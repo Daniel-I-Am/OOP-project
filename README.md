@@ -1,6 +1,6 @@
 # OOP-project
 
-## Afspraken
+## Requirements
 Definition of done
 - Github wiki is up to date for documentation
 - Github project is adjusted for relevant user stories
