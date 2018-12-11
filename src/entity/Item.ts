@@ -14,6 +14,7 @@ class Item extends Entity {
         yPos: number,
         height: number,
         width: number,
+        gravity: number,
         speed: number
     ) {
         super(

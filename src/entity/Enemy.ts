@@ -10,7 +10,7 @@ class Enemy extends Entity {
      * @param {number} speed
      * @param {number} gravity
      */
-    
+
     constructor(
         canvas: HTMLCanvasElement,
         imageSource: string,
@@ -18,8 +18,8 @@ class Enemy extends Entity {
         yPos: number,
         height: number,
         width: number,
-        speed: number,
-        gravity: number
+        gravity: number,
+        speed: number
     ) {
         super(
             imageSource,
@@ -47,7 +47,7 @@ class Enemy extends Entity {
     }
 
     /**
-     * 
+     *
      */
     protected move(): void {
 
