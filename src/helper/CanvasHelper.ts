@@ -44,6 +44,10 @@ class CanvasHelper {
     }
 
     // Getters and Setters
+    public getSize(): Array<number> {
+        return [this.getWidth(), this.getHeight()];
+    }
+
     public getWidth(): number {
         return this.canvas.width;
     }
