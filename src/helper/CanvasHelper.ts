@@ -72,6 +72,37 @@ class CanvasHelper {
         this.ctx.restore();
     }
 
+    /**
+     * Draws a button on screen that can be clicked
+     * @param src Image to use for the button
+     * @param caption Caption to put on the button
+     * @param location Location to put the button
+     * @param callback What to run when you click the button
+     */
+    public drawButton(
+        image: CanvasImageSource,
+        caption: string,
+        location: Vector,
+        callback: (event: MouseEvent) => void = null
+    ) {
+        this.writeText(caption, 24, location, "center", "middle", "black")
+        if (!callback) return;
+        let _listener = (event: MouseEvent) => {
+            // define the top left and bottom right of the button
+            let topleft = new Vector(this.canvas.offsetLeft+location.getValue(0)-<number>image.width/2, this.canvas.offsetTop+location.getValue(1)-<number>image.height/2),
+                bottomRight = new Vector(this.canvas.offsetLeft+location.getValue(0)+<number>image.width/2, this.canvas.offsetTop+location.getValue(1)+<number>image.height/2);
+            // check if we clicked within the button
+            if (event.x < bottomRight.getValue(0) && event.x > topleft.getValue(0) && event.y < bottomRight.getValue(1) && event.y > topleft.getValue(1)) {
+                // if we did, remove this event listener
+                this.canvas.removeEventListener('click', _listener);
+                // run the callback provided with the event as argument
+                callback(event);
+            }
+        }
+        // actually register the event listener
+        this.canvas.addEventListener('click', _listener);
+    }
+
     // Getters and Setters
     public getSize(): Array<number> {
         return [this.getWidth(), this.getHeight()];
