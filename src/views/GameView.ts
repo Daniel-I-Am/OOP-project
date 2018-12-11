@@ -10,7 +10,7 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim3.png",
         ],
         this.canvasHelper.getCenter(),
-        new Vector(312, 800), 1, 5
+        new Vector(58.5, 150), 1, 5
         );
     }
 
