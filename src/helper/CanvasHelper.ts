@@ -28,7 +28,7 @@ class CanvasHelper {
         location: Vector,
         rotation: Rotation,
         size: Vector,
-    ) {
+    ): void {
         this.ctx.save();
         this.ctx.translate(location.getValue(0), location.getValue(1));
         this.ctx.rotate(rotation.getValue());
