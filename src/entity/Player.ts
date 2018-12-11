@@ -3,32 +3,30 @@ class Player extends Entity {
 
     /**
      * @constructor
-     * @param {string} imageSource
-     * @param {number} xPos
-     * @param {number} yPos
+     * @param {Array<string>} imageSources
+     * @param {Vector} location
      * @param {number} height
      * @param {number} width
      * @param {number} speed
      */
     constructor(
-        imageSource: string,
-        xPos: number,
-        yPos: number,
-        height: number,
-        width: number,
+        imageSources: Array<string>,
+        location: Vector,
+        size: Vector,
         gravity: number,
         speed: number
     ) {
         super(
-            imageSource,
-            new Vector(xPos, yPos),
+            imageSources,
+            location,
             new Rotation(0),
-            new Vector(width, height),
+            size,
             gravity,
             speed
         );
 
         this.keyHelper = new KeyHelper();
+        this.animationCounterMax = 4;
     }
 
 
