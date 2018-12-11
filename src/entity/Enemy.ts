@@ -16,14 +16,14 @@ class Enemy extends Entity {
         yPos: number,
         height: number,
         width: number,
-        movementSpeed: number
+        speed: number
     ) {
         super(
             imageSource,
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
-            movementSpeed
+            speed
         );
     }
 

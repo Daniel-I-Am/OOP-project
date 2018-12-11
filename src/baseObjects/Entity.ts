@@ -11,7 +11,7 @@ abstract class Entity {
         location: Vector,
         rotation: Rotation,
         size: Vector,
-        movementSpeed: number,
+        speed: number,
     ) {
         this.canvasHelper = CanvasHelper.Instance();
         this.image = new Image();
@@ -19,7 +19,7 @@ abstract class Entity {
         this.location = location;
         this.rotation = rotation;
         this.size = size;
-        this.speed = movementSpeed;
+        this.speed = speed;
     }
 
     protected draw() {
