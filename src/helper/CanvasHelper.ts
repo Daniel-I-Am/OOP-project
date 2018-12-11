@@ -1,5 +1,5 @@
 class CanvasHelper {
-    private instance: CanvasHelper;
+    private static instance: CanvasHelper;
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
 
@@ -13,7 +13,7 @@ class CanvasHelper {
         this.canvas.height = window.innerHeight;
     }
 
-    public Instance(canvas: HTMLElement = null): CanvasHelper {
+    public static Instance(canvas: HTMLElement = null): CanvasHelper {
         if (!this.instance)
             this.instance = new CanvasHelper(canvas );
         return this.instance;
