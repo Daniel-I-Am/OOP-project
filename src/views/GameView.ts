@@ -1,5 +1,6 @@
 class GameView extends BaseView {
     private player: Player;
+    private tile: FallingTile;
 
     public constructor() {
         super();
@@ -12,9 +13,19 @@ class GameView extends BaseView {
         this.canvasHelper.getCenter(),
         new Vector(312, 800), 1, 5
         );
+        this.tile = new FallingTile(
+            ["./assets/images/buttonGreen.png"],
+            new Vector(100,100),
+            new Rotation(0),
+            new Vector(-1,-1),
+            2,
+            0
+        );   
+
     }
 
     public update(): void {
+        this.tile.update();
         this.player.update();
         this.drawGUI();
     }
