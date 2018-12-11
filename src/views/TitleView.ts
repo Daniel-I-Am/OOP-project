@@ -1,5 +1,7 @@
 class TitleView extends BaseView {
-    public constructor() {
+    public constructor(
+        buttonCallback: (event: MouseEvent) => void
+    ) {
         super();
         this.shouldClear = false;
         let buttonImage = new Image();
@@ -8,7 +10,7 @@ class TitleView extends BaseView {
                 buttonImage, "Play!",
                 this.canvasHelper.getCenter(),
                 new Vector(buttonImage.width, buttonImage.height),
-                (event: MouseEvent) => {}
+                buttonCallback
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
