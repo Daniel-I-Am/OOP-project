@@ -8,6 +8,7 @@ class Player extends Entity {
      * @param {Vector} location
      * @param {number} height
      * @param {number} width
+     * @param {number} gravity
      * @param {number} speed
      */
     constructor(
@@ -32,7 +33,7 @@ class Player extends Entity {
 
 
     /**
-     * Function to move the player right
+     * Function to move the player
      */
     public move(): void {
         let x: number;

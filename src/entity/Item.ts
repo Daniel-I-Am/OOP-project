@@ -6,6 +6,7 @@ class Item extends Entity {
      * @param {number} yPos
      * @param {number} height
      * @param {number} width
+     * @param {number} gravity
      * @param {number} speed
      */
     constructor(
