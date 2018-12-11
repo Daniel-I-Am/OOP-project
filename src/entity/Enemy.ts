@@ -1,13 +1,4 @@
 class Enemy extends Entity {
-    private canvas: HTMLCanvasElement;
-    private imageSource: string;
-    private xPos: number;
-    private yPos: number;
-    private height: number;
-    private width: number;
-    private movementSpeed: number;
-
-
     /**
      * @constructor
      * @param {HTMLCanvasElement} canvas
@@ -19,7 +10,7 @@ class Enemy extends Entity {
      * @param {number} speed
      */
     constructor(canvas: HTMLCanvasElement, imageSource: string, xPos: number, yPos: number, height: number, width: number, movementSpeed: number) {
-        super(canvas, imageSource, xPos, yPos, height, width, movementSpeed);
+        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), movementSpeed);
     }
 
 
@@ -27,7 +18,7 @@ class Enemy extends Entity {
      * Function to move the enemy right
      */
     public moveRight() {
-        this.xPos += this.movementSpeed;
+        this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
     }
 
 
@@ -35,6 +26,6 @@ class Enemy extends Entity {
      * Function to move the enemy left
      */
     public moveLeft() {
-        this.xPos -= this.movementSpeed;
+        this.location = this.location.sub(new Vector(1, 0).multiply(this.speed));
     }
 }
