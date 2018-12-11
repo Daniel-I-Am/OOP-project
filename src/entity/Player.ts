@@ -3,7 +3,6 @@ class Player extends Entity {
 
     /**
      * @constructor
-     * @param {HTMLCanvasElement} canvas
      * @param {string} imageSource
      * @param {number} xPos
      * @param {number} yPos
@@ -12,7 +11,6 @@ class Player extends Entity {
      * @param {number} speed
      */
     constructor(
-        canvas: HTMLCanvasElement,
         imageSource: string,
         xPos: number,
         yPos: number,
