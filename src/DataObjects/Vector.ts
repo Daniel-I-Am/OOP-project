@@ -33,8 +33,8 @@ class Vector {
     public add(vector: Vector): Vector {
         if (this.getDim() != vector.getDim())
             throw new Error(`Dimension of vector does not match.\n${this.getDim()} != ${vector.getDim()}`);
-        let myValue = this.getValues(),
-            thatValue = vector.getValues();
+        let myValue = this.toArray(),
+            thatValue = vector.toArray();
         return new Vector(...myValue.map((e,i) => e+thatValue[i]));
     }
 
@@ -43,7 +43,7 @@ class Vector {
     }
 
     public multiply(scalar: number): Vector {
-        return new Vector(...this.getValues().map(e => e*scalar));
+        return new Vector(...this.toArray().map(e => e*scalar));
     }
 
     public normalize(): Vector {
@@ -65,13 +65,13 @@ class Vector {
     public rotate(radians: number) {
         if (this.getDim() != 2)
             throw new Error(`Rotate can only be called on a 2-dim vector\n${this.getDim()} != 2`);
-        let myValue = this.getValues();
+        let myValue = this.toArray();
         let x = myValue[0],
             y = myValue[1];
         return new Vector(x*Math.cos(radians)-y*Math.sin(radians), x*Math.sin(radians)+y*Math.cos(radians));
     }
 
     public toString(): string {
-        return `[${this.getValues().map(e => e.toString()).join(", ")}]`
+        return `[${this.toArray().map(e => e.toString()).join(", ")}]`
     }
 }
