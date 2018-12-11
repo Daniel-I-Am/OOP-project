@@ -11,7 +11,7 @@ class Enemy extends Entity {
      * @param {number} speed
      */
 
-    constructor(
+    public constructor(
         canvas: HTMLCanvasElement,
         imageSource: string,
         xPos: number,

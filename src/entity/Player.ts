@@ -11,7 +11,7 @@ class Player extends Entity {
      * @param {number} gravity
      * @param {number} speed
      */
-    constructor(
+    public constructor(
         imageSources: Array<string>,
         location: Vector,
         size: Vector,

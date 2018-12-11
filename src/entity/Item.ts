@@ -9,7 +9,7 @@ class Item extends Entity {
      * @param {number} gravity
      * @param {number} speed
      */
-    constructor(
+    public constructor(
         imageSource: string,
         xPos: number,
         yPos: number,
