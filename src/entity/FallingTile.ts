@@ -26,12 +26,13 @@ class FallingTile extends Entity{
         if(this.countdown == 0){
             this.falling = true;
         }
-        if(this.location.getValue(1) < 500 && this.falling){ //replace with collide shit later on
+        if(this.location.y < 500 && this.falling){ //replace with collide shit later on
+            this.offset.y = 0;
             this.speed += this.gravity;
-            this.location.updateValue(1,this.location.getValue(1)+this.speed);
+            this.location.y += this.speed;
         }
         if(!this.falling){
-            this.location.updateValue(1,this.location.getValue(1)+MathHelper.randomNumber(-2,2));
+            this.offset.y = MathHelper.randomNumber(-5, 5, 2);
         }
     }
 }
