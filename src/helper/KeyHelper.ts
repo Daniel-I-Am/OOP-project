@@ -3,6 +3,8 @@ class KeyHelper {
     public rightPressed: boolean;
     public upPressed: boolean;
     public downPressed: boolean;
+    public spaceBarPressed: boolean;
+    public interactPressed: boolean;
 
 
     /**
@@ -14,6 +16,8 @@ class KeyHelper {
         this.upPressed = false;
         this.rightPressed = false;
         this.downPressed = false;
+        this.spaceBarPressed = false;
+        this.interactPressed = false;
         window.addEventListener("keydown", this.keyDownHandler);
         window.addEventListener("keyup", this.keyUpHandler);
     }
@@ -31,17 +35,30 @@ class KeyHelper {
      * @param {KeyboardEvent} event
      */
     private keyDownHandler = (event: KeyboardEvent): void => {
-        if (event.keyCode === 37) {
-            this.leftPressed = true;
-        }
-        if (event.keyCode === 38) {
-            this.upPressed = true;
-        }
-        if (event.keyCode === 39) {
-            this.rightPressed = true;
-        }
-        if (event.keyCode === 40) {
-            this.downPressed = true;
+        switch(event.keyCode) {
+            case 37:
+            case 65:
+                    this.leftPressed = true;
+                break;
+            case 38:
+            case 87:
+                    this.upPressed = true;
+                break;
+            case 39:
+            case 68:
+                    this.rightPressed = true;
+                break;
+            case 40:
+            case 83:
+                    this.downPressed = true;
+                break;
+            case 32:
+                    this.spaceBarPressed = true;
+                break;
+            case 69:
+                    this.interactPressed = true;
+                break;
+
         }
     }
 
@@ -51,17 +68,30 @@ class KeyHelper {
      * @param {KeyboardEvent} event
      */
     private keyUpHandler = (event: KeyboardEvent): void => {
-        if (event.keyCode === 37) {
-            this.leftPressed = false;
-        }
-        if (event.keyCode === 38) {
-            this.upPressed = false;
-        }
-        if (event.keyCode === 39) {
-            this.rightPressed = false;
-        }
-        if (event.keyCode === 40) {
-            this.downPressed = false;
+        switch(event.keyCode) {
+            case 37:
+            case 65:
+                    this.leftPressed = false;
+                break;
+            case 38:
+            case 87:
+                    this.upPressed = false;
+                break;
+            case 39:
+            case 68:
+                    this.rightPressed = false;
+                break;
+            case 40:
+            case 83:
+                    this.downPressed = false;
+                break;
+            case 32:
+                    this.spaceBarPressed = false;
+                break;
+            case 69:
+                    this.interactPressed = false;
+                break;
+
         }
     }
 
