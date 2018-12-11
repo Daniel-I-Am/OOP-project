@@ -4,6 +4,7 @@ abstract class Entity {
     protected animationCounterMax: number;
     protected activeImage: number;
     protected location: Vector;
+    protected offset: Vector;
     protected rotation: Rotation;
     protected size: Vector;
     protected speed: number;
@@ -29,6 +30,7 @@ abstract class Entity {
             this.images.push(image);
         });
         this.location = location;
+        this.offset = new Vector(0, 0);
         this.rotation = rotation;
         this.size = size;
         if (Math.min(...this.size.toArray()) < 0)
@@ -64,7 +66,7 @@ abstract class Entity {
     };
 
     private draw() {
-        this.canvasHelper.drawImage(this.images[this.activeImage], this.location, this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
 
     protected abstract move(): void;
