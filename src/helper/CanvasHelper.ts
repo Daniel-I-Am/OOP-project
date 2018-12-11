@@ -68,7 +68,11 @@ class CanvasHelper {
         this.ctx.save();
         this.ctx.translate(location.getValue(0), location.getValue(1));
         this.ctx.rotate(rotation.getValue());
-        this.ctx.drawImage(image, -size.getValue(0)/2, -size.getValue(1)/2, size.getValue(0), size.getValue(1));
+        if (Math.min(...size.toArray()) < 0) {
+            this.ctx.drawImage(image, -image.width/2, -image.height/2);
+        } else {
+            this.ctx.drawImage(image, -size.getValue(0)/2, -size.getValue(1)/2, size.getValue(0), size.getValue(1));   
+        }
         this.ctx.restore();
     }
 
