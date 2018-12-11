@@ -120,7 +120,21 @@ class KeyHelper {
     /**
     * Function to get the downPressed property
     */
-    public getdownPressed(): boolean {
+    public getDownPressed(): boolean {
         return this.downPressed;
+    }
+
+    /**
+    * Function to get the downPressed property
+    */
+    public getSpaceBarPressed(): boolean {
+        return this.spaceBarPressed;
+    }
+
+    /**
+    * Function to get the downPressed property
+    */
+    public getInteractPressed(): boolean {
+        return this.interactPressed;
     }
 }

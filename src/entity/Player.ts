@@ -33,6 +33,9 @@ class Player extends Entity {
     }
 
 
+    /**
+     * Function to move the player right
+     */
     public move(): void {
         let x: number;
         if (this.keyHelper.getLeftPressed())
@@ -43,5 +46,14 @@ class Player extends Entity {
             x = this.location.getValue(0);
             x += this.speed;
             this.location.updateValue(0, x);
+    }
+
+
+    /**
+     * Function to interact
+     */
+    public interact() {
+        if (this.keyHelper.getInteractPressed())
+            console.log('interacting');
     }
 }
