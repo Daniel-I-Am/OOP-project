@@ -4,38 +4,26 @@
  * These are standard mathematical operations, just... on vectors.
  */
 class Vector {
-    private numbers: Array<number>;
+    public x: number;
+    public y: number
 
-    public constructor(...args: Array<number>) {
-        this.numbers = args;
+    public constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
     }
 
     public toArray(): Array<number> {
-        return this.numbers;
-    }
-
-    public getValue(n: number): number {
-        return this.numbers[n];
-    }
-
-    public updateValue(i: number, n: number): void {
-        this.numbers[i] = n;
+        return [this.x, this.y]
     }
 
     public getSize(): number {
-        return Math.sqrt(this.numbers.map(e => e**2).reduce((a,b) => a+b, 0));
-    }
-
-    public getDim(): number {
-        return this.numbers.length;
+        return Math.sqrt(this.x**2 + this.y**2);
     }
 
     public add(vector: Vector): Vector {
-        if (this.getDim() != vector.getDim())
-            throw new Error(`Dimension of vector does not match.\n${this.getDim()} != ${vector.getDim()}`);
-        let myValue = this.toArray(),
-            thatValue = vector.toArray();
-        return new Vector(...myValue.map((e,i) => e+thatValue[i]));
+        this.x += vector.x;
+        this.y += vector.y;
+        return this;
     }
 
     public sub(vector: Vector): Vector {
@@ -43,32 +31,35 @@ class Vector {
     }
 
     public multiply(scalar: number): Vector {
-        return new Vector(...this.toArray().map(e => e*scalar));
+        this.x *= scalar;
+        this.y *= scalar;
+        return this;
     }
 
     public normalize(): Vector {
-        return this.multiply(1/this.getSize());
+        this.multiply(1/this.getSize());
+        return this;
     }
 
     public max(n: number): Vector {
-        if (this.getSize() <= n)
-            return this;
-        return this.multiply(n/this.getSize());
+        if (this.getSize() > n)
+            this.multiply(n/this.getSize());
+        return this;
     }
 
     public min(n: number): Vector {
-        if (this.getSize() >= n)
-            return this;
-        return this.multiply(n/this.getSize());
+        if (this.getSize() < n)
+            this.multiply(n/this.getSize());
+        return this;
     }
 
-    public rotate(radians: number) {
-        if (this.getDim() != 2)
-            throw new Error(`Rotate can only be called on a 2-dim vector\n${this.getDim()} != 2`);
+    public rotate(radians: number): Vector {
         let myValue = this.toArray();
         let x = myValue[0],
             y = myValue[1];
-        return new Vector(x*Math.cos(radians)-y*Math.sin(radians), x*Math.sin(radians)+y*Math.cos(radians));
+        this.x = x*Math.cos(radians)-y*Math.sin(radians);
+        this.y = x*Math.sin(radians)+y*Math.cos(radians);
+        return this;
     }
 
     public toString(): string {
