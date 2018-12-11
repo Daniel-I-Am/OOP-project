@@ -69,4 +69,12 @@ abstract class Entity {
 
     protected abstract move(): void;
 
+    // Getters & Setters
+    public getSize(): Vector {
+        return this.size;
+    }
+
+    public getLoc(): Vector {
+        return this.location;
+    }
 }
