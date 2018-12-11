@@ -31,6 +31,12 @@ abstract class Entity {
         this.location = location;
         this.rotation = rotation;
         this.size = size;
+        if (Math.min(...this.size.toArray()) < 0)
+            this.images[0].addEventListener('load', () => {
+                this.size = new Vector(
+                    this.images[0].width, this.images[0].height
+                );
+            });
         this.gravity = gravity;
         this.speed = speed;
     }
