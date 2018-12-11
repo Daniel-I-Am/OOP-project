@@ -238,7 +238,7 @@ class Entity {
     }
 }
 class Enemy extends Entity {
-    constructor(canvas, imageSource, xPos, yPos, height, width, speed, gravity) {
+    constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
         super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), speed, gravity);
     }
     moveRight() {
@@ -275,13 +275,13 @@ function init() {
 }
 window.addEventListener('load', init);
 class Item extends Entity {
-    constructor(canvas, imageSource, xPos, yPos, height, width, speed) {
-        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), 0, speed);
+    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
+        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
     }
     move() { }
 }
 class Player extends Entity {
-    constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
+    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
         super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
         this.keyHelper = new KeyHelper();
     }
