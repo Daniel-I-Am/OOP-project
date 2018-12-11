@@ -7,8 +7,8 @@ class Enemy extends Entity {
      * @param {number} yPos
      * @param {number} height
      * @param {number} width
-     * @param {number} speed
      * @param {number} gravity
+     * @param {number} speed
      */
 
     constructor(
@@ -26,8 +26,8 @@ class Enemy extends Entity {
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
-            speed,
-            gravity
+            gravity,
+            speed
         );
     }
 
