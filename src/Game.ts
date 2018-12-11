@@ -6,6 +6,7 @@
 ///<reference path="baseObjects/BaseView.ts"/>
 ///<reference path="baseObjects/Entity.ts"/>
 ///<reference path="entity/Enemy.ts"/>
+///<reference path="entity/FallingTile.ts"/>
 
 class Game {
     private canvasHelper: CanvasHelper;
