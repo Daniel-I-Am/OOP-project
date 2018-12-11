@@ -8,9 +8,12 @@
 ///<reference path="entity/Enemy.ts"/>
 
 class Game {
+    private canvasHelper: CanvasHelper;
     private currentView: BaseView;
     private currentInterval: number;
+
     public constructor(canvas: HTMLElement) {
+        this.canvasHelper = CanvasHelper.Instance(canvas);
         this.currentView = new TitleView()
         this.currentInterval = setInterval(this.loop, 33)
     }
@@ -19,7 +22,7 @@ class Game {
         if (this.currentView)
             this.currentView.update();
     }
-        
+
     private switchView = (
         newView: BaseView,
     ): void => {
