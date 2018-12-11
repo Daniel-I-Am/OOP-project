@@ -42,4 +42,13 @@ class CanvasHelper {
         this.ctx.drawImage(image, -size.getValue(0)/2, -size.getValue(1)/2, size.getValue(0), size.getValue(1));
         this.ctx.restore();
     }
+
+    // Getters and Setters
+    public getWidth(): number {
+        return this.canvas.width;
+    }
+
+    public getHeight(): number {
+        return this.canvas.height;
+    }
 }
