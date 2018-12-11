@@ -27,4 +27,6 @@ class Item extends Entity {
             speed
         );
     }
+
+    public move(): void {}
 }
