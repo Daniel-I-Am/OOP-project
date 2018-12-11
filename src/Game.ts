@@ -11,6 +11,8 @@ class Game {
     private currentView: BaseView;
     private currentInterval: number;
     public constructor(canvas: HTMLElement) {
+        this.currentView = new TitleView()
+        this.currentInterval = setInterval(this.loop, 33)
     }
 
     private loop = (): void => {
