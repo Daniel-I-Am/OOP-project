@@ -23,6 +23,7 @@ class Item extends Entity {
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
+            0,
             speed
         );
     }
