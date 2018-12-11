@@ -1,10 +1,11 @@
-class Enemey extends Entity {
+class Enemy extends Entity {
     private canvas: HTMLCanvasElement;
     private imageSource: string;
     private xPos: number;
     private yPos: number;
     private height: number;
     private width: number;
+    private movementSpeed: number;
 
 
     /**
@@ -15,8 +16,25 @@ class Enemey extends Entity {
      * @param {number} yPos
      * @param {number} height
      * @param {number} width
+     * @param {number} speed
      */
-    constructor(canvas: HTMLCanvasElement, imageSource: string, xPos: number, yPos: number, height: number, width: number) {
-        super(canvas, imageSource, xPos, yPos, height, width);
+    constructor(canvas: HTMLCanvasElement, imageSource: string, xPos: number, yPos: number, height: number, width: number, movementSpeed: number) {
+        super(canvas, imageSource, xPos, yPos, height, width, movementSpeed);
+    }
+
+
+    /**
+     * Function to move the enemy right
+     */
+    public moveRight() {
+        this.xPos += this.movementSpeed;
+    }
+
+
+    /**
+     * Function to move the enemy left
+     */
+    public moveLeft() {
+        this.xPos -= this.movementSpeed;
     }
 }
