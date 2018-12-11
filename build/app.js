@@ -147,7 +147,7 @@ class KeyHelper {
 }
 class MathHelper {
     static randomNumber(min, max, digits = 0) {
-        return Math.floor(Math.random() * (max - min) + min);
+        return Math.floor(Math.random() * (max - min) * Math.pow(10, digits) + min) / Math.pow(10, digits);
     }
     static toRadian(degrees) {
         return degrees * Math.PI / 180;
@@ -168,6 +168,9 @@ class Vector {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+    }
+    copy() {
+        return new Vector(this.x, this.y);
     }
     toArray() {
         return [this.x, this.y];
@@ -235,6 +238,7 @@ class Entity {
             this.images.push(image);
         });
         this.location = location;
+        this.offset = new Vector(0, 0);
         this.rotation = rotation;
         this.size = size;
         if (Math.min(...this.size.toArray()) < 0)
@@ -262,7 +266,7 @@ class Entity {
     }
     ;
     draw() {
-        this.canvasHelper.drawImage(this.images[this.activeImage], this.location, this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
     getSize() {
         return this.size;
@@ -282,6 +286,29 @@ class Enemy extends Entity {
         this.location = this.location.sub(new Vector(1, 0).multiply(this.speed));
     }
     move() {
+    }
+}
+class FallingTile extends Entity {
+    constructor(imageSource, location, rotation, size, gravity, speed) {
+        super(imageSource, location, rotation, size, gravity, speed);
+        this.countdown = 60;
+        this.falling = false;
+        this.location = new Vector(100, 100);
+        console.log("YEET");
+    }
+    move() {
+        this.countdown -= 1;
+        if (this.countdown == 0) {
+            this.falling = true;
+        }
+        if (this.location.y < 500 && this.falling) {
+            this.offset.y = 0;
+            this.speed += this.gravity;
+            this.location.y += this.speed;
+        }
+        if (!this.falling) {
+            this.offset.y = MathHelper.randomNumber(-5, 5, 2);
+        }
     }
 }
 class Game {
@@ -348,8 +375,10 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
+        this.tile = new FallingTile(["./assets/images/buttonGreen.png"], new Vector(100, 100), new Rotation(0), new Vector(-1, -1), 2, 0);
     }
     update() {
+        this.tile.update();
         this.player.update();
         this.drawGUI();
     }
