@@ -4,6 +4,7 @@ abstract class Entity {
     protected rotation: Rotation;
     protected size: Vector;
     protected speed: number;
+    protected gravity: number;
     private canvasHelper: CanvasHelper;
 
     protected constructor(
@@ -12,6 +13,7 @@ abstract class Entity {
         rotation: Rotation,
         size: Vector,
         movementSpeed: number,
+        gravity: number,
     ) {
         this.canvasHelper = CanvasHelper.Instance();
         this.image = new Image();
@@ -20,9 +22,18 @@ abstract class Entity {
         this.rotation = rotation;
         this.size = size;
         this.speed = movementSpeed;
+        this.gravity = gravity;
     }
 
-    protected draw() {
+    public update(): void {
+        this.move();
+        this.draw();
+    };
+
+    private draw() {
         this.canvasHelper.drawImage(this.image, this.location, this.rotation, this.size);
     }
+
+    protected abstract move(): void;
+
 }
