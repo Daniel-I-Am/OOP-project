@@ -80,11 +80,13 @@ class CanvasHelper {
      * @param callback What to run when you click the button
      */
     public drawButton(
-        image: CanvasImageSource,
+        image: HTMLImageElement,
         caption: string,
         location: Vector,
+        size: Vector,
         callback: (event: MouseEvent) => void = null
     ) {
+        this.drawImage(image, location, new Rotation(0), size);
         this.writeText(caption, 24, location, "center", "middle", "black")
         if (!callback) return;
         let _listener = (event: MouseEvent) => {

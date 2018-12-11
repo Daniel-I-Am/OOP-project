@@ -16,6 +16,7 @@ class Player extends Entity {
         yPos: number,
         height: number,
         width: number,
+        gravity: number,
         speed: number
     ) {
         super(
@@ -23,6 +24,7 @@ class Player extends Entity {
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
+            gravity,
             speed
         );
 
