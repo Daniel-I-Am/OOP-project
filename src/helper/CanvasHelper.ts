@@ -17,6 +17,13 @@ class CanvasHelper {
     }
 
     /**
+     * Clears the entire canvas
+     */
+    public clear(): void {
+        this.ctx.clearRect(0, 0, this.getWidth(), this.getHeight());
+    }
+
+    /**
      * Draws an image to the canvas
      * @param image Image to draw
      * @param location Location to draw the image at
