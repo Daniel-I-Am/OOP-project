@@ -10,7 +10,7 @@ class CanvasHelper {
         this.ctx = this.canvas.getContext('2d');
     }
 
-    public Instance(canvas: HTMLElement = null) {
+    public Instance(canvas: HTMLElement = null): CanvasHelper {
         if (!this.instance)
             this.instance = new CanvasHelper(canvas );
         return this.instance;
