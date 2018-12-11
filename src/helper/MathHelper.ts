@@ -1,13 +1,13 @@
 class MathHelper {
 
     /**
-     * Returns a random number between min and max
+     * Returns a random number between (inclusive) min and (exclusive) max
      * @static
      * @param {number} min
      * @param {number} max
      */
-    public static randomNumber(min: number, max: number): number {
-        return Math.round(Math.random() * (max - min) + min);
+    public static randomNumber(min: number, max: number, digits: number = 0): number {
+        return Math.floor(Math.random() * (max - min) * 10**digits + min) / 10**digits;
     }
 
 
