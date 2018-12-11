@@ -1,5 +1,8 @@
 abstract class Entity {
-    protected image: HTMLImageElement;
+    protected images: Array<HTMLImageElement>;
+    private animationCounter: number;
+    protected animationCounterMax: number;
+    protected activeImage: number;
     protected location: Vector;
     protected rotation: Rotation;
     protected size: Vector;
@@ -8,7 +11,7 @@ abstract class Entity {
     private canvasHelper: CanvasHelper;
 
     protected constructor(
-        imageSource: string,
+        imageSources: Array<string>,
         location: Vector,
         rotation: Rotation,
         size: Vector,
@@ -16,8 +19,15 @@ abstract class Entity {
         speed: number,
     ) {
         this.canvasHelper = CanvasHelper.Instance();
-        this.image = new Image();
-        this.image.src = imageSource;
+        this.images = new Array<HTMLImageElement>();
+        this.activeImage = 0;
+        this.animationCounter = 0;
+        this.animationCounterMax = 1;
+        imageSources.forEach(e => {
+            let image = new Image();
+            image.src = e;
+            this.images.push(image);
+        });
         this.location = location;
         this.rotation = rotation;
         this.size = size;
@@ -27,11 +37,15 @@ abstract class Entity {
 
     public update(): void {
         this.move();
+        this.animationCounter++;
+        this.animationCounter %= this.animationCounterMax;
+        if (this.animationCounter == 0)
+            this.activeImage = (this.activeImage+1) % this.images.length;
         this.draw();
     };
 
     private draw() {
-        this.canvasHelper.drawImage(this.image, this.location, this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location, this.rotation, this.size);
     }
 
     protected abstract move(): void;
