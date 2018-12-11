@@ -1,5 +1,6 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
+    private inventory: Inventory;
 
     /**
      * @constructor
