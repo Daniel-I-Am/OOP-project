@@ -1,8 +1,14 @@
 abstract class BaseView {
     protected canvasHelper: CanvasHelper;
+    protected shouldClear: boolean;
 
     protected constructor() {
         this.canvasHelper = CanvasHelper.Instance();
+        this.shouldClear = true;
+    }
+
+    public getShouldClear(): boolean {
+        return this.shouldClear;
     }
 
     /**
