@@ -15,7 +15,7 @@ class CanvasHelper {
 
     public static Instance(canvas: HTMLElement = null): CanvasHelper {
         if (!this.instance)
-            this.instance = new CanvasHelper(canvas );
+            this.instance = new CanvasHelper(canvas);
         return this.instance;
     }
 
