@@ -226,7 +226,7 @@ class BaseView {
     }
 }
 class Entity {
-    constructor(imageSources, location, rotation, size, gravity, speed) {
+    constructor(imageSources, location, rotation, size, gravity = 0, speed = 0, direction = new Rotation(0)) {
         this.canvasHelper = CanvasHelper.Instance();
         this.images = new Array();
         this.activeImage = 0;
@@ -247,6 +247,7 @@ class Entity {
             });
         this.gravity = gravity;
         this.speed = speed;
+        this.direction = direction;
     }
     collide(collideWith) {
         if (this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 < collideWith.getLoc().x / 2 &&

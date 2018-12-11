@@ -8,6 +8,7 @@ abstract class Entity {
     protected rotation: Rotation;
     protected size: Vector;
     protected speed: number;
+    protected direction: Rotation;
     protected gravity: number;
     private canvasHelper: CanvasHelper;
 
@@ -16,8 +17,9 @@ abstract class Entity {
         location: Vector,
         rotation: Rotation,
         size: Vector,
-        gravity: number,
-        speed: number,
+        gravity: number = 0,
+        speed: number = 0,
+        direction: Rotation = new Rotation(0),
     ) {
         this.canvasHelper = CanvasHelper.Instance();
         this.images = new Array<HTMLImageElement>();
@@ -41,6 +43,7 @@ abstract class Entity {
             });
         this.gravity = gravity;
         this.speed = speed;
+        this.direction = direction;
     }
 
     public collide(
