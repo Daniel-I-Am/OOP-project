@@ -266,7 +266,7 @@ class Game {
             this.currentView = newView;
         };
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView();
+        this.currentView = new TitleView(() => { this.switchView(new GameView()); });
         this.currentInterval = setInterval(this.loop, 33);
     }
 }
@@ -297,13 +297,25 @@ class Player extends Entity {
         this.location.updateValue(0, x);
     }
 }
-class TitleView extends BaseView {
+class GameView extends BaseView {
     constructor() {
+        super();
+    }
+    update() {
+        this.drawGUI();
+    }
+    drawGUI() {
+        this.canvasHelper.writeText("Hello World!", 69, this.canvasHelper.getCenter(), undefined, undefined, "black");
+    }
+    beforeExit() { }
+}
+class TitleView extends BaseView {
+    constructor(buttonCallback) {
         super();
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), (event) => { });
+            this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), buttonCallback);
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
     }
