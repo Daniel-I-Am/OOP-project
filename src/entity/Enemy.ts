@@ -9,8 +9,22 @@ class Enemy extends Entity {
      * @param {number} width
      * @param {number} speed
      */
-    constructor(canvas: HTMLCanvasElement, imageSource: string, xPos: number, yPos: number, height: number, width: number, movementSpeed: number) {
-        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), movementSpeed);
+    constructor(
+        canvas: HTMLCanvasElement,
+        imageSource: string,
+        xPos: number,
+        yPos: number,
+        height: number,
+        width: number,
+        movementSpeed: number
+    ) {
+        super(
+            imageSource,
+            new Vector(xPos, yPos),
+            new Rotation(0),
+            new Vector(width, height),
+            movementSpeed
+        );
     }
 
 
