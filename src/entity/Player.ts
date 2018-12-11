@@ -1,4 +1,6 @@
-class Enemy extends Entity {
+class Player extends Entity {
+    private keyHelper: KeyHelper;
+
     /**
      * @constructor
      * @param {HTMLCanvasElement} canvas
@@ -8,9 +10,7 @@ class Enemy extends Entity {
      * @param {number} height
      * @param {number} width
      * @param {number} speed
-     * @param {number} gravity
      */
-    
     constructor(
         canvas: HTMLCanvasElement,
         imageSource: string,
@@ -18,38 +18,29 @@ class Enemy extends Entity {
         yPos: number,
         height: number,
         width: number,
-        speed: number,
-        gravity: number
+        speed: number
     ) {
         super(
             imageSource,
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
-            speed,
-            gravity
+            speed
         );
+
+        this.keyHelper = new KeyHelper();
     }
 
 
-    /**
-     * Function to move the enemy right
-     */
-    public moveRight() {
-        this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
-    }
-
-    /**
-     * Function to move the enemy left
-     */
-    public moveLeft() {
-        this.location = this.location.sub(new Vector(1, 0).multiply(this.speed));
-    }
-
-    /**
-     * 
-     */
-    protected move(): void {
-
+    public move(): void {
+        let x: number;
+        if (this.keyHelper.getLeftPressed())
+            x = this.location.getValue(0);
+            x -= this.speed;
+            this.location.updateValue(0, x);
+        if (this.keyHelper.getRightPressed())
+            x = this.location.getValue(0);
+            x += this.speed;
+            this.location.updateValue(0, x);
     }
 }

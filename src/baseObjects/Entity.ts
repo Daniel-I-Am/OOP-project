@@ -12,8 +12,8 @@ abstract class Entity {
         location: Vector,
         rotation: Rotation,
         size: Vector,
-        movementSpeed: number,
         gravity: number,
+        speed: number,
     ) {
         this.canvasHelper = CanvasHelper.Instance();
         this.image = new Image();
@@ -21,8 +21,8 @@ abstract class Entity {
         this.location = location;
         this.rotation = rotation;
         this.size = size;
-        this.speed = movementSpeed;
         this.gravity = gravity;
+        this.speed = speed;
     }
 
     public update(): void {
