@@ -9,7 +9,7 @@ class KeyHelper {
      * Adds values to the public variables and adds eventlisteners to the window
      * @constructor
      */
-    constructor() {
+    public constructor() {
         this.leftPressed = false;
         this.upPressed = false;
         this.rightPressed = false;
@@ -18,6 +18,13 @@ class KeyHelper {
         window.addEventListener("keyup", this.keyUpHandler);
     }
 
+    /**
+     * Removes the event listeners
+     */
+    public destroy(): void {
+        window.removeEventListener("keydown", this.keyDownHandler);
+        window.removeEventListener("keyup", this.keyUpHandler);
+    }
 
     /**
      * Function to handle the key down
