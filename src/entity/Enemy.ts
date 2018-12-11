@@ -22,7 +22,7 @@ class Enemy extends Entity {
         speed: number
     ) {
         super(
-            imageSource,
+            [imageSource],
             new Vector(xPos, yPos),
             new Rotation(0),
             new Vector(width, height),
