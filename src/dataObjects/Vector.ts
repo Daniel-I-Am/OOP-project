@@ -12,6 +12,10 @@ class Vector {
         this.y = y;
     }
 
+    public copy(): Vector {
+        return new Vector(this.x, this.y);
+    }
+
     public toArray(): Array<number> {
         return [this.x, this.y]
     }
