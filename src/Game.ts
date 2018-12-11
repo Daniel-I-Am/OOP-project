@@ -19,4 +19,4 @@ function init() {
     const game = new Game(document.getElementById("canvas"));
 }
 
-window.addEventListener('load', init)
+window.addEventListener('load', init);
