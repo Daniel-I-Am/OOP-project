@@ -27,6 +27,32 @@ class CanvasHelper {
     }
 
     /**
+     * Writes text to screen
+     * @param text Text to write to screen
+     * @param fontsize Size of the text
+     * @param location Location to put the text at
+     * @param align Text alignment to use, default: center
+     * @param baseLine Baseline to use when printing, default: middle
+     * @param color Color of the text, default: white
+     * @param fontFamily Fontface to use, default: Minecraft
+     */
+    public writeText(
+        text: string,
+        fontsize: number,
+        location: Vector,
+        align: CanvasTextAlign = "center",
+        baseLine: CanvasTextBaseline = "middle",
+        color: string = "white",
+        fontFamily: string = "Arial"
+    ): void {
+        this.ctx.fillStyle = color;
+        this.ctx.font = `${fontsize}px ${fontFamily}`;
+        this.ctx.textAlign = align;
+        this.ctx.textBaseline = baseLine;
+        this.ctx.fillText(text, location.getValue(0), location.getValue(1));
+    }
+
+    /**
      * Draws an image to the canvas
      * @param image Image to draw
      * @param location Location to draw the image at
