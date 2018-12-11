@@ -30,7 +30,7 @@ class CanvasHelper {
         size: Vector,
     ) {
         this.ctx.save();
-        this.ctx.translate(...location.toArray());
+        this.ctx.translate(location.getValue(0), location.getValue(1));
         this.ctx.rotate(rotation.getValue());
         this.ctx.drawImage(image, -size.getValue(0)/2, -size.getValue(1)/2, size.getValue(0), size.getValue(1));
         this.ctx.restore();
