@@ -108,6 +108,10 @@ class CanvasHelper {
         return [this.getWidth(), this.getHeight()];
     }
 
+    public getCenter(): Vector {
+        return new Vector(this.getWidth()/2, this.getHeight()/2);
+    }
+
     public getWidth(): number {
         return this.canvas.width;
     }
