@@ -11,7 +11,20 @@ class Game {
     private currentView: BaseView;
     private currentInterval: number;
     public constructor(canvas: HTMLElement) {
+    }
+
+    private loop = (): void => {
+        if (this.currentView)
+            this.currentView.update();
+    }
         
+    private switchView = (
+        newView: BaseView,
+    ): void => {
+        if (this.currentView) {
+            this.currentView.beforeExit();
+        }
+        this.currentView = newView;
     }
 }
 
