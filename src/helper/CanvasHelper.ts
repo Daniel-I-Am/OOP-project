@@ -49,7 +49,7 @@ class CanvasHelper {
         this.ctx.font = `${fontsize}px ${fontFamily}`;
         this.ctx.textAlign = align;
         this.ctx.textBaseline = baseLine;
-        this.ctx.fillText(text, location.getValue(0), location.getValue(1));
+        this.ctx.fillText(text, location.x, location.y);
     }
 
     /**
@@ -66,12 +66,12 @@ class CanvasHelper {
         size: Vector,
     ): void {
         this.ctx.save();
-        this.ctx.translate(location.getValue(0), location.getValue(1));
+        this.ctx.translate(location.x, location.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             this.ctx.drawImage(image, -image.width/2, -image.height/2);
         } else {
-            this.ctx.drawImage(image, -size.getValue(0)/2, -size.getValue(1)/2, size.getValue(0), size.getValue(1));   
+            this.ctx.drawImage(image, -size.x/2, -size.y/2, size.x, size.y);   
         }
         this.ctx.restore();
     }
@@ -95,10 +95,10 @@ class CanvasHelper {
         if (!callback) return;
         let _listener = (event: MouseEvent) => {
             // define the top left and bottom right of the button
-            let topleft = new Vector(this.canvas.offsetLeft+location.getValue(0)-<number>image.width/2, this.canvas.offsetTop+location.getValue(1)-<number>image.height/2),
-                bottomRight = new Vector(this.canvas.offsetLeft+location.getValue(0)+<number>image.width/2, this.canvas.offsetTop+location.getValue(1)+<number>image.height/2);
+            let topleft = new Vector(this.canvas.offsetLeft+location.x-<number>image.width/2, this.canvas.offsetTop+location.y-<number>image.height/2),
+                bottomRight = new Vector(this.canvas.offsetLeft+location.x+<number>image.width/2, this.canvas.offsetTop+location.y+<number>image.height/2);
             // check if we clicked within the button
-            if (event.x < bottomRight.getValue(0) && event.x > topleft.getValue(0) && event.y < bottomRight.getValue(1) && event.y > topleft.getValue(1)) {
+            if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
                 // if we did, remove this event listener
                 this.canvas.removeEventListener('click', _listener);
                 // run the callback provided with the event as argument

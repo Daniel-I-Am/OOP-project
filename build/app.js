@@ -18,17 +18,17 @@ class CanvasHelper {
         this.ctx.font = `${fontsize}px ${fontFamily}`;
         this.ctx.textAlign = align;
         this.ctx.textBaseline = baseLine;
-        this.ctx.fillText(text, location.getValue(0), location.getValue(1));
+        this.ctx.fillText(text, location.x, location.y);
     }
     drawImage(image, location, rotation, size) {
         this.ctx.save();
-        this.ctx.translate(location.getValue(0), location.getValue(1));
+        this.ctx.translate(location.x, location.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
         }
         else {
-            this.ctx.drawImage(image, -size.getValue(0) / 2, -size.getValue(1) / 2, size.getValue(0), size.getValue(1));
+            this.ctx.drawImage(image, -size.x / 2, -size.y / 2, size.x, size.y);
         }
         this.ctx.restore();
     }
@@ -38,8 +38,8 @@ class CanvasHelper {
         if (!callback)
             return;
         let _listener = (event) => {
-            let topleft = new Vector(this.canvas.offsetLeft + location.getValue(0) - image.width / 2, this.canvas.offsetTop + location.getValue(1) - image.height / 2), bottomRight = new Vector(this.canvas.offsetLeft + location.getValue(0) + image.width / 2, this.canvas.offsetTop + location.getValue(1) + image.height / 2);
-            if (event.x < bottomRight.getValue(0) && event.x > topleft.getValue(0) && event.y < bottomRight.getValue(1) && event.y > topleft.getValue(1)) {
+            let topleft = new Vector(this.canvas.offsetLeft + location.x - image.width / 2, this.canvas.offsetTop + location.y - image.height / 2), bottomRight = new Vector(this.canvas.offsetLeft + location.x + image.width / 2, this.canvas.offsetTop + location.y + image.height / 2);
+            if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
                 this.canvas.removeEventListener('click', _listener);
                 callback(event);
             }
@@ -135,8 +135,14 @@ class KeyHelper {
     getRightPressed() {
         return this.rightPressed;
     }
-    getdownPressed() {
+    getDownPressed() {
         return this.downPressed;
+    }
+    getSpaceBarPressed() {
+        return this.spaceBarPressed;
+    }
+    getInteractPressed() {
+        return this.interactPressed;
     }
 }
 class MathHelper {
@@ -159,55 +165,49 @@ class Rotation {
     }
 }
 class Vector {
-    constructor(...args) {
-        this.numbers = args;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
     }
     toArray() {
-        return this.numbers;
-    }
-    getValue(n) {
-        return this.numbers[n];
-    }
-    updateValue(i, n) {
-        this.numbers[i] = n;
+        return [this.x, this.y];
     }
     getSize() {
-        return Math.sqrt(this.numbers.map(e => Math.pow(e, 2)).reduce((a, b) => a + b, 0));
-    }
-    getDim() {
-        return this.numbers.length;
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
     add(vector) {
-        if (this.getDim() != vector.getDim())
-            throw new Error(`Dimension of vector does not match.\n${this.getDim()} != ${vector.getDim()}`);
-        let myValue = this.toArray(), thatValue = vector.toArray();
-        return new Vector(...myValue.map((e, i) => e + thatValue[i]));
+        this.x += vector.x;
+        this.y += vector.y;
+        return this;
     }
     sub(vector) {
         return this.add(vector.multiply(-1));
     }
     multiply(scalar) {
-        return new Vector(...this.toArray().map(e => e * scalar));
+        this.x *= scalar;
+        this.y *= scalar;
+        return this;
     }
     normalize() {
-        return this.multiply(1 / this.getSize());
+        this.multiply(1 / this.getSize());
+        return this;
     }
     max(n) {
-        if (this.getSize() <= n)
-            return this;
-        return this.multiply(n / this.getSize());
+        if (this.getSize() > n)
+            this.multiply(n / this.getSize());
+        return this;
     }
     min(n) {
-        if (this.getSize() >= n)
-            return this;
-        return this.multiply(n / this.getSize());
+        if (this.getSize() < n)
+            this.multiply(n / this.getSize());
+        return this;
     }
     rotate(radians) {
-        if (this.getDim() != 2)
-            throw new Error(`Rotate can only be called on a 2-dim vector\n${this.getDim()} != 2`);
         let myValue = this.toArray();
         let x = myValue[0], y = myValue[1];
-        return new Vector(x * Math.cos(radians) - y * Math.sin(radians), x * Math.sin(radians) + y * Math.cos(radians));
+        this.x = x * Math.cos(radians) - y * Math.sin(radians);
+        this.y = x * Math.sin(radians) + y * Math.cos(radians);
+        return this;
     }
     toString() {
         return `[${this.toArray().map(e => e.toString()).join(", ")}]`;
@@ -255,7 +255,7 @@ class Entity {
 }
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), speed, gravity);
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
     }
     moveRight() {
         this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
@@ -290,6 +290,9 @@ function init() {
     const game = new Game(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
+var itemId;
+(function (itemId) {
+})(itemId || (itemId = {}));
 class Item extends Entity {
     constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
         super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
@@ -305,13 +308,17 @@ class Player extends Entity {
     move() {
         let x;
         if (this.keyHelper.getLeftPressed())
-            x = this.location.getValue(0);
+            x = this.location.x;
         x -= this.speed;
-        this.location.updateValue(0, x);
+        this.location.x = x;
         if (this.keyHelper.getRightPressed())
-            x = this.location.getValue(0);
+            x = this.location.x;
         x += this.speed;
-        this.location.updateValue(0, x);
+        this.location.x = x;
+    }
+    interact() {
+        if (this.keyHelper.getInteractPressed())
+            console.log('interacting');
     }
 }
 class GameView extends BaseView {
@@ -322,7 +329,7 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim2.png",
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim3.png",
-        ], this.canvasHelper.getCenter(), new Vector(312, 800), 1, 5);
+        ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
     }
     update() {
         this.player.update();
