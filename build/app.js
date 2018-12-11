@@ -146,8 +146,8 @@ class KeyHelper {
     }
 }
 class MathHelper {
-    static randomNumber(min, max) {
-        return Math.round(Math.random() * (max - min) + min);
+    static randomNumber(min, max, digits = 0) {
+        return Math.floor(Math.random() * (max - min) + min);
     }
     static toRadian(degrees) {
         return degrees * Math.PI / 180;
@@ -237,8 +237,20 @@ class Entity {
         this.location = location;
         this.rotation = rotation;
         this.size = size;
+        if (Math.min(...this.size.toArray()) < 0)
+            this.images[0].addEventListener('load', () => {
+                this.size = new Vector(this.images[0].width, this.images[0].height);
+            });
         this.gravity = gravity;
         this.speed = speed;
+    }
+    collide(collideWith) {
+        if (this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 < collideWith.getLoc().x / 2 &&
+            this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 > collideWith.getLoc().x / 2 &&
+            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 < collideWith.getLoc().y / 2 &&
+            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 > collideWith.getLoc().y / 2)
+            return true;
+        return false;
     }
     update() {
         this.move();
@@ -251,6 +263,12 @@ class Entity {
     ;
     draw() {
         this.canvasHelper.drawImage(this.images[this.activeImage], this.location, this.rotation, this.size);
+    }
+    getSize() {
+        return this.size;
+    }
+    getLoc() {
+        return this.location;
     }
 }
 class Enemy extends Entity {
