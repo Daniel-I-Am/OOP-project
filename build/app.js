@@ -24,7 +24,12 @@ class CanvasHelper {
         this.ctx.save();
         this.ctx.translate(location.getValue(0), location.getValue(1));
         this.ctx.rotate(rotation.getValue());
-        this.ctx.drawImage(image, -size.getValue(0) / 2, -size.getValue(1) / 2, size.getValue(0), size.getValue(1));
+        if (Math.min(...size.toArray()) < 0) {
+            this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
+        }
+        else {
+            this.ctx.drawImage(image, -size.getValue(0) / 2, -size.getValue(1) / 2, size.getValue(0), size.getValue(1));
+        }
         this.ctx.restore();
     }
     drawButton(image, caption, location, size, callback = null) {
@@ -218,10 +223,17 @@ class BaseView {
     }
 }
 class Entity {
-    constructor(imageSource, location, rotation, size, gravity, speed) {
+    constructor(imageSources, location, rotation, size, gravity, speed) {
         this.canvasHelper = CanvasHelper.Instance();
-        this.image = new Image();
-        this.image.src = imageSource;
+        this.images = new Array();
+        this.activeImage = 0;
+        this.animationCounter = 0;
+        this.animationCounterMax = 1;
+        imageSources.forEach(e => {
+            let image = new Image();
+            image.src = e;
+            this.images.push(image);
+        });
         this.location = location;
         this.rotation = rotation;
         this.size = size;
@@ -230,16 +242,20 @@ class Entity {
     }
     update() {
         this.move();
+        this.animationCounter++;
+        this.animationCounter %= this.animationCounterMax;
+        if (this.animationCounter == 0)
+            this.activeImage = (this.activeImage + 1) % this.images.length;
         this.draw();
     }
     ;
     draw() {
-        this.canvasHelper.drawImage(this.image, this.location, this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location, this.rotation, this.size);
     }
 }
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
-        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), speed, gravity);
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), speed, gravity);
     }
     moveRight() {
         this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
@@ -276,14 +292,15 @@ function init() {
 window.addEventListener('load', init);
 class Item extends Entity {
     constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
-        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
     }
     move() { }
 }
 class Player extends Entity {
-    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
-        super(imageSource, new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
+    constructor(imageSources, location, size, gravity, speed) {
+        super(imageSources, location, new Rotation(0), size, gravity, speed);
         this.keyHelper = new KeyHelper();
+        this.animationCounterMax = 4;
     }
     move() {
         let x;
@@ -300,8 +317,15 @@ class Player extends Entity {
 class GameView extends BaseView {
     constructor() {
         super();
+        this.player = new Player([
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim2.png",
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim3.png",
+        ], this.canvasHelper.getCenter(), new Vector(312, 800), 1, 5);
     }
     update() {
+        this.player.update();
         this.drawGUI();
     }
     drawGUI() {
