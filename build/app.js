@@ -2,6 +2,8 @@ class CanvasHelper {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
+        this.canvas.style.width = `${this.canvas.clientWidth}px`;
+        this.canvas.style.height = `${this.canvas.clientWidth * 9 / 16}px`;
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
     }
@@ -362,6 +364,7 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
+        this.inventory = new Array();
         this.tempMaxSpeed = this.maxSpeed;
     }
     move() {
@@ -404,12 +407,13 @@ class Player extends Entity {
     }
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
-            this.inventory.items.push(this.newInventoryItem(entity.name));
+            this.inventory.push(this.newInventoryItem(entity.name));
         console.log('interacting');
+        console.log(this.inventory);
     }
     newInventoryItem(name) {
         return {
-            id: this.inventory.items.length - 1,
+            id: this.inventory.length - 1,
             name: name
         };
     }
