@@ -11,8 +11,8 @@ class CanvasHelper {
 
         this.canvas.style.width = `${this.canvas.clientWidth}px`
         this.canvas.style.height = `${this.canvas.clientWidth*9/16}px`
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
+        this.canvas.width = 1600;
+        this.canvas.height = 900;
     }
 
     public static Instance(canvas: HTMLElement = null): CanvasHelper {
@@ -96,9 +96,16 @@ class CanvasHelper {
         this.writeText(caption, 24, location, "center", "middle", "black")
         if (!callback) return;
         let _listener = (event: MouseEvent) => {
+            let croppingFactor = this.getCroppingFactor();
             // define the top left and bottom right of the button
-            let topleft = new Vector(this.canvas.offsetLeft+location.x-<number>image.width/2, this.canvas.offsetTop+location.y-<number>image.height/2),
-                bottomRight = new Vector(this.canvas.offsetLeft+location.x+<number>image.width/2, this.canvas.offsetTop+location.y+<number>image.height/2);
+            let topleft = new Vector(
+                this.canvas.offsetLeft + croppingFactor.x * (location.x-<number>image.width/2),
+                this.canvas.offsetTop + croppingFactor.x * (location.y-<number>image.height/2)
+                ),
+                bottomRight = new Vector(
+                    this.canvas.offsetLeft + croppingFactor.y * (location.x+<number>image.width/2),
+                    this.canvas.offsetTop + croppingFactor.y * (location.y+<number>image.height/2)
+                );
             // check if we clicked within the button
             if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
                 // if we did, remove this event listener
@@ -126,5 +133,12 @@ class CanvasHelper {
 
     public getHeight(): number {
         return this.canvas.height;
+    }
+
+    private getCroppingFactor(): Vector {
+        return new Vector(
+            this.canvas.clientWidth/this.canvas.width,
+            this.canvas.clientHeight/this.canvas.height,
+        );
     }
 }

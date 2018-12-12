@@ -4,8 +4,8 @@ class CanvasHelper {
         this.ctx = this.canvas.getContext('2d');
         this.canvas.style.width = `${this.canvas.clientWidth}px`;
         this.canvas.style.height = `${this.canvas.clientWidth * 9 / 16}px`;
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
+        this.canvas.width = 1600;
+        this.canvas.height = 900;
     }
     static Instance(canvas = null) {
         if (!this.instance)
@@ -40,7 +40,8 @@ class CanvasHelper {
         if (!callback)
             return;
         let _listener = (event) => {
-            let topleft = new Vector(this.canvas.offsetLeft + location.x - image.width / 2, this.canvas.offsetTop + location.y - image.height / 2), bottomRight = new Vector(this.canvas.offsetLeft + location.x + image.width / 2, this.canvas.offsetTop + location.y + image.height / 2);
+            let croppingFactor = this.getCroppingFactor();
+            let topleft = new Vector(this.canvas.offsetLeft + croppingFactor.x * (location.x - image.width / 2), this.canvas.offsetTop + croppingFactor.x * (location.y - image.height / 2)), bottomRight = new Vector(this.canvas.offsetLeft + croppingFactor.y * (location.x + image.width / 2), this.canvas.offsetTop + croppingFactor.y * (location.y + image.height / 2));
             if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
                 this.canvas.removeEventListener('click', _listener);
                 callback(event);
@@ -59,6 +60,9 @@ class CanvasHelper {
     }
     getHeight() {
         return this.canvas.height;
+    }
+    getCroppingFactor() {
+        return new Vector(this.canvas.clientWidth / this.canvas.width, this.canvas.clientHeight / this.canvas.height);
     }
 }
 class KeyHelper {
