@@ -36,7 +36,6 @@ class Player extends Entity {
      * Function to move the player
      */
     public move(): void {
-        let x: number;
         if (this.keyHelper.getLeftPressed())
             this.location.x -= this.speed;
         if (this.keyHelper.getRightPressed())
