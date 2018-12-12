@@ -410,10 +410,11 @@ class Player extends Entity {
         this.tempMaxSpeed = 100;
     }
     interact(entity) {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
             this.inventory.push(this.newInventoryItem(entity.name));
-        console.log('interacting');
-        console.log(this.inventory);
+            console.log('interacting');
+            console.log(this.inventory);
+        }
     }
     newInventoryItem(name) {
         return {
