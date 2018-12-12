@@ -355,7 +355,6 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
-        this.jumpLimit = 20;
     }
     move() {
         if (this.keyHelper.getLeftPressed()) {
@@ -365,22 +364,27 @@ class Player extends Entity {
             this.velocity.x += this.acceleration;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
-            if (!this.isJumping && this.location.y > this.jumpLimit) {
+            if (!this.isJumping) {
                 this.velocity.y -= this.acceleration;
             }
         }
         this.velocity.y += this.gravity;
         this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x;
         this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y;
-        if (this.isLanded)
+        if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0);
+            if (!(this.keyHelper.getLeftPressed() ||
+                this.keyHelper.getRightPressed())) {
+                this.velocity.x *= .60;
+            }
+        }
         this.location.add(this.velocity);
     }
     footCollision(collideWith) {
         if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
             this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
-            this.location.y + this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+            this.location.y + this.size.y / 2 - 15 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 - 15 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
             return true;
         return false;
     }
