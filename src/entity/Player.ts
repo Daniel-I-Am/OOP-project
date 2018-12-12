@@ -1,7 +1,7 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
     private inventory: Inventory;
-    private jumpLimit: number;
+    private jumpHeight: number;
     private isJumping: boolean;
     private isLanded: boolean;
 
@@ -36,7 +36,6 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
-        this.jumpLimit = 20;
     }
 
 
@@ -51,7 +50,7 @@ class Player extends Entity {
             this.velocity.x += this.acceleration;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
-            if (!this.isJumping && this.location.y > this.jumpLimit) {
+            if (!this.isJumping) {
                 this.velocity.y -= this.acceleration;
             }
         }
