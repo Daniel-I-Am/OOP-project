@@ -38,13 +38,9 @@ class Player extends Entity {
     public move(): void {
         let x: number;
         if (this.keyHelper.getLeftPressed())
-            x = this.location.x;
-            x -= this.speed;
-            this.location.x = x;
+            this.location.x -= this.speed;
         if (this.keyHelper.getRightPressed())
-            x = this.location.x;
-            x += this.speed;
-            this.location.x = x;
+            this.location.x += this.speed;
     }
 
 
