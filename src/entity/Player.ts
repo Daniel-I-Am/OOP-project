@@ -1,7 +1,7 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
     private inventory: Inventory;
-    private jumpLimit: number;
+    private jumpHeight: number;
     private isJumping: boolean;
 
     /**
@@ -32,7 +32,7 @@ class Player extends Entity {
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
-        this.jumpLimit = 20;
+        this.jumpHeight = 50;
     }
 
 
@@ -47,8 +47,15 @@ class Player extends Entity {
             this.location.x += this.speed;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
-            if (!this.isJumping && this.location.y > this.jumpLimit) {
-                this.location.y -= this.speed;
+            if (!this.isJumping) {
+                this.isJumping = true;
+                this.location.y -= this.jumpHeight;
+                setTimeout(() => {
+                    this.location.y += this.jumpHeight;
+                    setTimeout(() => {
+                        this.isJumping = false;
+                    }, 350);
+                }, 300);
             }
         }
     }
