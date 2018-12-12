@@ -1,6 +1,6 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
-    private inventory: Inventory;
+    private inventory: Array<InventoryItem>;
     private jumpHeight: number;
     private isJumping: boolean;
     private isLanded: boolean;
@@ -36,6 +36,7 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
+        this.inventory = new Array<InventoryItem>();
     }
 
 
@@ -89,13 +90,14 @@ class Player extends Entity {
      */
     public interact(entity: Entity): void {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
-            this.inventory.items.push(this.newInventoryItem(entity.name))
+            this.inventory.push(this.newInventoryItem(entity.name))
             console.log('interacting');
+            console.log(this.inventory)
     }
 
     private newInventoryItem(name: string): InventoryItem {
         return {
-            id: this.inventory.items.length - 1,
+            id: this.inventory.length - 1,
             name: name
         }
     }
