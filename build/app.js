@@ -403,8 +403,15 @@ class Player extends Entity {
         this.tempMaxSpeed = 100;
     }
     interact(entity) {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity))
-            console.log('interacting');
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
+            this.inventory.items.push(this.newInventoryItem(entity.name));
+        console.log('interacting');
+    }
+    newInventoryItem(name) {
+        return {
+            id: this.inventory.items.length - 1,
+            name: name
+        };
     }
     setIsLanded(state) {
         this.isLanded = state;
