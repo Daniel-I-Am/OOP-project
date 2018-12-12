@@ -95,12 +95,12 @@ class Player extends Entity {
     /**
      * Function to interact
      */
-    public interact(): void {
-        if (this.keyHelper.getInteractPressed())
+    public interact(entity: Entity): void {
+        if (this.keyHelper.getInteractPressed() && this.collide(entity))
             console.log('interacting');
     }
 
-    public setIsLanded(state: boolean): void {
+    public setIsLanded(state: boolean): void    {
         this.isLanded = state;
     }
 }

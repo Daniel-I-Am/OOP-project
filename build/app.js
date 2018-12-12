@@ -293,6 +293,7 @@ class GameView extends BaseView {
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
         this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
         this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64), 'Default'));
         this.entities.push(this.player);
     }
     update() {
@@ -306,6 +307,7 @@ class GameView extends BaseView {
             if (e.collide(this.player) && e instanceof Accellerator) {
                 this.player.boost();
             }
+            this.player.interact(e);
         });
         this.entities.forEach(e => {
             e.update();
@@ -347,8 +349,9 @@ class Enemy extends Entity {
     }
 }
 class Item extends Entity {
-    constructor(imageSource, xPos, yPos, height, width, gravity, acceleration) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, undefined, 0, acceleration);
+    constructor(imageSource, location, rotation, size, name) {
+        super([imageSource], location, rotation, size);
+        this.name = name;
     }
     move() { }
 }
@@ -399,8 +402,8 @@ class Player extends Entity {
         this.velocity = new Vector(100, -1);
         this.tempMaxSpeed = 100;
     }
-    interact() {
-        if (this.keyHelper.getInteractPressed())
+    interact(entity) {
+        if (this.keyHelper.getInteractPressed() && this.collide(entity))
             console.log('interacting');
     }
     setIsLanded(state) {

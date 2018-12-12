@@ -1,4 +1,6 @@
 class Item extends Entity {
+    private name: string;
+
     /**
      * @constructor
      * @param {string} imageSource
@@ -11,23 +13,18 @@ class Item extends Entity {
      */
     public constructor(
         imageSource: string,
-        xPos: number,
-        yPos: number,
-        height: number,
-        width: number,
-        gravity: number,
-        acceleration: number
+        location: Vector,
+        rotation: Rotation,
+        size: Vector,
+        name: string
     ) {
         super(
             [imageSource],
-            new Vector(xPos, yPos),
-            new Rotation(0),
-            new Vector(width, height),
-            gravity,
-            undefined,
-            0,
-            acceleration
+            location,
+            rotation,
+            size
         );
+        this.name = name;
     }
 
     public move(): void {}
