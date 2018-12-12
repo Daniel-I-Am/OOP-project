@@ -8,7 +8,7 @@ class Enemy extends Entity {
      * @param {number} height
      * @param {number} width
      * @param {number} gravity
-     * @param {number} speed
+     * @param {number} acceleration
      */
 
     public constructor(
@@ -19,7 +19,7 @@ class Enemy extends Entity {
         height: number,
         width: number,
         gravity: number,
-        speed: number
+        acceleration: number
     ) {
         super(
             [imageSource],
@@ -27,7 +27,9 @@ class Enemy extends Entity {
             new Rotation(0),
             new Vector(width, height),
             gravity,
-            speed
+            undefined,
+            2,
+            acceleration
         );
     }
 
@@ -36,20 +38,20 @@ class Enemy extends Entity {
      * Function to move the enemy right
      */
     public moveRight() {
-        this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
+        this.velocity = new Vector(this.acceleration, 0)
     }
 
     /**
      * Function to move the enemy left
      */
     public moveLeft() {
-        this.location = this.location.sub(new Vector(1, 0).multiply(this.speed));
+        this.velocity = new Vector(this.acceleration, 0)
     }
 
     /**
      *
      */
     protected move(): void {
-
+        this.location.add(this.velocity)
     }
 }

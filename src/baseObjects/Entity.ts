@@ -7,18 +7,22 @@ abstract class Entity {
     protected offset: Vector;
     protected rotation: Rotation;
     protected size: Vector;
-    protected speed: number;
+    protected velocity: Vector;
+    protected maxSpeed: number;
+    protected acceleration: number;
     protected direction: Rotation;
     protected gravity: number;
     private canvasHelper: CanvasHelper;
 
     protected constructor(
-        imageSources: Array<string>,
+        imageSources: Array<string> = ["./assets/images/default.png"],
         location: Vector,
         rotation: Rotation,
         size: Vector,
         gravity: number = 0,
-        speed: number = 0,
+        velocity: Vector = new Vector(0, 0),
+        acceleration: number = 0,
+        maxSpeed: number = 0,
         direction: Rotation = new Rotation(0),
     ) {
         this.canvasHelper = CanvasHelper.Instance();
@@ -42,7 +46,9 @@ abstract class Entity {
                 );
             });
         this.gravity = gravity;
-        this.speed = speed;
+        this.velocity = velocity;
+        this.acceleration = acceleration;
+        this.maxSpeed = maxSpeed;
         this.direction = direction;
     }
 
@@ -50,10 +56,10 @@ abstract class Entity {
         collideWith: Entity
     ): boolean {
         if (
-            this.location.x + this.size.x/2 + collideWith.getSize().x/2 < collideWith.getLoc().x/2 &&
-            this.location.x - this.size.x/2 - collideWith.getSize().x/2 > collideWith.getLoc().x/2 &&
-            this.location.y + this.size.y/2 + collideWith.getSize().y/2 < collideWith.getLoc().y/2 &&
-            this.location.y - this.size.y/2 - collideWith.getSize().y/2 > collideWith.getLoc().y/2
+            this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
+            this.location.y - this.size.y/2 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y/2 + collideWith.getSize().y/2 > collideWith.getLoc().y
         )
             return true;
         return false;

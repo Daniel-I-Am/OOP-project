@@ -3,15 +3,14 @@ class FallingTile extends Entity{
     private falling: boolean = false;
 
     public constructor(
-        imageSource: Array<string>,
+        imageSource: Array<string> = ["./assets/images/fallingTile1.png"],
         location: Vector,
         rotation: Rotation,
         size: Vector,
         gravity: number,
-        speed: number
+        acceleration: number
     ) {
-        super(imageSource, location, rotation, size, gravity, speed);
-        this.location = new Vector(100,100);
+        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
     }
 
     protected move():void{
@@ -21,11 +20,11 @@ class FallingTile extends Entity{
         }
         if(this.location.y < 500 && this.falling){ //replace with collide shit later on
             this.offset.y = 0;
-            this.speed += this.gravity;
-            this.location.y += this.speed;
+            this.velocity.y += this.gravity;
+            this.location.add(this.velocity);
         }
-        if(!this.falling){
-            this.offset.y = MathHelper.randomNumber(-5, 5, 2);
+        if(!this.falling) {
+            this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }
 }

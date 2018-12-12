@@ -14,6 +14,14 @@ class TitleView extends BaseView {
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
+
+        this.canvasHelper.writeText(
+            "Dr. Avontuur",
+            96,
+            new Vector(this.canvasHelper.getCenter().x, 50),
+            undefined, undefined,
+            "black", "Cabin Sketch"
+        )
     }
     
     public update() {}

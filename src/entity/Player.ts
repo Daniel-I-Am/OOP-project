@@ -1,6 +1,9 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
     private inventory: Inventory;
+    private jumpHeight: number;
+    private isJumping: boolean;
+    private isLanded: boolean;
 
     /**
      * @constructor
@@ -9,14 +12,14 @@ class Player extends Entity {
      * @param {number} height
      * @param {number} width
      * @param {number} gravity
-     * @param {number} speed
+     * @param {number} acceleration
      */
     public constructor(
         imageSources: Array<string>,
         location: Vector,
         size: Vector,
         gravity: number,
-        speed: number
+        acceleration: number
     ) {
         super(
             imageSources,
@@ -24,11 +27,15 @@ class Player extends Entity {
             new Rotation(0),
             size,
             gravity,
-            speed
+            undefined,
+            acceleration,
+            15
         );
 
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
+        this.isJumping = false;
+        this.isLanded = false;
     }
 
 
@@ -36,23 +43,55 @@ class Player extends Entity {
      * Function to move the player
      */
     public move(): void {
-        let x: number;
-        if (this.keyHelper.getLeftPressed())
-            x = this.location.x;
-            x -= this.speed;
-            this.location.x = x;
-        if (this.keyHelper.getRightPressed())
-            x = this.location.x;
-            x += this.speed;
-            this.location.x = x;
+        if (this.keyHelper.getLeftPressed()) {
+            this.velocity.x -= this.acceleration;
+        }
+        if (this.keyHelper.getRightPressed()) {
+            this.velocity.x += this.acceleration;
+        }
+        if (this.keyHelper.getSpaceBarPressed()) {
+            if (!this.isJumping) {
+                this.velocity.y -= this.acceleration;
+            }
+        }
+        this.velocity.y += this.gravity;
+        this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x
+        this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y
+        if (this.isLanded) {
+            this.velocity.y = Math.min(this.velocity.y, 0)
+            if (!(
+                this.keyHelper.getLeftPressed() ||
+                this.keyHelper.getRightPressed()
+            )) {
+                this.velocity.x *= .60;
+            }
+        }
+        this.location.add(this.velocity)
     }
 
+
+    public footCollision(
+        collideWith: Entity
+    ): boolean {
+        if (
+            this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
+            this.location.y + this.size.y/2 - 15 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y/2 - 15 + collideWith.getSize().y/2 > collideWith.getLoc().y
+        )
+            return true;
+        return false;
+    }
 
     /**
      * Function to interact
      */
-    public interact() {
+    public interact(): void {
         if (this.keyHelper.getInteractPressed())
             console.log('interacting');
+    }
+
+    public setIsLanded(state: boolean): void {
+        this.isLanded = state;
     }
 }

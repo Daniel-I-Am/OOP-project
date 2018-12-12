@@ -1,9 +1,11 @@
 class GameView extends BaseView {
+    private entities: Array<Entity>;
     private player: Player;
-    private tile: FallingTile;
 
     public constructor() {
         super();
+        this.entities = new Array<Entity>();
+
         this.player = new Player([
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim2.png",
@@ -13,19 +15,29 @@ class GameView extends BaseView {
         this.canvasHelper.getCenter(),
         new Vector(58.5, 150), 1, 5
         );
-        this.tile = new FallingTile(
-            ["./assets/images/buttonGreen.png"],
-            new Vector(100,100),
+        this.entities.push(new FallingTile(
+            undefined,
+            new Vector(500,100),
             new Rotation(0),
-            new Vector(-1,-1),
+            new Vector(175,50),
             2,
             0
-        );
+        ));
+
+        this.entities.push(this.player);
     }
 
     public update(): void {
-        this.tile.update();
-        this.player.update();
+        this.entities.forEach(e => {
+            if (e === this.player) return;
+            console.log(e.collide(this.player));
+            this.player.setIsLanded(false);
+            if (this.player.footCollision(e))
+                this.player.setIsLanded(true);
+        });
+        this.entities.forEach(e => {
+            e.update();
+        });
         this.drawGUI();
     }
 
