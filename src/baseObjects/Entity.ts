@@ -13,7 +13,7 @@ abstract class Entity {
     private canvasHelper: CanvasHelper;
 
     protected constructor(
-        imageSources: Array<string>,
+        imageSources: Array<string> = ["./assets/images/default.png"],
         location: Vector,
         rotation: Rotation,
         size: Vector,

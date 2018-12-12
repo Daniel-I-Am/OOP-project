@@ -1,6 +1,8 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
     private inventory: Inventory;
+    private jumpLimit: number;
+    private isJumping: boolean;
 
     /**
      * @constructor
@@ -29,6 +31,8 @@ class Player extends Entity {
 
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
+        this.isJumping = false;
+        this.jumpLimit = 20;
     }
 
 
@@ -36,17 +40,24 @@ class Player extends Entity {
      * Function to move the player
      */
     public move(): void {
-        if (this.keyHelper.getLeftPressed())
+        if (this.keyHelper.getLeftPressed()) {
             this.location.x -= this.speed;
-        if (this.keyHelper.getRightPressed())
+        }
+        if (this.keyHelper.getRightPressed()) {
             this.location.x += this.speed;
+        }
+        if (this.keyHelper.getSpaceBarPressed()) {
+            if (!this.isJumping && this.location.y > this.jumpLimit) {
+                this.location.y -= this.speed;
+            }
+        }
     }
 
 
     /**
      * Function to interact
      */
-    public interact() {
+    public interact(): void {
         if (this.keyHelper.getInteractPressed())
             console.log('interacting');
     }
