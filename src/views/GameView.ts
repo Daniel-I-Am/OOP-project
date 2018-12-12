@@ -29,12 +29,15 @@ class GameView extends BaseView {
 
     public update(): void {
         this.entities.forEach(e => {
-            e.update();
-        });
-        this.entities.forEach(e => {
             if (e === this.player) return;
             console.log(e.collide(this.player));
-        })
+            this.player.setIsLanded(false);
+            if (this.player.footCollision(e))
+                this.player.setIsLanded(true);
+        });
+        this.entities.forEach(e => {
+            e.update();
+        });
         this.drawGUI();
     }
 

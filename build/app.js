@@ -229,7 +229,7 @@ class BaseView {
     }
 }
 class Entity {
-    constructor(imageSources = ["./assets/images/default.png"], location, rotation, size, gravity = 0, speed = 0, direction = new Rotation(0)) {
+    constructor(imageSources = ["./assets/images/default.png"], location, rotation, size, gravity = 0, velocity = new Vector(0, 0), acceleration = 0, maxSpeed = 0, direction = new Rotation(0)) {
         this.canvasHelper = CanvasHelper.Instance();
         this.images = new Array();
         this.activeImage = 0;
@@ -249,7 +249,9 @@ class Entity {
                 this.size = new Vector(this.images[0].width, this.images[0].height);
             });
         this.gravity = gravity;
-        this.speed = speed;
+        this.velocity = velocity;
+        this.acceleration = acceleration;
+        this.maxSpeed = maxSpeed;
         this.direction = direction;
     }
     collide(collideWith) {
@@ -294,12 +296,15 @@ class GameView extends BaseView {
     }
     update() {
         this.entities.forEach(e => {
-            e.update();
-        });
-        this.entities.forEach(e => {
             if (e === this.player)
                 return;
             console.log(e.collide(this.player));
+            this.player.setIsLanded(false);
+            if (this.player.footCollision(e))
+                this.player.setIsLanded(true);
+        });
+        this.entities.forEach(e => {
+            e.update();
         });
         this.drawGUI();
     }
@@ -317,59 +322,79 @@ class TitleView extends BaseView {
             this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), buttonCallback);
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
+        this.canvasHelper.writeText("Dr. Avontuur", 96, new Vector(this.canvasHelper.getCenter().x, 50), undefined, undefined, "black", "Cabin Sketch");
     }
     update() { }
     drawGUI() { }
     beforeExit() { }
 }
 class Enemy extends Entity {
-    constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
+    constructor(canvas, imageSource, xPos, yPos, height, width, gravity, acceleration) {
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, undefined, 2, acceleration);
     }
     moveRight() {
-        this.location = this.location.add(new Vector(1, 0).multiply(this.speed));
+        this.velocity = new Vector(this.acceleration, 0);
     }
     moveLeft() {
-        this.location = this.location.sub(new Vector(1, 0).multiply(this.speed));
+        this.velocity = new Vector(this.acceleration, 0);
     }
     move() {
+        this.location.add(this.velocity);
     }
 }
 class Item extends Entity {
-    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
+    constructor(imageSource, xPos, yPos, height, width, gravity, acceleration) {
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, undefined, 0, acceleration);
     }
     move() { }
 }
 class Player extends Entity {
-    constructor(imageSources, location, size, gravity, speed) {
-        super(imageSources, location, new Rotation(0), size, gravity, speed);
+    constructor(imageSources, location, size, gravity, acceleration) {
+        super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
+        this.isLanded = false;
         this.jumpLimit = 20;
     }
     move() {
         if (this.keyHelper.getLeftPressed()) {
-            this.location.x -= this.speed;
+            this.velocity.x -= this.acceleration;
         }
         if (this.keyHelper.getRightPressed()) {
-            this.location.x += this.speed;
+            this.velocity.x += this.acceleration;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
             if (!this.isJumping && this.location.y > this.jumpLimit) {
-                this.location.y -= this.speed;
+                this.velocity.y -= this.acceleration;
             }
         }
+        this.velocity.y += this.gravity;
+        this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x;
+        this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y;
+        if (this.isLanded)
+            this.velocity.y = Math.min(this.velocity.y, 0);
+        this.location.add(this.velocity);
+    }
+    footCollision(collideWith) {
+        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+            this.location.y + this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+            return true;
+        return false;
     }
     interact() {
         if (this.keyHelper.getInteractPressed())
             console.log('interacting');
     }
+    setIsLanded(state) {
+        this.isLanded = state;
+    }
 }
 class FallingTile extends Entity {
-    constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, speed) {
-        super(imageSource, location, rotation, size, gravity, speed);
+    constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, acceleration) {
+        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.countdown = 60;
         this.falling = false;
     }
@@ -380,8 +405,8 @@ class FallingTile extends Entity {
         }
         if (this.location.y < 500 && this.falling) {
             this.offset.y = 0;
-            this.speed += this.gravity;
-            this.location.y += this.speed;
+            this.velocity.y += this.gravity;
+            this.location.add(this.velocity);
         }
         if (!this.falling) {
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);

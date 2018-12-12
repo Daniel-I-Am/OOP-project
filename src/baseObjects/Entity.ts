@@ -7,7 +7,9 @@ abstract class Entity {
     protected offset: Vector;
     protected rotation: Rotation;
     protected size: Vector;
-    protected speed: number;
+    protected velocity: Vector;
+    protected maxSpeed: number;
+    protected acceleration: number;
     protected direction: Rotation;
     protected gravity: number;
     private canvasHelper: CanvasHelper;
@@ -18,7 +20,9 @@ abstract class Entity {
         rotation: Rotation,
         size: Vector,
         gravity: number = 0,
-        speed: number = 0,
+        velocity: Vector = new Vector(0, 0),
+        acceleration: number = 0,
+        maxSpeed: number = 0,
         direction: Rotation = new Rotation(0),
     ) {
         this.canvasHelper = CanvasHelper.Instance();
@@ -42,7 +46,9 @@ abstract class Entity {
                 );
             });
         this.gravity = gravity;
-        this.speed = speed;
+        this.velocity = velocity;
+        this.acceleration = acceleration;
+        this.maxSpeed = maxSpeed;
         this.direction = direction;
     }
 
