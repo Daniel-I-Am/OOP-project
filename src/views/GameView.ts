@@ -29,7 +29,7 @@ class GameView extends BaseView {
             new Rotation(0),
             new Vector(175,50),
             2,
-            new Vector(0,0)
+            0
         ));
         this.entities.push(new Item(
             "./assets/images/default.png",
@@ -49,6 +49,9 @@ class GameView extends BaseView {
             this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
+                if(e.collide(this.player) && e instanceof Accellerator){
+                    this.player.boost();
+                }
             this.player.interact(e);
         });
         this.entities.forEach(e => {

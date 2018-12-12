@@ -6,9 +6,9 @@ class Accellerator extends Entity{
         rotation: Rotation,
         size: Vector,
         gravity: number,
-        speed: Vector
+        acceleration: number
     ) {
-        super(imageSource, location, rotation, size, gravity, speed);
+        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.animationCounterMax = 10;
     }
 

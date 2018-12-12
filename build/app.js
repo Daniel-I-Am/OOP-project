@@ -292,8 +292,8 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
         this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
-        this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, new Vector(0, 0)));
-        this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64)));
+        this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64), 'Default'));
         this.entities.push(this.player);
     }
     update() {
@@ -304,6 +304,9 @@ class GameView extends BaseView {
             this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
+            if (e.collide(this.player) && e instanceof Accellerator) {
+                this.player.boost();
+            }
             this.player.interact(e);
         });
         this.entities.forEach(e => {
@@ -346,8 +349,9 @@ class Enemy extends Entity {
     }
 }
 class Item extends Entity {
-    constructor(imageSource, location, rotation, size) {
+    constructor(imageSource, location, rotation, size, name) {
         super([imageSource], location, rotation, size);
+        this.name = name;
     }
     move() { }
 }
@@ -358,6 +362,7 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
+        this.tempMaxSpeed = this.maxSpeed;
     }
     move() {
         if (this.keyHelper.getLeftPressed()) {
@@ -372,8 +377,8 @@ class Player extends Entity {
             }
         }
         this.velocity.y += this.gravity;
-        this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x;
-        this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y;
+        this.velocity.x = new Vector(this.velocity.x, 0).max(this.tempMaxSpeed).x;
+        this.velocity.y = new Vector(0, this.velocity.y).max(this.tempMaxSpeed).y;
         if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0);
             if (!(this.keyHelper.getLeftPressed() ||
@@ -382,6 +387,8 @@ class Player extends Entity {
             }
         }
         this.location.add(this.velocity);
+        if (this.tempMaxSpeed > this.maxSpeed)
+            this.tempMaxSpeed -= 0.5;
     }
     footCollision(collideWith) {
         if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
@@ -391,9 +398,20 @@ class Player extends Entity {
             return true;
         return false;
     }
+    boost() {
+        this.velocity = new Vector(100, -1);
+        this.tempMaxSpeed = 100;
+    }
     interact(entity) {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity))
-            console.log('interacting');
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
+            this.inventory.items.push(this.newInventoryItem(entity.name));
+        console.log('interacting');
+    }
+    newInventoryItem(name) {
+        return {
+            id: this.inventory.items.length - 1,
+            name: name
+        };
     }
     setIsLanded(state) {
         this.isLanded = state;
@@ -452,8 +470,8 @@ var ItemId;
     ItemId[ItemId["WATER"] = 3] = "WATER";
 })(ItemId || (ItemId = {}));
 class Accellerator extends Entity {
-    constructor(imageSource = ["./assets/images/Anim_accellerator/1.png", "./assets/images/Anim_accellerator/2.png", "./assets/images/Anim_accellerator/3.png"], location, rotation, size, gravity, speed) {
-        super(imageSource, location, rotation, size, gravity, speed);
+    constructor(imageSource = ["./assets/images/Anim_accellerator/1.png", "./assets/images/Anim_accellerator/2.png", "./assets/images/Anim_accellerator/3.png"], location, rotation, size, gravity, acceleration) {
+        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.animationCounterMax = 10;
     }
     move() {
