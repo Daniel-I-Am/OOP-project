@@ -42,6 +42,7 @@ class GameView extends BaseView {
             this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
+            this.player.interact(e);
         });
         this.entities.forEach(e => {
             e.update();
