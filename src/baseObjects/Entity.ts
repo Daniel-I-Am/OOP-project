@@ -50,10 +50,10 @@ abstract class Entity {
         collideWith: Entity
     ): boolean {
         if (
-            this.location.x + this.size.x/2 + collideWith.getSize().x/2 < collideWith.getLoc().x/2 &&
-            this.location.x - this.size.x/2 - collideWith.getSize().x/2 > collideWith.getLoc().x/2 &&
-            this.location.y + this.size.y/2 + collideWith.getSize().y/2 < collideWith.getLoc().y/2 &&
-            this.location.y - this.size.y/2 - collideWith.getSize().y/2 > collideWith.getLoc().y/2
+            this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
+            this.location.y - this.size.y/2 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y/2 + collideWith.getSize().y/2 > collideWith.getLoc().y
         )
             return true;
         return false;

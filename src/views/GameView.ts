@@ -32,9 +32,8 @@ class GameView extends BaseView {
             e.update();
         });
         this.entities.forEach(e => {
-            if (e === this.player)
-                return
-            console.log(e.collide(this.player))
+            if (e === this.player) return;
+            console.log(e.collide(this.player));
         })
         this.drawGUI();
     }
