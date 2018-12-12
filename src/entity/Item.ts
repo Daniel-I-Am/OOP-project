@@ -7,7 +7,7 @@ class Item extends Entity {
      * @param {number} height
      * @param {number} width
      * @param {number} gravity
-     * @param {number} speed
+     * @param {number} acceleration
      */
     public constructor(
         imageSource: string,
@@ -16,7 +16,7 @@ class Item extends Entity {
         height: number,
         width: number,
         gravity: number,
-        speed: number
+        acceleration: number
     ) {
         super(
             [imageSource],
@@ -24,7 +24,9 @@ class Item extends Entity {
             new Rotation(0),
             new Vector(width, height),
             gravity,
-            speed
+            undefined,
+            0,
+            acceleration
         );
     }
 
