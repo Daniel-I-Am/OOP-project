@@ -14,10 +14,10 @@ class GameView extends BaseView {
         new Vector(58.5, 150), 1, 5
         );
         this.tile = new FallingTile(
-            ["./assets/images/buttonGreen.png"],
-            new Vector(100,100),
+            undefined,
+            new Vector(500,100),
             new Rotation(0),
-            new Vector(-1,-1),
+            new Vector(175,50),
             2,
             0
         );

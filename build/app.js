@@ -229,7 +229,7 @@ class BaseView {
     }
 }
 class Entity {
-    constructor(imageSources, location, rotation, size, gravity = 0, speed = 0, direction = new Rotation(0)) {
+    constructor(imageSources = ["./assets/images/default.png"], location, rotation, size, gravity = 0, speed = 0, direction = new Rotation(0)) {
         this.canvasHelper = CanvasHelper.Instance();
         this.images = new Array();
         this.activeImage = 0;
@@ -288,7 +288,7 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
-        this.tile = new FallingTile(["./assets/images/buttonGreen.png"], new Vector(100, 100), new Rotation(0), new Vector(-1, -1), 2, 0);
+        this.tile = new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0);
     }
     update() {
         this.tile.update();
@@ -338,17 +338,21 @@ class Player extends Entity {
         super(imageSources, location, new Rotation(0), size, gravity, speed);
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
+        this.isJumping = false;
+        this.jumpLimit = 20;
     }
     move() {
-        let x;
-        if (this.keyHelper.getLeftPressed())
-            x = this.location.x;
-        x -= this.speed;
-        this.location.x = x;
-        if (this.keyHelper.getRightPressed())
-            x = this.location.x;
-        x += this.speed;
-        this.location.x = x;
+        if (this.keyHelper.getLeftPressed()) {
+            this.location.x -= this.speed;
+        }
+        if (this.keyHelper.getRightPressed()) {
+            this.location.x += this.speed;
+        }
+        if (this.keyHelper.getSpaceBarPressed()) {
+            if (!this.isJumping && this.location.y > this.jumpLimit) {
+                this.location.y -= this.speed;
+            }
+        }
     }
     interact() {
         if (this.keyHelper.getInteractPressed())
@@ -356,11 +360,10 @@ class Player extends Entity {
     }
 }
 class FallingTile extends Entity {
-    constructor(imageSource, location, rotation, size, gravity, speed) {
+    constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, speed) {
         super(imageSource, location, rotation, size, gravity, speed);
         this.countdown = 60;
         this.falling = false;
-        this.location = new Vector(100, 100);
     }
     move() {
         this.countdown -= 1;
@@ -373,7 +376,7 @@ class FallingTile extends Entity {
             this.location.y += this.speed;
         }
         if (!this.falling) {
-            this.offset.y = MathHelper.randomNumber(-5, 5, 2);
+            this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }
 }

@@ -3,7 +3,7 @@ class FallingTile extends Entity{
     private falling: boolean = false;
 
     public constructor(
-        imageSource: Array<string>,
+        imageSource: Array<string> = ["./assets/images/fallingTile1.png"],
         location: Vector,
         rotation: Rotation,
         size: Vector,
@@ -11,7 +11,6 @@ class FallingTile extends Entity{
         speed: number
     ) {
         super(imageSource, location, rotation, size, gravity, speed);
-        this.location = new Vector(100,100);
     }
 
     protected move():void{
@@ -25,7 +24,7 @@ class FallingTile extends Entity{
             this.location.y += this.speed;
         }
         if(!this.falling){
-            this.offset.y = MathHelper.randomNumber(-5, 5, 2);
+            this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }
 }
