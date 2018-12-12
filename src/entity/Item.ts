@@ -1,4 +1,6 @@
 class Item extends Entity {
+    private name: string;
+
     /**
      * @constructor
      * @param {string} imageSource
@@ -13,14 +15,16 @@ class Item extends Entity {
         imageSource: string,
         location: Vector,
         rotation: Rotation,
-        size: Vector
+        size: Vector,
+        name: string
     ) {
         super(
             [imageSource],
             location,
             rotation,
             size
-        );  
+        );
+        this.name = name;
     }
 
     public move(): void {}

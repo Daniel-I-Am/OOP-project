@@ -292,6 +292,8 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
         this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, new Vector(0, 0)));
+        this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64)));
         this.entities.push(this.player);
     }
     update() {
@@ -302,6 +304,7 @@ class GameView extends BaseView {
             this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
+            this.player.interact(e);
         });
         this.entities.forEach(e => {
             e.update();
@@ -343,8 +346,8 @@ class Enemy extends Entity {
     }
 }
 class Item extends Entity {
-    constructor(imageSource, xPos, yPos, height, width, gravity, acceleration) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, undefined, 0, acceleration);
+    constructor(imageSource, location, rotation, size) {
+        super([imageSource], location, rotation, size);
     }
     move() { }
 }
@@ -388,8 +391,8 @@ class Player extends Entity {
             return true;
         return false;
     }
-    interact() {
-        if (this.keyHelper.getInteractPressed())
+    interact(entity) {
+        if (this.keyHelper.getInteractPressed() && this.collide(entity))
             console.log('interacting');
     }
     setIsLanded(state) {
@@ -448,4 +451,12 @@ var ItemId;
     ItemId[ItemId["IODINE"] = 2] = "IODINE";
     ItemId[ItemId["WATER"] = 3] = "WATER";
 })(ItemId || (ItemId = {}));
+class Accellerator extends Entity {
+    constructor(imageSource = ["./assets/images/Anim_accellerator/1.png", "./assets/images/Anim_accellerator/2.png", "./assets/images/Anim_accellerator/3.png"], location, rotation, size, gravity, speed) {
+        super(imageSource, location, rotation, size, gravity, speed);
+        this.animationCounterMax = 10;
+    }
+    move() {
+    }
+}
 //# sourceMappingURL=app.js.map

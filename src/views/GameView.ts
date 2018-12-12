@@ -29,13 +29,14 @@ class GameView extends BaseView {
             new Rotation(0),
             new Vector(175,50),
             2,
-            0
+            new Vector(0,0)
         ));
         this.entities.push(new Item(
             "./assets/images/default.png",
             new Vector(700, 300),
             new Rotation(0),
-            new Vector(64,64)
+            new Vector(64,64),
+            'Default'
         ));
 
         this.entities.push(this.player);
