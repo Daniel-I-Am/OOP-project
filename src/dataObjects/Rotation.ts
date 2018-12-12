@@ -14,4 +14,8 @@ class Rotation {
     public getValue(): number {
         return this.value;
     }
+
+    public getDegree(): number {
+        return this.value * (180 / Math.PI);
+    }
 }

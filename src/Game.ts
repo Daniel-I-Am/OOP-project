@@ -5,7 +5,11 @@
 ///<reference path="dataObjects/Vector.ts"/>
 ///<reference path="baseObjects/BaseView.ts"/>
 ///<reference path="baseObjects/Entity.ts"/>
+///<reference path="views/GameView.ts"/>
+///<reference path="views/TitleView.ts"/>
 ///<reference path="entity/Enemy.ts"/>
+///<reference path="entity/Item.ts"/>
+///<reference path="entity/Player.ts"/>
 ///<reference path="entity/FallingTile.ts"/>
 
 class Game {

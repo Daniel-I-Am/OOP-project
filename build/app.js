@@ -163,6 +163,9 @@ class Rotation {
     getValue() {
         return this.value;
     }
+    getDegree() {
+        return this.value * (180 / Math.PI);
+    }
 }
 class Vector {
     constructor(x, y) {
@@ -276,6 +279,41 @@ class Entity {
         return this.location;
     }
 }
+class GameView extends BaseView {
+    constructor() {
+        super();
+        this.player = new Player([
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim2.png",
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim3.png",
+        ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
+        this.tile = new FallingTile(["./assets/images/buttonGreen.png"], new Vector(100, 100), new Rotation(0), new Vector(-1, -1), 2, 0);
+    }
+    update() {
+        this.tile.update();
+        this.player.update();
+        this.drawGUI();
+    }
+    drawGUI() {
+        this.canvasHelper.writeText("Hello World!", 69, this.canvasHelper.getCenter(), undefined, undefined, "black");
+    }
+    beforeExit() { }
+}
+class TitleView extends BaseView {
+    constructor(buttonCallback) {
+        super();
+        this.shouldClear = false;
+        let buttonImage = new Image();
+        buttonImage.addEventListener('load', () => {
+            this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), buttonCallback);
+        });
+        buttonImage.src = "./assets/images/buttonGreen.png";
+    }
+    update() { }
+    drawGUI() { }
+    beforeExit() { }
+}
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, speed) {
         super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
@@ -289,13 +327,40 @@ class Enemy extends Entity {
     move() {
     }
 }
+class Item extends Entity {
+    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
+        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
+    }
+    move() { }
+}
+class Player extends Entity {
+    constructor(imageSources, location, size, gravity, speed) {
+        super(imageSources, location, new Rotation(0), size, gravity, speed);
+        this.keyHelper = new KeyHelper();
+        this.animationCounterMax = 4;
+    }
+    move() {
+        let x;
+        if (this.keyHelper.getLeftPressed())
+            x = this.location.x;
+        x -= this.speed;
+        this.location.x = x;
+        if (this.keyHelper.getRightPressed())
+            x = this.location.x;
+        x += this.speed;
+        this.location.x = x;
+    }
+    interact() {
+        if (this.keyHelper.getInteractPressed())
+            console.log('interacting');
+    }
+}
 class FallingTile extends Entity {
     constructor(imageSource, location, rotation, size, gravity, speed) {
         super(imageSource, location, rotation, size, gravity, speed);
         this.countdown = 60;
         this.falling = false;
         this.location = new Vector(100, 100);
-        console.log("YEET");
     }
     move() {
         this.countdown -= 1;
@@ -336,70 +401,11 @@ function init() {
     const game = new Game(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
-var itemId;
-(function (itemId) {
-})(itemId || (itemId = {}));
-class Item extends Entity {
-    constructor(imageSource, xPos, yPos, height, width, gravity, speed) {
-        super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, speed);
-    }
-    move() { }
-}
-class Player extends Entity {
-    constructor(imageSources, location, size, gravity, speed) {
-        super(imageSources, location, new Rotation(0), size, gravity, speed);
-        this.keyHelper = new KeyHelper();
-        this.animationCounterMax = 4;
-    }
-    move() {
-        let x;
-        if (this.keyHelper.getLeftPressed())
-            x = this.location.x;
-        x -= this.speed;
-        this.location.x = x;
-        if (this.keyHelper.getRightPressed())
-            x = this.location.x;
-        x += this.speed;
-        this.location.x = x;
-    }
-    interact() {
-        if (this.keyHelper.getInteractPressed())
-            console.log('interacting');
-    }
-}
-class GameView extends BaseView {
-    constructor() {
-        super();
-        this.player = new Player([
-            "./assets/player/anim_walk/PlayerAnim1.png",
-            "./assets/player/anim_walk/PlayerAnim2.png",
-            "./assets/player/anim_walk/PlayerAnim1.png",
-            "./assets/player/anim_walk/PlayerAnim3.png",
-        ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
-        this.tile = new FallingTile(["./assets/images/buttonGreen.png"], new Vector(100, 100), new Rotation(0), new Vector(-1, -1), 2, 0);
-    }
-    update() {
-        this.tile.update();
-        this.player.update();
-        this.drawGUI();
-    }
-    drawGUI() {
-        this.canvasHelper.writeText("Hello World!", 69, this.canvasHelper.getCenter(), undefined, undefined, "black");
-    }
-    beforeExit() { }
-}
-class TitleView extends BaseView {
-    constructor(buttonCallback) {
-        super();
-        this.shouldClear = false;
-        let buttonImage = new Image();
-        buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), buttonCallback);
-        });
-        buttonImage.src = "./assets/images/buttonGreen.png";
-    }
-    update() { }
-    drawGUI() { }
-    beforeExit() { }
-}
+var ItemId;
+(function (ItemId) {
+    ItemId[ItemId["NONE"] = 0] = "NONE";
+    ItemId[ItemId["BANDAGE"] = 1] = "BANDAGE";
+    ItemId[ItemId["IODINE"] = 2] = "IODINE";
+    ItemId[ItemId["WATER"] = 3] = "WATER";
+})(ItemId || (ItemId = {}));
 //# sourceMappingURL=app.js.map

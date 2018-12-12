@@ -20,8 +20,7 @@ class GameView extends BaseView {
             new Vector(-1,-1),
             2,
             0
-        );   
-
+        );
     }
 
     public update(): void {

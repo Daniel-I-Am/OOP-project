@@ -12,14 +12,7 @@ class FallingTile extends Entity{
     ) {
         super(imageSource, location, rotation, size, gravity, speed);
         this.location = new Vector(100,100);
-        console.log("YEET");
-
     }
-
-
-
-
-
 
     protected move():void{
         this.countdown -= 1
