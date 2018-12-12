@@ -2,4 +2,31 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-image: url(https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.wallpapersafari.com%2F44%2F32%2FwnkjfL.jpeg&f=1);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+h1 {
+    text-align: center;
+    font-family: 'Cabin Sketch';
+    font-size: 80px;
+    color: white;
+}
+
+
+#img1 {
+    display: block;
+    margin-left: auto;
+    margin-right: 200px;
+    float: right;
+    overflow: auto;
+  } 
+
+#img2 {
+    display: block;
+    margin-left: 200px;
+    margin-right: auto;
+    float: left;
+    overflow: auto;
+  } 
