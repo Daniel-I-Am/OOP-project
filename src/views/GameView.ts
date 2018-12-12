@@ -23,6 +23,21 @@ class GameView extends BaseView {
             2,
             0
         ));
+        this.entities.push(new Accellerator(
+            undefined,
+            new Vector(900,300),
+            new Rotation(0),
+            new Vector(175,50),
+            2,
+            0
+        ));
+        this.entities.push(new Item(
+            "./assets/images/default.png",
+            new Vector(700, 300),
+            new Rotation(0),
+            new Vector(64,64),
+            'Default'
+        ));
 
         this.entities.push(this.player);
     }
@@ -34,6 +49,10 @@ class GameView extends BaseView {
             this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
+                if(e.collide(this.player) && e instanceof Accellerator){
+                    this.player.boost();
+                }
+            this.player.interact(e);
         });
         this.entities.forEach(e => {
             e.update();

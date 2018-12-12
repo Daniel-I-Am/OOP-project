@@ -1,9 +1,10 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
-    private inventory: Inventory;
+    private inventory: Array<InventoryItem>;
     private jumpHeight: number;
     private isJumping: boolean;
     private isLanded: boolean;
+    public tempMaxSpeed: number;
 
     /**
      * @constructor
@@ -36,6 +37,8 @@ class Player extends Entity {
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
+        this.inventory = new Array<InventoryItem>();
+        this.tempMaxSpeed = this.maxSpeed;
     }
 
 
@@ -55,8 +58,8 @@ class Player extends Entity {
             }
         }
         this.velocity.y += this.gravity;
-        this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x
-        this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y
+        this.velocity.x = new Vector(this.velocity.x, 0).max(this.tempMaxSpeed).x
+        this.velocity.y = new Vector(0, this.velocity.y).max(this.tempMaxSpeed).y
         if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0)
             if (!(
@@ -67,6 +70,7 @@ class Player extends Entity {
             }
         }
         this.location.add(this.velocity)
+        if(this.tempMaxSpeed>this.maxSpeed) this.tempMaxSpeed -= 0.5;
     }
 
 
@@ -76,7 +80,7 @@ class Player extends Entity {
         if (
             this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
             this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
-            // Where did this number come     \/ from?
+            // Where did this number come     \/ from?      MAGIC!
             this.location.y + this.size.y/2 - 15 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
             this.location.y + this.size.y/2 - 15 + collideWith.getSize().y/2 > collideWith.getLoc().y
         )
@@ -84,15 +88,29 @@ class Player extends Entity {
         return false;
     }
 
+    public boost(){
+        this.velocity = new Vector(100,-1);
+        this.tempMaxSpeed = 100;
+    }
+
     /**
      * Function to interact
      */
-    public interact(): void {
-        if (this.keyHelper.getInteractPressed())
+    public interact(entity: Entity): void {
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
+            this.inventory.push(this.newInventoryItem(entity.name))
             console.log('interacting');
+            console.log(this.inventory)
     }
 
-    public setIsLanded(state: boolean): void {
+    private newInventoryItem(name: string): InventoryItem {
+        return {
+            id: this.inventory.length - 1,
+            name: name
+        }
+    }
+
+    public setIsLanded(state: boolean): void    {
         this.isLanded = state;
     }
 }
