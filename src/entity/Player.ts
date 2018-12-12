@@ -64,7 +64,7 @@ class Player extends Entity {
                 this.keyHelper.getLeftPressed() ||
                 this.keyHelper.getRightPressed()
             )) {
-                this.velocity.x = 0;
+                this.velocity.x *= .60;
             }
         }
         this.location.add(this.velocity)
