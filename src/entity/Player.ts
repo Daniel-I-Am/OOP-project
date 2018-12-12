@@ -92,7 +92,7 @@ class Player extends Entity {
             console.log('interacting');
     }
 
-    public setIsLanded(state: boolean): void {
+    public setIsLanded(state: boolean): void    {
         this.isLanded = state;
     }
 }

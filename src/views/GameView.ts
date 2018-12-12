@@ -31,6 +31,12 @@ class GameView extends BaseView {
             2,
             0
         ));
+        this.entities.push(new Item(
+            "./assets/images/default.png",
+            new Vector(700, 300),
+            new Rotation(0),
+            new Vector(64,64)
+        ));
 
         this.entities.push(this.player);
     }
