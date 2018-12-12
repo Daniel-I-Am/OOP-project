@@ -253,10 +253,10 @@ class Entity {
         this.direction = direction;
     }
     collide(collideWith) {
-        if (this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 < collideWith.getLoc().x / 2 &&
-            this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 > collideWith.getLoc().x / 2 &&
-            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 < collideWith.getLoc().y / 2 &&
-            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 > collideWith.getLoc().y / 2)
+        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
             return true;
         return false;
     }
@@ -282,17 +282,25 @@ class Entity {
 class GameView extends BaseView {
     constructor() {
         super();
+        this.entities = new Array();
         this.player = new Player([
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim2.png",
             "./assets/player/anim_walk/PlayerAnim1.png",
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
-        this.tile = new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0);
+        this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(this.player);
     }
     update() {
-        this.tile.update();
-        this.player.update();
+        this.entities.forEach(e => {
+            e.update();
+        });
+        this.entities.forEach(e => {
+            if (e === this.player)
+                return;
+            console.log(e.collide(this.player));
+        });
         this.drawGUI();
     }
     drawGUI() {
