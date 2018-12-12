@@ -58,8 +58,15 @@ class Player extends Entity {
         this.velocity.y += this.gravity;
         this.velocity.x = new Vector(this.velocity.x, 0).max(this.maxSpeed).x
         this.velocity.y = new Vector(0, this.velocity.y).max(this.maxSpeed).y
-        if (this.isLanded)
+        if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0)
+            if (!(
+                this.keyHelper.getLeftPressed() ||
+                this.keyHelper.getRightPressed()
+            )) {
+                this.velocity.x = 0;
+            }
+        }
         this.location.add(this.velocity)
     }
 
