@@ -23,6 +23,14 @@ class GameView extends BaseView {
             2,
             0
         ));
+        this.entities.push(new Accellerator(
+            undefined,
+            new Vector(900,300),
+            new Rotation(0),
+            new Vector(175,50),
+            2,
+            0
+        ));
 
         this.entities.push(this.player);
     }
