@@ -5,6 +5,23 @@ body {
     background-image: url(https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.wallpapersafari.com%2F44%2F32%2FwnkjfL.jpeg&f=1);
     background-repeat: no-repeat;
     background-size: cover;
+
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-rows: 20vh 80vh;
+    grid-template-areas:
+        "img1 title img2"
+        "emptyL canvas emptyR";
+}
+
+#img1 {
+    margin: auto;
+    grid-area: "img1";
+}
+
+#img2 {
+    margin: auto;
+    grid-area: "img2";
 }
 
 h1 {
@@ -12,20 +29,12 @@ h1 {
     font-family: 'Cabin Sketch';
     font-size: 80px;
     color: white;
+    margin: auto;
 }
 
-#img1 {
-    display: block;
-    margin-left: auto;
-    margin-right: 200px;
-    float: right;
-    overflow: auto;
-}
-
-#img2 {
-    display: block;
-    margin-left: 200px;
-    margin-right: auto;
-    float: left;
-    overflow: auto;
+canvas {
+    grid-area: "canvas";
+    width: 100%;
+    height: 56.25%;
+    background-color: white;
 }

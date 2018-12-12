@@ -9,6 +9,8 @@ class CanvasHelper {
         this.canvas = <HTMLCanvasElement>canvas;
         this.ctx = this.canvas.getContext('2d');
 
+        this.canvas.style.width = `${this.canvas.clientWidth}px`
+        this.canvas.style.height = `${this.canvas.clientWidth*9/16}px`
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
     }
