@@ -1,5 +1,5 @@
 class Item extends Entity {
-    private name: string;
+    public name: string;
 
     /**
      * @constructor

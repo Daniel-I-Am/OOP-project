@@ -96,8 +96,16 @@ class Player extends Entity {
      * Function to interact
      */
     public interact(entity: Entity): void {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity))
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item)
+            this.inventory.items.push(this.newInventoryItem(entity.name))
             console.log('interacting');
+    }
+
+    private newInventoryItem(name: string): InventoryItem {
+        return {
+            id: this.inventory.items.length - 1,
+            name: name
+        }
     }
 
     public setIsLanded(state: boolean): void    {
