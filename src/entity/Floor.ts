@@ -1,11 +1,14 @@
 class Floor extends Entity {
     constructor(
-        imageSource: string = "./assets/images/floorPlain.png",
+        imageSource: string = null,
         location: Vector,
         rotation: Rotation,
         size: Vector
     ) {
-        super([imageSource], location, rotation, size);
+        super(
+            imageSource == null ? [] : [imageSource],
+            location, rotation, size
+        );
     }
 
     protected move(): void {

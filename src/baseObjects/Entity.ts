@@ -75,6 +75,7 @@ abstract class Entity {
     };
 
     private draw() {
+        if (this.images.length <= 0) return;
         this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
 
