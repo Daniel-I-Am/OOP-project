@@ -22,7 +22,8 @@
 		},
 		"gravity": 1
 	},
-	"FallingTiles": [{
+	"FallingTiles": [
+        {
 			"sprites": null,
 			"location": {
 				"x": {
@@ -77,7 +78,8 @@
 			}
 		}
 	],
-	"Accelerators": [{
+	"Accelerators": [
+        {
 		"sprites": null,
 		"location": {
 			"x": {
@@ -94,8 +96,10 @@
 			"x": 175,
 			"y": 50
 		}
-	}],
-	"items": [{
+    }
+],
+	"items": [
+        {
 		"sprite": "./assets/images/default.png",
 		"location": {
 			"x": {
@@ -113,9 +117,11 @@
 			"y": 64
 		},
 		"name": "Default"
-	}],
+    }
+],
 
-	"Trampolines": [{
+	"Trampolines": [
+        {
 		"sprite": null,
 		"location": {
 			"x": {
@@ -132,9 +138,11 @@
 			"x": 259,
 			"y": 135
 		}
-	}],
+    }
+],
 
-	"floors": [{
+	"floors": [
+        {
 			"sprite": null,
 			"location": {
 				"x": {
@@ -890,6 +898,5 @@
 				"y": 100
 			}
 		}
-
 	]
 }
