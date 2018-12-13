@@ -7,21 +7,13 @@ class TitleView extends BaseView {
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(
-                buttonImage, "Play!",
+                buttonImage, "Play!", 96,
                 this.canvasHelper.getCenter(),
-                new Vector(buttonImage.width, buttonImage.height),
+                new Vector(buttonImage.width*5, buttonImage.height*5),
                 buttonCallback
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
-
-        this.canvasHelper.writeText(
-            "Dr. Avontuur",
-            96,
-            new Vector(this.canvasHelper.getCenter().x, 50),
-            undefined, undefined,
-            "black", "Cabin Sketch"
-        )
     }
     
     public update() {}

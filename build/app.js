@@ -34,14 +34,16 @@ class CanvasHelper {
         }
         this.ctx.restore();
     }
-    drawButton(image, caption, location, size, callback = null) {
+    drawButton(image, caption, fontSize, location, size, callback = null) {
         this.drawImage(image, location, new Rotation(0), size);
-        this.writeText(caption, 24, location, "center", "middle", "black");
+        this.writeText(caption, fontSize, location, "center", "middle", "black");
         if (!callback)
             return;
         let _listener = (event) => {
             let croppingFactor = this.getCroppingFactor();
-            let topleft = new Vector(this.canvas.offsetLeft + croppingFactor.x * (location.x - image.width / 2), this.canvas.offsetTop + croppingFactor.x * (location.y - image.height / 2)), bottomRight = new Vector(this.canvas.offsetLeft + croppingFactor.y * (location.x + image.width / 2), this.canvas.offsetTop + croppingFactor.y * (location.y + image.height / 2));
+            let xScale = size.x / image.width;
+            let yScale = size.y / image.height;
+            let topleft = new Vector(this.canvas.offsetLeft + croppingFactor.x * (location.x - xScale * image.width / 2), this.canvas.offsetTop + croppingFactor.y * (location.y - yScale * image.height / 2)), bottomRight = new Vector(this.canvas.offsetLeft + croppingFactor.y * (location.x + xScale * image.width / 2), this.canvas.offsetTop + croppingFactor.y * (location.y + yScale * image.height / 2));
             if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
                 this.canvas.removeEventListener('click', _listener);
                 callback(event);
@@ -381,10 +383,9 @@ class TitleView extends BaseView {
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", this.canvasHelper.getCenter(), new Vector(buttonImage.width, buttonImage.height), buttonCallback);
+            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
-        this.canvasHelper.writeText("Dr. Avontuur", 96, new Vector(this.canvasHelper.getCenter().x, 50), undefined, undefined, "black", "Cabin Sketch");
     }
     update() { }
     drawGUI() { }

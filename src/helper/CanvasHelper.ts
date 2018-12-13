@@ -88,23 +88,26 @@ class CanvasHelper {
     public drawButton(
         image: HTMLImageElement,
         caption: string,
+        fontSize: number,
         location: Vector,
         size: Vector,
         callback: (event: MouseEvent) => void = null
     ) {
         this.drawImage(image, location, new Rotation(0), size);
-        this.writeText(caption, 24, location, "center", "middle", "black")
+        this.writeText(caption, fontSize, location, "center", "middle", "black")
         if (!callback) return;
         let _listener = (event: MouseEvent) => {
             let croppingFactor = this.getCroppingFactor();
+            let xScale = size.x/image.width
+            let yScale = size.y/image.height
             // define the top left and bottom right of the button
             let topleft = new Vector(
-                this.canvas.offsetLeft + croppingFactor.x * (location.x-<number>image.width/2),
-                this.canvas.offsetTop + croppingFactor.x * (location.y-<number>image.height/2)
+                this.canvas.offsetLeft + croppingFactor.x * (location.x-xScale*<number>image.width/2),
+                this.canvas.offsetTop + croppingFactor.y * (location.y-yScale*<number>image.height/2)
                 ),
                 bottomRight = new Vector(
-                    this.canvas.offsetLeft + croppingFactor.y * (location.x+<number>image.width/2),
-                    this.canvas.offsetTop + croppingFactor.y * (location.y+<number>image.height/2)
+                    this.canvas.offsetLeft + croppingFactor.y * (location.x+xScale*<number>image.width/2),
+                    this.canvas.offsetTop + croppingFactor.y * (location.y+yScale*<number>image.height/2)
                 );
             // check if we clicked within the button
             if (event.x < bottomRight.x && event.x > topleft.x && event.y < bottomRight.y && event.y > topleft.y) {
