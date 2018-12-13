@@ -100,5 +100,25 @@
             },
             "name": "Default"
         }
+    ],
+    "floors": [
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": true,
+                    "offset": 100
+                },
+                "y": {
+                    "center": true,
+                    "offset": 200
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 500,
+                "y": 32
+            }
+        }
     ]
 }
