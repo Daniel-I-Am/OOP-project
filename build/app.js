@@ -307,6 +307,9 @@ class GameView extends BaseView {
         levelJSON.Accelerators.forEach(e => {
             this.entities.push(new Accelerator(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
+        levelJSON.Trampolines.forEach(e => {
+            this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2));
+        });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
@@ -320,15 +323,20 @@ class GameView extends BaseView {
         this.entities.forEach(e => {
             if (e === this.player)
                 return;
-            if (this.player.footCollision(e))
+            if (this.player.footCollision(e)) {
                 this.player.setIsLanded(true);
+                if (e instanceof FallingTile) {
+                    e.activated = true;
+                }
+            }
             if (e.collide(this.player) && e instanceof Accelerator) {
                 this.player.boost();
             }
             if (e.collide(this.player) && e instanceof Trampoline) {
                 this.player.trampoline();
             }
-            this.player.interact(e);
+            if (e.collide(this.player))
+                this.player.interact(e);
         });
         this.entities.forEach(e => {
             e.update();
@@ -453,9 +461,11 @@ class FallingTile extends Entity {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.countdown = 60;
         this.falling = false;
+        this.activated = false;
     }
     move() {
-        this.countdown -= 1;
+        if (this.activated)
+            this.countdown -= 1;
         if (this.countdown == 0) {
             this.falling = true;
         }
@@ -464,7 +474,7 @@ class FallingTile extends Entity {
             this.velocity.y += this.gravity;
             this.location.add(this.velocity);
         }
-        if (!this.falling) {
+        if (!this.falling && this.activated) {
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }

@@ -32,7 +32,7 @@
                 },
                 "y": {
                     "center": false,
-                    "offset": 100
+                    "offset": 300
                 }
             },
             "rotation": 0,

@@ -1,6 +1,7 @@
 class FallingTile extends Entity{
     private countdown: number = 60;
     private falling: boolean = false;
+    public activated: boolean = false;
 
     public constructor(
         imageSource: Array<string> = ["./assets/images/fallingTile1.png"],
@@ -14,7 +15,7 @@ class FallingTile extends Entity{
     }
 
     protected move():void{
-        this.countdown -= 1
+        if(this.activated) this.countdown -= 1;
         if(this.countdown == 0){
             this.falling = true;
         }
@@ -23,7 +24,7 @@ class FallingTile extends Entity{
             this.velocity.y += this.gravity;
             this.location.add(this.velocity);
         }
-        if(!this.falling) {
+        if(!this.falling && this.activated) {
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }
