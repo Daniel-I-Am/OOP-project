@@ -88,12 +88,13 @@ class CanvasHelper {
     public drawButton(
         image: HTMLImageElement,
         caption: string,
+        fontSize: number,
         location: Vector,
         size: Vector,
         callback: (event: MouseEvent) => void = null
     ) {
         this.drawImage(image, location, new Rotation(0), size);
-        this.writeText(caption, 24, location, "center", "middle", "black")
+        this.writeText(caption, fontSize, location, "center", "middle", "black")
         if (!callback) return;
         let _listener = (event: MouseEvent) => {
             let croppingFactor = this.getCroppingFactor();
