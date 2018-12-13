@@ -88,4 +88,8 @@ abstract class Entity {
     public getLoc(): Vector {
         return this.location;
     }
+
+    public getVelocity(): Vector {
+        return this.velocity;
+    }
 }
