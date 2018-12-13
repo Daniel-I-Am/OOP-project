@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-image: url(https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.wallpapersafari.com%2F44%2F32%2FwnkjfL.jpeg&f=1);
+    background-image: url("../images/html/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 
