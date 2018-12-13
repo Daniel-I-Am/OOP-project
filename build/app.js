@@ -298,6 +298,7 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
         this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new FallingTile(undefined, this.canvasHelper.getCenter().add(new Vector(0, 100)), new Rotation(0), new Vector(175, 50), 2, 0));
         this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, 0));
         this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64), 'Default'));
         this.entities.push(this.player);
@@ -363,12 +364,14 @@ class Item extends Entity {
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
+        this.jumpSpeed = 100;
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array();
         this.tempMaxSpeed = this.maxSpeed;
+        this.jumpSpeed = 100;
     }
     move() {
         if (this.keyHelper.getLeftPressed()) {
@@ -378,8 +381,9 @@ class Player extends Entity {
             this.velocity.x += this.acceleration;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
-            if (!this.isJumping) {
-                this.velocity.y -= this.acceleration;
+            if (this.isLanded) {
+                this.velocity.y -= this.jumpSpeed = 100;
+                ;
             }
         }
         this.velocity.y += this.gravity;
