@@ -1,6 +1,6 @@
 class Floor extends Entity {
     constructor(
-        imageSource: string = "./assets/images/default.png",
+        imageSource: string = "./assets/images/floorPlain.png",
         location: Vector,
         rotation: Rotation,
         size: Vector
