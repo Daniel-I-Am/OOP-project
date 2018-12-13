@@ -40,6 +40,15 @@ class GameView extends BaseView {
                 2, 0
             ));
         });
+        levelJSON.Trampolines.forEach(e => {
+            this.entities.push(new Trampoline(
+                ((e.sprites == null) ? undefined : e.sprites),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y),
+                2
+            ));
+        });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(
                 ((e.sprite == null) ? undefined : e.sprite),
@@ -65,12 +74,13 @@ class GameView extends BaseView {
             if (e === this.player) return;
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
-                if(e.collide(this.player) && e instanceof Accelerator){
-                    this.player.boost();
-                }
-                if(e.collide(this.player) && e instanceof Trampoline){
-                    this.player.trampoline();
-                }
+            if(e.collide(this.player) && e instanceof Accelerator){
+                this.player.boost();
+            }
+            if(e.collide(this.player) && e instanceof Trampoline){
+                this.player.trampoline();
+            }
+            
             this.player.interact(e);
         });
         this.entities.forEach(e => {
