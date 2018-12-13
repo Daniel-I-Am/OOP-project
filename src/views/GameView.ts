@@ -23,13 +23,20 @@ class GameView extends BaseView {
             2,
             0
         ));
-        this.entities.push(new Accellerator(
+        this.entities.push(new Accelerator(
             undefined,
             new Vector(900,300),
             new Rotation(0),
             new Vector(175,50),
             2,
             0
+        ));
+        this.entities.push(new Trampoline(
+            undefined,
+            new Vector(50,500),
+            new Rotation(0),
+            new Vector(175,50),
+            2,
         ));
         this.entities.push(new Item(
             "./assets/images/default.png",
@@ -48,8 +55,11 @@ class GameView extends BaseView {
             if (e === this.player) return;
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
-                if(e.collide(this.player) && e instanceof Accellerator){
+                if(e.collide(this.player) && e instanceof Accelerator){
                     this.player.boost();
+                }
+                if(e.collide(this.player) && e instanceof Trampoline){
+                    this.player.trampoline();
                 }
             this.player.interact(e);
         });

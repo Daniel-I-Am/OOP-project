@@ -298,7 +298,8 @@ class GameView extends BaseView {
             "./assets/player/anim_walk/PlayerAnim3.png",
         ], this.canvasHelper.getCenter(), new Vector(58.5, 150), 1, 5);
         this.entities.push(new FallingTile(undefined, new Vector(500, 100), new Rotation(0), new Vector(175, 50), 2, 0));
-        this.entities.push(new Accellerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new Accelerator(undefined, new Vector(900, 300), new Rotation(0), new Vector(175, 50), 2, 0));
+        this.entities.push(new Trampoline(undefined, new Vector(50, 500), new Rotation(0), new Vector(175, 50), 2));
         this.entities.push(new Item("./assets/images/default.png", new Vector(700, 300), new Rotation(0), new Vector(64, 64), 'Default'));
         this.entities.push(this.player);
     }
@@ -309,8 +310,11 @@ class GameView extends BaseView {
                 return;
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
-            if (e.collide(this.player) && e instanceof Accellerator) {
+            if (e.collide(this.player) && e instanceof Accelerator) {
                 this.player.boost();
+            }
+            if (e.collide(this.player) && e instanceof Trampoline) {
+                this.player.trampoline();
             }
             this.player.interact(e);
         });
@@ -395,6 +399,8 @@ class Player extends Entity {
         this.location.add(this.velocity);
         if (this.tempMaxSpeed > this.maxSpeed)
             this.tempMaxSpeed -= 0.5;
+        this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
+        this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
     }
     footCollision(collideWith) {
         if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
@@ -406,6 +412,10 @@ class Player extends Entity {
     }
     boost() {
         this.velocity = new Vector(100, -1);
+        this.tempMaxSpeed = 100;
+    }
+    trampoline() {
+        this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
         this.tempMaxSpeed = 100;
     }
     interact(entity) {
@@ -477,10 +487,17 @@ var ItemId;
     ItemId[ItemId["IODINE"] = 2] = "IODINE";
     ItemId[ItemId["WATER"] = 3] = "WATER";
 })(ItemId || (ItemId = {}));
-class Accellerator extends Entity {
-    constructor(imageSource = ["./assets/images/Anim_accellerator/1.png", "./assets/images/Anim_accellerator/2.png", "./assets/images/Anim_accellerator/3.png"], location, rotation, size, gravity, acceleration) {
+class Accelerator extends Entity {
+    constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, gravity, acceleration) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.animationCounterMax = 10;
+    }
+    move() {
+    }
+}
+class Trampoline extends Entity {
+    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
+        super(imageSource, location, rotation, size, gravity, undefined, undefined);
     }
     move() {
     }
