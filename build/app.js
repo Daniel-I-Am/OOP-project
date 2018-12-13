@@ -158,6 +158,9 @@ class MathHelper {
     static toRadian(degrees) {
         return degrees * Math.PI / 180;
     }
+    static floor(n, digits) {
+        return Math.floor(n * (Math.pow(10, digits))) / (Math.pow(10, digits));
+    }
 }
 class Rotation {
     constructor(value, isRadian = false) {
@@ -286,6 +289,9 @@ class Entity {
     getLoc() {
         return this.location;
     }
+    getVelocity() {
+        return this.velocity;
+    }
 }
 class GameView extends BaseView {
     constructor(levelName) {
@@ -312,6 +318,9 @@ class GameView extends BaseView {
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
+        });
+        levelJSON.floors.forEach(e => {
+            this.entities.push(new Floor(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
         });
         this.entities.push(this.player);
     }
@@ -343,7 +352,12 @@ class GameView extends BaseView {
         });
         this.drawGUI();
     }
-    drawGUI() { }
+    drawGUI() {
+        this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black");
+        this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black");
+        this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black");
+        this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
+    }
     beforeExit() { }
 }
 class TitleView extends BaseView {
@@ -424,8 +438,8 @@ class Player extends Entity {
         this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
     }
     footCollision(collideWith) {
-        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+        if (this.location.x - 1 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + 1 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
             this.location.y + this.size.y / 2 - 15 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
             this.location.y + this.size.y / 2 - 15 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
             return true;
@@ -516,6 +530,14 @@ class Accelerator extends Entity {
         this.animationCounterMax = 10;
     }
     move() {
+    }
+}
+class Floor extends Entity {
+    constructor(imageSource = "./assets/images/floorPlain.png", location, rotation, size) {
+        super([imageSource], location, rotation, size);
+    }
+    move() {
+        return;
     }
 }
 class Trampoline extends Entity {

@@ -58,6 +58,14 @@ class GameView extends BaseView {
                 e.name
             ));
         });
+        levelJSON.floors.forEach(e => {
+            this.entities.push(new Floor(
+                ((e.sprite == null) ? undefined : e.sprite),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y)
+            ));
+        });
         this.entities.push(this.player);
     }
 
@@ -93,7 +101,12 @@ class GameView extends BaseView {
         this.drawGUI();
     }
 
-    protected drawGUI(): void {}
+    protected drawGUI(): void {
+        this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black")
+        this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black")
+        this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black")
+        this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black")
+    }
 
     public beforeExit(): void {}
 
