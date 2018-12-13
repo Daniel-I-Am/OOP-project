@@ -1,7 +1,9 @@
 class FallingTile extends Entity{
     private countdown: number = 60;
     private falling: boolean = false;
+    private alive: boolean = true;
     public activated: boolean = false;
+    
 
     public constructor(
         imageSource: Array<string> = ["./assets/images/fallingTile1.png"],
@@ -19,7 +21,7 @@ class FallingTile extends Entity{
         if(this.countdown == 0){
             this.falling = true;
         }
-        if(this.location.y < 500 && this.falling){ //replace with collide shit later on
+        if(this.alive && this.falling){ //replace with collide shit later on
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             this.location.add(this.velocity);
@@ -27,5 +29,14 @@ class FallingTile extends Entity{
         if(!this.falling && this.activated) {
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
+    }
+    public getFalling(){
+        return this.falling;
+    }
+    public kill(){
+        this.alive=false;
+    }
+    public getAlive(){
+        return this.alive;
     }
 }

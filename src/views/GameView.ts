@@ -96,6 +96,15 @@ class GameView extends BaseView {
             }
             if(e.collide(this.player))
             this.player.interact(e);
+            if(e instanceof FallingTile){
+                if(e.getAlive()){
+                    let tile = e
+                    this.entities.forEach(e => {
+                        if(!(e instanceof Floor)) return;
+                        if(tile.collide(e)) tile.kill();
+                    });
+                }
+            }
         });
         this.entities.forEach(e => {
             e.update();

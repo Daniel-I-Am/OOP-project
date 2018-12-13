@@ -350,6 +350,17 @@ class GameView extends BaseView {
             }
             if (e.collide(this.player))
                 this.player.interact(e);
+            if (e instanceof FallingTile) {
+                if (e.getAlive()) {
+                    let tile = e;
+                    this.entities.forEach(e => {
+                        if (!(e instanceof Floor))
+                            return;
+                        if (tile.collide(e))
+                            tile.kill();
+                    });
+                }
+            }
         });
         this.entities.forEach(e => {
             e.update();
@@ -479,6 +490,7 @@ class FallingTile extends Entity {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.countdown = 60;
         this.falling = false;
+        this.alive = true;
         this.activated = false;
     }
     move() {
@@ -487,7 +499,7 @@ class FallingTile extends Entity {
         if (this.countdown == 0) {
             this.falling = true;
         }
-        if (this.location.y < 500 && this.falling) {
+        if (this.alive && this.falling) {
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             this.location.add(this.velocity);
@@ -495,6 +507,15 @@ class FallingTile extends Entity {
         if (!this.falling && this.activated) {
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
+    }
+    getFalling() {
+        return this.falling;
+    }
+    kill() {
+        this.alive = false;
+    }
+    getAlive() {
+        return this.alive;
     }
 }
 class Game {
