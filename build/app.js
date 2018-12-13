@@ -411,8 +411,8 @@ class Player extends Entity {
             this.tempMaxSpeed -= 0.5;
     }
     footCollision(collideWith) {
-        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+        if (this.location.x - 1 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + 1 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
             this.location.y + this.size.y / 2 - 15 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
             this.location.y + this.size.y / 2 - 15 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
             return true;
