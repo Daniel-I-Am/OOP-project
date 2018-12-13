@@ -309,6 +309,11 @@ class GameView extends BaseView {
     }
     makeLevel(levelJSON) {
         this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 5);
+        levelJSON.floors.forEach(e => {
+            let sprite = ((e.sprite == null) ? undefined : e.sprite);
+            sprite = ((sprite == "null") ? null : sprite);
+            this.entities.push(new Floor(sprite, this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
+        });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -320,11 +325,6 @@ class GameView extends BaseView {
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
-        });
-        levelJSON.floors.forEach(e => {
-            let sprite = ((e.sprite == null) ? undefined : e.sprite);
-            sprite = ((sprite == "null") ? null : sprite);
-            this.entities.push(new Floor(sprite, this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
         });
         this.entities.push(this.player);
     }

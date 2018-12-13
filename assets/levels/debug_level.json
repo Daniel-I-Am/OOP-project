@@ -58,6 +58,24 @@
                 "x": 175,
                 "y": 50
             }
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": true,
+                    "offset": 550
+                },
+                "y": {
+                    "center": true,
+                    "offset": 200
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 382,
+                "y": 100
+            }
         }
     ],
     "Accelerators": [
@@ -112,42 +130,24 @@
                 },
                 "y":{
                     "center": false,
-                    "offset": 600
+                    "offset": 590
                 }
             },
             "rotation": 0,
             "size": {
-                "x": 346,
-                "y": 180
+                "x": 259,
+                "y": 135
             }
         }
     ],
-    
+
     "floors": [
         {
             "sprite": null,
             "location": {
                 "x": {
                     "center": true,
-                    "offset": 100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": "null",
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 350
+                    "offset": -650
                 },
                 "y": {
                     "center": true,
@@ -165,7 +165,43 @@
             "location": {
                 "x": {
                     "center": true,
-                    "offset": 600
+                    "offset": -400
+                },
+                "y": {
+                    "center": true,
+                    "offset": 200
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 382,
+                "y": 100
+            }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": true,
+                    "offset": -150
+                },
+                "y": {
+                    "center": true,
+                    "offset": 200
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 382,
+                "y": 100
+            }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": true,
+                    "offset": 100
                 },
                 "y": {
                     "center": true,
