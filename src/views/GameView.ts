@@ -23,6 +23,14 @@ class GameView extends BaseView {
             2,
             0
         ));
+        this.entities.push(new FallingTile(
+            undefined,
+            this.canvasHelper.getCenter().add(new Vector(0, 100)),
+            new Rotation(0),
+            new Vector(175,50),
+            2,
+            0
+        ));
         this.entities.push(new Accellerator(
             undefined,
             new Vector(900,300),
