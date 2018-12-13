@@ -59,8 +59,10 @@ class GameView extends BaseView {
             ));
         });
         levelJSON.floors.forEach(e => {
+            let sprite = ((e.sprite == null) ? undefined : e.sprite);
+            sprite = ((sprite == "null") ? null : sprite);
             this.entities.push(new Floor(
-                ((e.sprite == null) ? undefined : e.sprite),
+                sprite,
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y)
