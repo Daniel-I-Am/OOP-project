@@ -7,8 +7,8 @@ body {
     background-size: cover;
 
     display: grid;
-    grid-template-columns: 20% 60% 20%;
-    grid-template-rows: 20vh 80vh;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 10vh 90vh;
     grid-template-areas:
         "img1 title img2"
         "emptyL canvas emptyR";
