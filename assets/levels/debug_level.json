@@ -100,5 +100,25 @@
             },
             "name": "Default"
         }
+    ],
+    "Trampolines": [
+        {
+            "sprite": null,
+            "location": {
+                "x":{
+                    "center": false,
+                    "offset": 200
+                },
+                "y":{
+                    "center": false,
+                    "offset": 600
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 346,
+                "y": 180
+            }
+        }
     ]
 }
