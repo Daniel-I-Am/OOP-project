@@ -5,6 +5,7 @@ class Player extends Entity {
     private isJumping: boolean;
     private isLanded: boolean;
     public tempMaxSpeed: number;
+    private jumpSpeed: number = 100;
 
     /**
      * @constructor
@@ -39,6 +40,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array<InventoryItem>();
         this.tempMaxSpeed = this.maxSpeed;
+        this.jumpSpeed = 100;
     }
 
 
@@ -53,8 +55,8 @@ class Player extends Entity {
             this.velocity.x += this.acceleration;
         }
         if (this.keyHelper.getSpaceBarPressed()) {
-            if (!this.isJumping) {
-                this.velocity.y -= this.acceleration;
+            if (this.isLanded) {
+                this.velocity.y -= this.jumpSpeed = 100;;
             }
         }
         this.velocity.y += this.gravity;

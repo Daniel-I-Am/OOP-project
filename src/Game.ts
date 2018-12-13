@@ -20,7 +20,7 @@ class Game {
     public constructor(canvas: HTMLElement) {
         this.canvasHelper = CanvasHelper.Instance(canvas);
         this.currentView = new TitleView(
-            () => {this.switchView(new GameView())}
+            () => {this.switchView(new GameView("debug_level"))}
         );
         this.currentInterval = setInterval(this.loop, 33);
     }

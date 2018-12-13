@@ -2,51 +2,61 @@ class GameView extends BaseView {
     private entities: Array<Entity>;
     private player: Player;
 
-    public constructor() {
+    public constructor(levelName: string) {
         super();
         this.entities = new Array<Entity>();
+        fetch(`./assets/levels/${levelName}.json`)
+            .then(response => {
+                return response.json();
+            })
+            .then(myJson => {
+                this.makeLevel(myJson);
+            })
+    }
 
-        this.player = new Player([
-            "./assets/player/anim_walk/PlayerAnim1.png",
-            "./assets/player/anim_walk/PlayerAnim2.png",
-            "./assets/player/anim_walk/PlayerAnim1.png",
-            "./assets/player/anim_walk/PlayerAnim3.png",
-        ],
-        this.canvasHelper.getCenter(),
-        new Vector(58.5, 150), 1, 5
+    private makeLevel(levelJSON: Level) {
+        this.player = new Player(
+            levelJSON.player.sprites,
+            this.parseLocation(levelJSON.player.location),
+            new Vector(levelJSON.player.size.x, levelJSON.player.size.y),
+            levelJSON.player.gravity,
+            5
         );
-        this.entities.push(new FallingTile(
-            undefined,
-            new Vector(500,100),
-            new Rotation(0),
-            new Vector(175,50),
-            2,
-            0
-        ));
-        this.entities.push(new Accelerator(
-            undefined,
-            new Vector(900,300),
-            new Rotation(0),
-            new Vector(175,50),
-            2,
-            0
-        ));
-        this.entities.push(new Trampoline(
-            undefined,
-            new Vector(50,500),
-            new Rotation(0),
-            new Vector(175,50),
-            2,
-        ));
-        this.entities.push(new Item(
-            "./assets/images/default.png",
-            new Vector(700, 300),
-            new Rotation(0),
-            new Vector(64,64),
-            'Default'
-        ));
-
+        levelJSON.FallingTiles.forEach(e => {
+            this.entities.push(new FallingTile(
+                ((e.sprites == null) ? undefined : e.sprites),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y),
+                2, 0
+            ));
+        });
+        levelJSON.Accelerators.forEach(e => {
+            this.entities.push(new Accelerator(
+                ((e.sprites == null) ? undefined : e.sprites),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y),
+                2, 0
+            ));
+        });
+        levelJSON.items.forEach(e => {
+            this.entities.push(new Item(
+                ((e.sprite == null) ? undefined : e.sprite),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y),
+                e.name
+            ));
+        });
         this.entities.push(this.player);
+    }
+
+    private parseLocation(location: LevelLocations): Vector {
+        return new Vector(
+            (location.x.center ? this.canvasHelper.getCenter().x : 0) + location.x.offset,
+            (location.y.center ? this.canvasHelper.getCenter().y : 0) + location.y.offset
+        )
     }
 
     public update(): void {
@@ -69,9 +79,7 @@ class GameView extends BaseView {
         this.drawGUI();
     }
 
-    protected drawGUI(): void {
-        this.canvasHelper.writeText("Hello World!", 69, this.canvasHelper.getCenter(), undefined, undefined, "black");
-    }
+    protected drawGUI(): void {}
 
     public beforeExit(): void {}
 
