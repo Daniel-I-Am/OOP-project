@@ -19,4 +19,14 @@ class MathHelper {
     public static toRadian(degrees: number): number {
         return degrees * Math.PI / 180;
     }
+
+
+    /**
+     * Floors a number, leaving an amount of numbers
+     * @param n 
+     * @param digits 
+     */
+    public static floor(n: number, digits: number) {
+        return Math.floor(n*(10**digits))/(10**digits);
+    }
 }
