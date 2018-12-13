@@ -322,7 +322,9 @@ class GameView extends BaseView {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
         levelJSON.floors.forEach(e => {
-            this.entities.push(new Floor(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
+            let sprite = ((e.sprite == null) ? undefined : e.sprite);
+            sprite = ((sprite == "null") ? null : sprite);
+            this.entities.push(new Floor(sprite, this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
         });
         this.entities.push(this.player);
     }
@@ -535,7 +537,7 @@ class Accelerator extends Entity {
     }
 }
 class Floor extends Entity {
-    constructor(imageSource = null, location, rotation, size) {
+    constructor(imageSource = "./assets/images/floorPlain.png", location, rotation, size) {
         super(imageSource == null ? [] : [imageSource], location, rotation, size);
     }
     move() {
