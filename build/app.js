@@ -281,6 +281,8 @@ class Entity {
     }
     ;
     draw() {
+        if (this.images.length <= 0)
+            return;
         this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
     getSize() {
@@ -533,8 +535,8 @@ class Accelerator extends Entity {
     }
 }
 class Floor extends Entity {
-    constructor(imageSource = "./assets/images/floorPlain.png", location, rotation, size) {
-        super([imageSource], location, rotation, size);
+    constructor(imageSource = null, location, rotation, size) {
+        super(imageSource == null ? [] : [imageSource], location, rotation, size);
     }
     move() {
         return;
