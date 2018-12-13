@@ -49,6 +49,14 @@ class GameView extends BaseView {
                 e.name
             ));
         });
+        levelJSON.floors.forEach(e => {
+            this.entities.push(new Floor(
+                ((e.sprite == null) ? undefined : e.sprite),
+                this.parseLocation(e.location),
+                new Rotation(e.rotation),
+                new Vector(e.size.x, e.size.y)
+            ));
+        });
         this.entities.push(this.player);
     }
 
