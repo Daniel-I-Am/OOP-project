@@ -454,7 +454,7 @@ class Player extends Entity {
         this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
         this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
         var dx = this.canvasHelper.offset + this.canvasHelper.getWidth() / 2 - this.location.x;
-        this.canvasHelper.offset -= 0.000000075 * Math.pow(dx, 3);
+        this.canvasHelper.offset -= 2 * Math.pow(10, -19) * Math.pow(dx, 7);
     }
     footCollision(collideWith) {
         if (this.location.x - 1 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
