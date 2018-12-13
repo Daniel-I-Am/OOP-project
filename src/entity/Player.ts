@@ -73,6 +73,9 @@ class Player extends Entity {
         }
         this.location.add(this.velocity)
         if(this.tempMaxSpeed>this.maxSpeed) this.tempMaxSpeed -= 0.5;
+        //this.tempMaxSpeed = Math.min(this.tempMaxSpeed,Math.max(this.velocity.x,this.velocity.y));
+        this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
+        this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
     }
 
 
@@ -92,6 +95,10 @@ class Player extends Entity {
 
     public boost(){
         this.velocity = new Vector(100,-1);
+        this.tempMaxSpeed = 100;
+    }
+    public trampoline(){
+        this.velocity = new Vector(this.velocity.x,-this.velocity.y-5);
         this.tempMaxSpeed = 100;
     }
 

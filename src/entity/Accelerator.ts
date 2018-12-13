@@ -1,7 +1,7 @@
-class Accellerator extends Entity{
+class Accelerator extends Entity{
 
     public constructor(
-        imageSource: Array<string> = ["./assets/images/Anim_accellerator/1.png","./assets/images/Anim_accellerator/2.png", "./assets/images/Anim_accellerator/3.png"],
+        imageSource: Array<string> = ["./assets/images/Anim_accelerator/1.png","./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"],
         location: Vector,
         rotation: Rotation,
         size: Vector,
