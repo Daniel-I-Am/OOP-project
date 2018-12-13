@@ -43,10 +43,9 @@ class GameView extends BaseView {
     }
 
     public update(): void {
+        this.player.setIsLanded(false);
         this.entities.forEach(e => {
             if (e === this.player) return;
-            console.log(e.collide(this.player));
-            this.player.setIsLanded(false);
             if (this.player.footCollision(e))
                 this.player.setIsLanded(true);
                 if(e.collide(this.player) && e instanceof Accellerator){
