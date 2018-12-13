@@ -523,7 +523,7 @@ class Accelerator extends Entity {
     }
 }
 class Floor extends Entity {
-    constructor(imageSource = "./assets/images/default.png", location, rotation, size) {
+    constructor(imageSource = "./assets/images/floorPlain.png", location, rotation, size) {
         super([imageSource], location, rotation, size);
     }
     move() {
