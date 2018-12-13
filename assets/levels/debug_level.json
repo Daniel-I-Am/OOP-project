@@ -219,60 +219,6 @@
 			"location": {
 				"x": {
 					"center": true,
-					"offset": 350
-				},
-				"y": {
-					"center": true,
-					"offset": 200
-				}
-			},
-			"rotation": 0,
-			"size": {
-				"x": 382,
-				"y": 100
-			}
-		},
-		{
-			"sprite": null,
-			"location": {
-				"x": {
-					"center": true,
-					"offset": 600
-				},
-				"y": {
-					"center": true,
-					"offset": 200
-				}
-			},
-			"rotation": 0,
-			"size": {
-				"x": 382,
-				"y": 100
-			}
-		},
-		{
-			"sprite": null,
-			"location": {
-				"x": {
-					"center": true,
-					"offset": 850
-				},
-				"y": {
-					"center": true,
-					"offset": 200
-				}
-			},
-			"rotation": 0,
-			"size": {
-				"x": 382,
-				"y": 100
-			}
-		},
-		{
-			"sprite": null,
-			"location": {
-				"x": {
-					"center": true,
 					"offset": 1100
 				},
 				"y": {
