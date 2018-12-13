@@ -5,3 +5,54 @@ interface InventoryItem {
     id: number,
     name: string,
 }
+
+interface Level {
+    player: LevelPlayer,
+    FallingTiles: Array<LevelFallingTile>,
+    Accelerators: Array<LevelAccelerator>,
+    items: Array<LevelItem>
+}
+
+interface LevelPlayer {
+    sprites: Array<string>,
+    location: LevelLocations,
+    size: LevelSize,
+    gravity: number
+}
+
+interface LevelFallingTile {
+    sprites: Array<string>,
+    location: LevelLocations,
+    rotation: number,
+    size: LevelSize
+}
+
+interface LevelAccelerator {
+    sprites: Array<string>,
+    location: LevelLocations,
+    rotation: number,
+    size: LevelSize
+}
+
+interface LevelItem {
+    sprite: string,
+    location: LevelLocations,
+    rotation: number,
+    size: LevelSize,
+    name: string
+}
+
+interface LevelLocations {
+    x: LevelLocation,
+    y: LevelLocation
+}
+
+interface LevelLocation {
+    center: boolean,
+    offset: number
+}
+
+interface LevelSize {
+    x: number,
+    y: number
+}
