@@ -11,6 +11,11 @@ class Accelerator extends Entity{
         super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
         this.animationCounterMax = 10;
         this.yeet = yeet;
+        this.collision = new CollisionObject(
+            this.location.copy().sub(this.size.copy().multiply(.5)),
+            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.rotation
+        )
     }
 
     protected move(): void{}

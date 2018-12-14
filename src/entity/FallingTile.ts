@@ -14,6 +14,11 @@ class FallingTile extends Entity{
         acceleration: number
     ) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
+        this.collision = new CollisionObject(
+            this.location.copy().sub(this.size.copy().multiply(.5)),
+            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.rotation
+        )
     }
 
     protected move():void{

@@ -25,6 +25,11 @@ class Item extends Entity {
             size
         );
         this.name = name;
+        this.collision = new CollisionObject(
+            this.location.copy().sub(this.size.copy().multiply(.5)),
+            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.rotation
+        )
     }
 
     public move(): void {}
