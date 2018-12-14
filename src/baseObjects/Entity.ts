@@ -13,6 +13,7 @@ abstract class Entity {
     protected direction: Rotation;
     protected gravity: number;
     protected canvasHelper: CanvasHelper;
+    protected collision: CollisionObject;
 
     protected constructor(
         imageSources: Array<string> = ["./assets/images/default.png"],
@@ -50,6 +51,7 @@ abstract class Entity {
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
         this.direction = direction;
+        this.collision = null;
     }
 
     public collide(
