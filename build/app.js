@@ -346,7 +346,7 @@ class GameView extends BaseView {
                 }
             }
             if (e.collide(this.player) && e instanceof Accelerator) {
-                this.player.boost();
+                this.player.boost(e);
             }
             if (e.collide(this.player) && e instanceof Trampoline) {
                 this.player.trampoline();
@@ -464,8 +464,8 @@ class Player extends Entity {
             return true;
         return false;
     }
-    boost() {
-        this.velocity = new Vector(100, -1);
+    boost(booster) {
+        this.velocity = new Vector(100, 0).rotate(booster.getRotation().getValue());
         this.tempMaxSpeed = 100;
     }
     trampoline() {
@@ -558,7 +558,9 @@ class Accelerator extends Entity {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.animationCounterMax = 10;
     }
-    move() {
+    move() { }
+    getRotation() {
+        return this.rotation;
     }
 }
 class Floor extends Entity {

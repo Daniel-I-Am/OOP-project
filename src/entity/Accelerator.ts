@@ -12,7 +12,9 @@ class Accelerator extends Entity{
         this.animationCounterMax = 10;
     }
 
-    protected move(): void{
+    protected move(): void{}
 
+    public getRotation(): Rotation {
+        return this.rotation;
     }
 }
