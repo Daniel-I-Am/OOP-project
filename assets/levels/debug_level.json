@@ -97,6 +97,25 @@
                 "y": 50
             },
             "yeet": 115
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 10500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 550
+                }
+            },
+            "rotation": -160,
+            "size": {
+                "x": 175,
+                "y": 50
+            },
+            "yeet": 130
         }
     ],
     "items": [
