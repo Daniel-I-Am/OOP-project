@@ -321,7 +321,7 @@ class GameView extends BaseView {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
         levelJSON.Accelerators.forEach(e => {
-            this.entities.push(new Accelerator(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
+            this.entities.push(new Accelerator(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.yeet));
         });
         levelJSON.Trampolines.forEach(e => {
             this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2));
@@ -466,7 +466,7 @@ class Player extends Entity {
     }
     boost(booster) {
         this.velocity = new Vector(100, 0).rotate(booster.getRotation().getValue());
-        this.tempMaxSpeed = 100;
+        this.tempMaxSpeed = booster.getYeet();
     }
     trampoline() {
         this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
@@ -554,13 +554,17 @@ var ItemId;
     ItemId[ItemId["WATER"] = 3] = "WATER";
 })(ItemId || (ItemId = {}));
 class Accelerator extends Entity {
-    constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, gravity, acceleration) {
-        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
+    constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, yeet) {
+        super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
         this.animationCounterMax = 10;
+        this.yeet = yeet;
     }
     move() { }
     getRotation() {
         return this.rotation;
+    }
+    getYeet() {
+        return this.yeet;
     }
 }
 class Floor extends Entity {

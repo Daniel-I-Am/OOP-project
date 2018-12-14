@@ -47,7 +47,7 @@ class GameView extends BaseView {
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),
-                2, 0
+                e.yeet
             ));
         });
         levelJSON.Trampolines.forEach(e => {

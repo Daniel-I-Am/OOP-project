@@ -33,7 +33,8 @@ interface LevelAccelerator {
     sprites: Array<string>,
     location: LevelLocations,
     rotation: number,
-    size: LevelSize
+    size: LevelSize,
+    yeet: number
 }
 
 interface LevelTrampoline {
