@@ -2,7 +2,7 @@ class CanvasHelper {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.offset = 0;
+        this.offset = new Vector(0, 0);
         this.canvas.style.width = `${this.canvas.clientWidth}px`;
         this.canvas.style.height = `${this.canvas.clientWidth * 9 / 16}px`;
         this.canvas.width = 1600;
@@ -23,15 +23,27 @@ class CanvasHelper {
         this.ctx.textBaseline = baseLine;
         this.ctx.fillText(text, location.x, location.y);
     }
-    drawImage(image, location, rotation, size) {
+    fillRect(topLeft, bottomRight, color) {
         this.ctx.save();
-        this.ctx.translate(location.x - this.offset, location.y);
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - bottomRight.y);
+        this.ctx.restore();
+    }
+    drawImage(image, location, rotation, size, isCentered = true) {
+        this.ctx.save();
+        this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
-            this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
+            if (isCentered)
+                this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
+            else
+                this.ctx.drawImage(image, 0, 0);
         }
         else {
-            this.ctx.drawImage(image, -size.x / 2, -size.y / 2, size.x, size.y);
+            if (isCentered)
+                this.ctx.drawImage(image, -size.x / 2, -size.y / 2, size.x, size.y);
+            else
+                this.ctx.drawImage(image, 0, 0, size.x, size.y);
         }
         this.ctx.restore();
     }
@@ -235,9 +247,18 @@ class BaseView {
     constructor() {
         this.canvasHelper = CanvasHelper.Instance();
         this.shouldClear = true;
+        this.background = new Image();
+    }
+    tick() {
+        this.drawBackground();
+        this.update();
+        this.drawGUI();
     }
     getShouldClear() {
         return this.shouldClear;
+    }
+    drawBackground() {
+        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
     }
 }
 class Entity {
@@ -265,17 +286,22 @@ class Entity {
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
         this.direction = direction;
+        this.collision = null;
     }
     collide(collideWith) {
-        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
-            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
-            return true;
-        return false;
+        if (this.collision == null || collideWith.getCollision() == null)
+            return false;
+        return this.collision.collide(collideWith.getCollision());
+    }
+    getCollision() {
+        return this.collision;
     }
     update() {
         this.move();
+        if (!(this instanceof CollisionObject)) {
+            this.getCollision().updateLocation(this.location);
+        }
+        this.getCollision().draw();
         this.animationCounter++;
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
@@ -311,12 +337,11 @@ class GameView extends BaseView {
         });
     }
     makeLevel(levelJSON) {
-        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 5);
-        levelJSON.floors.forEach(e => {
-            let sprite = ((e.sprite == null) ? undefined : e.sprite);
-            sprite = ((sprite == "null") ? null : sprite);
-            this.entities.push(new Floor(sprite, this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y)));
+        this.background.src = levelJSON.background;
+        levelJSON.Collisions.forEach(e => {
+            this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
+        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2);
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -345,22 +370,24 @@ class GameView extends BaseView {
                     e.activated = true;
                 }
             }
-            if (e.collide(this.player) && e instanceof Accelerator) {
-                this.player.boost(e);
-            }
-            if (e.collide(this.player) && e instanceof Trampoline) {
-                this.player.trampoline();
-            }
-            if (e.collide(this.player))
+            if (e.collide(this.player)) {
+                if (e instanceof Accelerator) {
+                    this.player.boost(e);
+                }
+                if (e.collide(this.player) && e instanceof Trampoline) {
+                    this.player.trampoline();
+                }
                 this.player.interact(e);
+            }
             if (e instanceof FallingTile) {
-                if (e.getAlive()) {
+                if (e.getAlive() && e.getFalling()) {
                     let tile = e;
                     this.entities.forEach(e => {
-                        if (!(e instanceof Floor))
+                        if (!(e instanceof CollisionObject))
                             return;
-                        if (tile.collide(e))
+                        if (e.collide(tile.getCollision())) {
                             tile.kill();
+                        }
                     });
                 }
             }
@@ -368,13 +395,14 @@ class GameView extends BaseView {
         this.entities.forEach(e => {
             e.update();
         });
-        this.drawGUI();
     }
     drawGUI() {
-        this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black");
-        this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black");
-        this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black");
-        this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
+        if (Game.DEBUG_MODE) {
+            this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black");
+            this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black");
+            this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black");
+            this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
+        }
     }
     beforeExit() { }
 }
@@ -410,37 +438,32 @@ class Item extends Entity {
     constructor(imageSource, location, rotation, size, name) {
         super([imageSource], location, rotation, size);
         this.name = name;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
 }
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
-        this.jumpSpeed = 100;
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array();
-        this.tempMaxSpeed = this.maxSpeed;
-        this.jumpSpeed = 100;
+        this.jumpSpeed = 20;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() {
-        if (this.keyHelper.getLeftPressed()) {
+        if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
             this.velocity.x -= this.acceleration;
         }
-        if (this.keyHelper.getRightPressed()) {
+        if (this.keyHelper.getRightPressed() && this.velocity.x < this.maxSpeed) {
             this.velocity.x += this.acceleration;
         }
-        if (this.keyHelper.getSpaceBarPressed()) {
-            if (this.isLanded) {
-                this.velocity.y -= this.jumpSpeed = 100;
-                ;
-            }
+        if (this.keyHelper.getSpaceBarPressed() && this.isLanded) {
+            this.velocity.y -= this.jumpSpeed;
         }
         this.velocity.y += this.gravity;
-        this.velocity.x = new Vector(this.velocity.x, 0).max(this.tempMaxSpeed).x;
-        this.velocity.y = new Vector(0, this.velocity.y).max(this.tempMaxSpeed).y;
         if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0);
             if (!(this.keyHelper.getLeftPressed() ||
@@ -449,28 +472,27 @@ class Player extends Entity {
             }
         }
         this.location.add(this.velocity);
-        if (this.tempMaxSpeed > this.maxSpeed)
-            this.tempMaxSpeed -= 0.5;
-        this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
-        this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
-        var dx = this.canvasHelper.offset + this.canvasHelper.getWidth() / 2 - this.location.x;
-        this.canvasHelper.offset -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
+        var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
+        var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+        this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
+        this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
     }
     footCollision(collideWith) {
-        if (this.location.x - 1 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
-            this.location.x + 1 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
-            this.location.y + this.size.y / 2 - 30 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y / 2 - 30 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+        let other = collideWith.getCollision();
+        if (other == null)
+            return false;
+        if (this.location.x - 1 - other.getSize().x / 2 < other.getLoc().x &&
+            this.location.x + 1 + other.getSize().x / 2 > other.getLoc().x &&
+            this.location.y + this.size.y / 2 - 30 - other.getSize().y / 2 < other.getLoc().y &&
+            this.location.y + this.size.y / 2 - 30 + other.getSize().y / 2 > other.getLoc().y)
             return true;
         return false;
     }
     boost(booster) {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
-        this.tempMaxSpeed = booster.getYeet();
     }
     trampoline() {
         this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
-        this.tempMaxSpeed = 100;
     }
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
@@ -496,6 +518,7 @@ class FallingTile extends Entity {
         this.falling = false;
         this.alive = true;
         this.activated = false;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() {
         if (this.activated)
@@ -528,7 +551,7 @@ class Game {
             if (this.currentView) {
                 if (this.currentView.getShouldClear())
                     this.canvasHelper.clear();
-                this.currentView.update();
+                this.currentView.tick();
             }
         };
         this.switchView = (newView) => {
@@ -542,6 +565,7 @@ class Game {
         this.currentInterval = setInterval(this.loop, 33);
     }
 }
+Game.DEBUG_MODE = true;
 function init() {
     const game = new Game(document.getElementById("canvas"));
 }
@@ -558,6 +582,7 @@ class Accelerator extends Entity {
         super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
         this.animationCounterMax = 10;
         this.yeet = yeet;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
     getRotation() {
@@ -565,6 +590,36 @@ class Accelerator extends Entity {
     }
     getYeet() {
         return this.yeet;
+    }
+}
+class CollisionObject extends Entity {
+    constructor(topLeft, bottomRight, rotation, onCollide = null) {
+        let textures = (Game.DEBUG_MODE ? ["./assets/images/default.png"] : []);
+        super(textures, new Vector((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2), rotation, new Vector(Math.abs(bottomRight.x - topLeft.x), Math.abs(bottomRight.y - topLeft.y)), undefined, undefined, undefined, undefined, new Rotation(0));
+        this.collideFunction = onCollide;
+        this.collision = this;
+    }
+    onCollide(entity) {
+        if (this.collideFunction)
+            this.collideFunction(entity);
+    }
+    updateLocation(location) {
+        this.location = location;
+    }
+    collide(collideWith) {
+        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+            return true;
+        return false;
+    }
+    move() {
+        if (Game.DEBUG_MODE)
+            this.drawOutline();
+    }
+    drawOutline() {
+        this.canvasHelper.fillRect(this.location.copy().sub(this.size.copy().multiply(0.5)), this.location.copy().add(this.size.copy().multiply(0.5)), "rgba(255,0,0,100)");
     }
 }
 class Floor extends Entity {
@@ -578,9 +633,9 @@ class Floor extends Entity {
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined);
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
-    move() {
-    }
+    move() { }
 }
 var PlayingStat;
 (function (PlayingStat) {
