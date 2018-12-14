@@ -89,12 +89,14 @@ class Player extends Entity {
     public footCollision(
         collideWith: Entity
     ): boolean {
+        let other = collideWith.getCollision()
+        if (other == null) return false;
         if (
-            this.location.x - 1 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
-            this.location.x + 1 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
+            this.location.x - 1 - other.getSize().x/2 < other.getLoc().x &&
+            this.location.x + 1 + other.getSize().x/2 > other.getLoc().x &&
             // Where did this number come     \/ from?      MAGIC!
-            this.location.y + this.size.y/2 - 30 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y/2 - 30 + collideWith.getSize().y/2 > collideWith.getLoc().y
+            this.location.y + this.size.y/2 - 30 - other.getSize().y/2 < other.getLoc().y &&
+            this.location.y + this.size.y/2 - 30 + other.getSize().y/2 > other.getLoc().y
         )
             return true;
         return false;
