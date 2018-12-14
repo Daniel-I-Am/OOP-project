@@ -1,19 +1,29 @@
 abstract class BaseView {
     protected canvasHelper: CanvasHelper;
     protected shouldClear: boolean;
+    protected background: HTMLImageElement;
 
     protected constructor() {
         this.canvasHelper = CanvasHelper.Instance();
         this.shouldClear = true;
+        this.background = new Image();
     }
 
     public tick(): void {
+        this.drawBackground();
         this.update();
         this.drawGUI();
     }
 
     public getShouldClear(): boolean {
         return this.shouldClear;
+    }
+
+    /**
+     * Draws background
+     */
+    protected drawBackground(): void {
+        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
     }
 
     /**
