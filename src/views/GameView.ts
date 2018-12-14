@@ -21,7 +21,7 @@ class GameView extends BaseView {
             this.parseLocation(levelJSON.player.location),
             new Vector(levelJSON.player.size.x, levelJSON.player.size.y),
             levelJSON.player.gravity,
-            5
+            2
         );
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(
