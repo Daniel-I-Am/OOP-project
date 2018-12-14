@@ -159,5 +159,30 @@
                 "y": 135
             }
         }
+    ],
+    "Collisions": [
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 700
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 10000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 800
+                }
+            },
+            "rotation": 0
+        }
     ]
 }
