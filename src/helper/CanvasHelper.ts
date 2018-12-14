@@ -68,14 +68,21 @@ class CanvasHelper {
         location: Vector,
         rotation: Rotation,
         size: Vector,
+        isCentered: boolean = true,
     ): void {
         this.ctx.save();
         this.ctx.translate(location.x - this.offset, location.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
-            this.ctx.drawImage(image, -image.width/2, -image.height/2);
+            if (isCentered)
+                this.ctx.drawImage(image, -image.width/2, -image.height/2);
+            else
+                this.ctx.drawImage(image, 0, 0)
         } else {
-            this.ctx.drawImage(image, -size.x/2, -size.y/2, size.x, size.y);   
+            if (isCentered)
+                this.ctx.drawImage(image, -size.x/2, -size.y/2, size.x, size.y);   
+            else
+                this.ctx.drawImage(image, 0, 0, size.x, size.y)
         }
         this.ctx.restore();
     }
