@@ -582,4 +582,47 @@ class Trampoline extends Entity {
     move() {
     }
 }
+var PlayingStat;
+(function (PlayingStat) {
+    PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
+    PlayingStat[PlayingStat["PAUSED"] = 1] = "PAUSED";
+    PlayingStat[PlayingStat["STOPPED"] = 2] = "STOPPED";
+})(PlayingStat || (PlayingStat = {}));
+class SoundHelper {
+    constructor(src) {
+        this.audioElem = document.createElement("audio");
+        this.audioElem.setAttribute("preload", "auto");
+        this.audioElem.setAttribute("controls", "none");
+        this.audioElem.style.display = "none";
+        this.state = PlayingStat.PLAYING;
+        this.audioElem.src = src;
+        this.audioElem.play();
+    }
+    play() {
+        this.audioElem.play();
+    }
+    pause(state = null) {
+        if (this.state == PlayingStat.STOPPED)
+            return;
+        if (state) {
+            switch (state) {
+                case PlayingStat.PLAYING:
+                    this.audioElem.play();
+                    break;
+                case PlayingStat.PAUSED:
+                    this.audioElem.pause();
+                    break;
+            }
+            return;
+        }
+        if (this.state == PlayingStat.PLAYING) {
+            this.state = PlayingStat.PAUSED;
+            this.audioElem.pause();
+        }
+        else if (this.state == PlayingStat.PAUSED) {
+            this.state = PlayingStat.PLAYING;
+            this.audioElem.play();
+        }
+    }
+}
 //# sourceMappingURL=app.js.map
