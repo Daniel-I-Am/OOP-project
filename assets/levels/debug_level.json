@@ -91,7 +91,7 @@
                 "offset": 300
             }
         },
-        "rotation": 0,
+        "rotation": -45,
         "size": {
             "x": 175,
             "y": 50
