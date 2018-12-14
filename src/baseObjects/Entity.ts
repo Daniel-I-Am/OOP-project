@@ -57,14 +57,12 @@ abstract class Entity {
     public collide(
         collideWith: Entity
     ): boolean {
-        if (
-            this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
-            this.location.y - this.size.y/2 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y/2 + collideWith.getSize().y/2 > collideWith.getLoc().y
-        )
-            return true;
-        return false;
+        if (this.collision == null || collideWith.getCollision() == null) return false;
+        return this.collision.collide(collideWith.getCollision());
+    }
+
+    public getCollision(): CollisionObject {
+        return this.collision;
     }
 
     public update(): void {
