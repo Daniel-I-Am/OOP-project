@@ -67,6 +67,10 @@ abstract class Entity {
 
     public update(): void {
         this.move();
+        if (!(this instanceof CollisionObject)) {
+            this.getCollision().updateLocation(this.location);
+        }
+        this.getCollision().draw();
         this.animationCounter++;
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
