@@ -2,6 +2,7 @@ class CanvasHelper {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
+        this.offset = 0;
         this.canvas.style.width = `${this.canvas.clientWidth}px`;
         this.canvas.style.height = `${this.canvas.clientWidth * 9 / 16}px`;
         this.canvas.width = 1600;
@@ -24,7 +25,7 @@ class CanvasHelper {
     }
     drawImage(image, location, rotation, size) {
         this.ctx.save();
-        this.ctx.translate(location.x, location.y);
+        this.ctx.translate(location.x - this.offset, location.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
@@ -345,7 +346,7 @@ class GameView extends BaseView {
                 }
             }
             if (e.collide(this.player) && e instanceof Accelerator) {
-                this.player.boost();
+                this.player.boost(e);
             }
             if (e.collide(this.player) && e instanceof Trampoline) {
                 this.player.trampoline();
@@ -452,17 +453,19 @@ class Player extends Entity {
             this.tempMaxSpeed -= 0.5;
         this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
         this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
+        var dx = this.canvasHelper.offset + this.canvasHelper.getWidth() / 2 - this.location.x;
+        this.canvasHelper.offset -= 2 * Math.pow(10, -19) * Math.pow(dx, 7);
     }
     footCollision(collideWith) {
         if (this.location.x - 1 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
             this.location.x + 1 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
-            this.location.y + this.size.y / 2 - 15 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y / 2 - 15 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+            this.location.y + this.size.y / 2 - 30 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 - 30 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
             return true;
         return false;
     }
-    boost() {
-        this.velocity = new Vector(100, -1);
+    boost(booster) {
+        this.velocity = new Vector(100, 0).rotate(booster.getRotation().getValue());
         this.tempMaxSpeed = 100;
     }
     trampoline() {
@@ -555,7 +558,9 @@ class Accelerator extends Entity {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.animationCounterMax = 10;
     }
-    move() {
+    move() { }
+    getRotation() {
+        return this.rotation;
     }
 }
 class Floor extends Entity {

@@ -12,7 +12,7 @@ abstract class Entity {
     protected acceleration: number;
     protected direction: Rotation;
     protected gravity: number;
-    private canvasHelper: CanvasHelper;
+    protected canvasHelper: CanvasHelper;
 
     protected constructor(
         imageSources: Array<string> = ["./assets/images/default.png"],

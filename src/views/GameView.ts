@@ -90,7 +90,7 @@ class GameView extends BaseView {
                 }
             }
             if(e.collide(this.player) && e instanceof Accelerator){
-                this.player.boost();
+                this.player.boost(e);
             }
             if(e.collide(this.player) && e instanceof Trampoline){
                 this.player.trampoline();

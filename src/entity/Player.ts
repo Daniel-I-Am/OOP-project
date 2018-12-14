@@ -73,9 +73,10 @@ class Player extends Entity {
         }
         this.location.add(this.velocity)
         if(this.tempMaxSpeed>this.maxSpeed) this.tempMaxSpeed -= 0.5;
-        //this.tempMaxSpeed = Math.min(this.tempMaxSpeed,Math.max(this.velocity.x,this.velocity.y));
         this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
         this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
+        var dx = this.canvasHelper.offset + this.canvasHelper.getWidth()/2 - this.location.x
+        this.canvasHelper.offset -= 2*10**-19*dx**7
     }
 
 
@@ -86,15 +87,15 @@ class Player extends Entity {
             this.location.x - 1 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
             this.location.x + 1 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
             // Where did this number come     \/ from?      MAGIC!
-            this.location.y + this.size.y/2 - 15 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y/2 - 15 + collideWith.getSize().y/2 > collideWith.getLoc().y
+            this.location.y + this.size.y/2 - 30 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y/2 - 30 + collideWith.getSize().y/2 > collideWith.getLoc().y
         )
             return true;
         return false;
     }
 
-    public boost(){
-        this.velocity = new Vector(100,-1);
+    public boost(booster: Accelerator) {
+        this.velocity = new Vector(100, 0).rotate(booster.getRotation().getValue());
         this.tempMaxSpeed = 100;
     }
     public trampoline(){
