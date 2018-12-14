@@ -2,14 +2,14 @@ class CanvasHelper {
     private static instance: CanvasHelper;
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    public offset: number;
+    public offset: Vector;
 
     private constructor(
         canvas: HTMLElement
     ) {
         this.canvas = <HTMLCanvasElement>canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.offset = 0;
+        this.offset = new Vector(0, 0);
 
         this.canvas.style.width = `${this.canvas.clientWidth}px`
         this.canvas.style.height = `${this.canvas.clientWidth*9/16}px`
@@ -88,7 +88,7 @@ class CanvasHelper {
         isCentered: boolean = true,
     ): void {
         this.ctx.save();
-        this.ctx.translate(location.x - this.offset, location.y);
+        this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             if (isCentered)

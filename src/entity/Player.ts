@@ -75,8 +75,10 @@ class Player extends Entity {
         if(this.tempMaxSpeed>this.maxSpeed) this.tempMaxSpeed -= 0.5;
         this.tempMaxSpeed = Math.min(this.tempMaxSpeed, Math.max(Math.abs(this.velocity.x), Math.abs(this.velocity.y)));
         this.tempMaxSpeed = Math.max(this.tempMaxSpeed, this.maxSpeed);
-        var dx = this.canvasHelper.offset + this.canvasHelper.getWidth()/2 - this.location.x
-        this.canvasHelper.offset -= 1*10**-17*dx**7
+        var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x
+        var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
+        this.canvasHelper.offset.x -= 1*10**-17*dx**7
+        this.canvasHelper.offset.y -= 1*10**-17*dy**7
     }
 
 
