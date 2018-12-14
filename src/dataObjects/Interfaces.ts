@@ -7,6 +7,7 @@ interface InventoryItem {
 }
 
 interface Level {
+    background: string,
     player: LevelPlayer,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,

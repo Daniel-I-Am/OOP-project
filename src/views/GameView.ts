@@ -15,6 +15,7 @@ class GameView extends BaseView {
     }
 
     private makeLevel(levelJSON: Level) {
+        this.background.src = levelJSON.background;
         this.player = new Player(
             levelJSON.player.sprites,
             this.parseLocation(levelJSON.player.location),
