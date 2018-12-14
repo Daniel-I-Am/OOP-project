@@ -57,6 +57,23 @@ class CanvasHelper {
     }
 
     /**
+     * Draws a rectangle to the canvas
+     * @param topLeft Location of the top left point
+     * @param bottomRight Location of the bottom right point
+     * @param color Color to draw rect at
+     */
+    public fillRect(
+        topLeft: Vector,
+        bottomRight: Vector,
+        color: string
+    ): void {
+        this.ctx.save();
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-bottomRight.y)
+        this.ctx.restore();
+    }
+
+    /**
      * Draws an image to the canvas
      * @param image Image to draw
      * @param location Location to draw the image at
