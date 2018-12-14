@@ -38,7 +38,7 @@ class CanvasHelper {
      * @param align Text alignment to use, default: center
      * @param baseLine Baseline to use when printing, default: middle
      * @param color Color of the text, default: white
-     * @param fontFamily Fontface to use, default: Minecraft
+     * @param fontFamily Fontface to use, default: Arial
      */
     public writeText(
         text: string,
