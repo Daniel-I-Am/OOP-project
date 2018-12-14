@@ -7,6 +7,11 @@ abstract class BaseView {
         this.shouldClear = true;
     }
 
+    public tick(): void {
+        this.update();
+        this.drawGUI();
+    }
+
     public getShouldClear(): boolean {
         return this.shouldClear;
     }
@@ -15,7 +20,7 @@ abstract class BaseView {
      * Does whatever needs to be done in a tick
      * @abstract
      */
-    public abstract update(): void;
+    protected abstract update(): void;
 
     /**
      * Seperated to drawing the GUI, this is te ensure the GUI is drawn on top of everything else

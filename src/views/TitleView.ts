@@ -16,7 +16,7 @@ class TitleView extends BaseView {
         buttonImage.src = "./assets/images/buttonGreen.png";
     }
     
-    public update() {}
+    protected update() {}
     protected drawGUI() {}
     public beforeExit() {}
 }

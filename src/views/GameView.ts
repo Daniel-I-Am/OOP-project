@@ -79,7 +79,7 @@ class GameView extends BaseView {
         )
     }
 
-    public update(): void {
+    protected update(): void {
         this.player.setIsLanded(false);
         this.entities.forEach(e => {
             if (e === this.player) return;
@@ -110,7 +110,6 @@ class GameView extends BaseView {
         this.entities.forEach(e => {
             e.update();
         });
-        this.drawGUI();
     }
 
     protected drawGUI(): void {

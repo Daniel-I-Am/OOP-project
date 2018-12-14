@@ -30,7 +30,7 @@ class Game {
         if (this.currentView) {
             if (this.currentView.getShouldClear())
                 this.canvasHelper.clear();
-            this.currentView.update();
+            this.currentView.tick();
         }
     }
 
