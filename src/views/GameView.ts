@@ -22,16 +22,6 @@ class GameView extends BaseView {
             levelJSON.player.gravity,
             5
         );
-        levelJSON.floors.forEach(e => {
-            let sprite = ((e.sprite == null) ? undefined : e.sprite);
-            sprite = ((sprite == "null") ? null : sprite);
-            this.entities.push(new Floor(
-                sprite,
-                this.parseLocation(e.location),
-                new Rotation(e.rotation),
-                new Vector(e.size.x, e.size.y)
-            ));
-        });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(
                 ((e.sprites == null) ? undefined : e.sprites),
