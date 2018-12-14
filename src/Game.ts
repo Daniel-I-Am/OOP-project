@@ -16,6 +16,7 @@ class Game {
     private canvasHelper: CanvasHelper;
     private currentView: BaseView;
     private currentInterval: number;
+    public static readonly DEBUG_MODE: boolean = false;
 
     public constructor(canvas: HTMLElement) {
         this.canvasHelper = CanvasHelper.Instance(canvas);
