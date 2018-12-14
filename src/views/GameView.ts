@@ -16,6 +16,13 @@ class GameView extends BaseView {
 
     private makeLevel(levelJSON: Level) {
         this.background.src = levelJSON.background;
+        levelJSON.Collisions.forEach(e => {
+            this.entities.push(new CollisionObject(
+                this.parseLocation(e.topLeft),
+                this.parseLocation(e.bottomRight),
+                new Rotation(e.rotation)
+            ));
+        });
         this.player = new Player(
             levelJSON.player.sprites,
             this.parseLocation(levelJSON.player.location),
