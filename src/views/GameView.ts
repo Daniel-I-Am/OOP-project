@@ -87,20 +87,23 @@ class GameView extends BaseView {
                     e.activated = true;
                 }
             }
-            if(e.collide(this.player) && e instanceof Accelerator){
-                this.player.boost(e);
+            if (e.collide(this.player)) {
+                if(e instanceof Accelerator){
+                    this.player.boost(e);
+                }
+                if(e.collide(this.player) && e instanceof Trampoline){
+                    this.player.trampoline();
+                }
+                this.player.interact(e);
             }
-            if(e.collide(this.player) && e instanceof Trampoline){
-                this.player.trampoline();
-            }
-            if(e.collide(this.player))
-            this.player.interact(e);
             if(e instanceof FallingTile){
-                if(e.getAlive()){
+                if(e.getAlive() && e.getFalling()){
                     let tile = e
                     this.entities.forEach(e => {
-                        if(!(e instanceof Floor)) return;
-                        if(tile.collide(e)) tile.kill();
+                        if(!(e instanceof CollisionObject)) return;
+                        if(e.collide(tile.getCollision())) {
+                            tile.kill();
+                        }
                     });
                 }
             }
