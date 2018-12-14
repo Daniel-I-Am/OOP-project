@@ -7,7 +7,6 @@ class Accelerator extends Entity{
         rotation: Rotation,
         size: Vector,
         yeet: number
-        ///TODO Add YEET variable, the higher the acceleration, the higher the yeet
     ) {
         super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
         this.animationCounterMax = 10;
