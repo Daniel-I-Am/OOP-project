@@ -450,8 +450,10 @@ class Player extends Entity {
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array();
-        this.jumpSpeed = 20;
+        this.jumpSpeed = 30;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)), this.rotation);
+        this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
+        this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
     }
     move() {
         if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
