@@ -451,7 +451,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array();
         this.jumpSpeed = 20;
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)), this.rotation);
     }
     move() {
         if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
@@ -483,8 +483,8 @@ class Player extends Entity {
             return false;
         if (this.location.x - 1 - other.getSize().x / 2 < other.getLoc().x &&
             this.location.x + 1 + other.getSize().x / 2 > other.getLoc().x &&
-            this.location.y + this.size.y / 2 - 30 - other.getSize().y / 2 < other.getLoc().y &&
-            this.location.y + this.size.y / 2 - 30 + other.getSize().y / 2 > other.getLoc().y)
+            this.location.y + this.size.y / 2 - 20 - other.getSize().y / 2 < other.getLoc().y &&
+            this.location.y + this.size.y / 2 - 20 + other.getSize().y / 2 > other.getLoc().y)
             return true;
         return false;
     }
@@ -620,14 +620,6 @@ class CollisionObject extends Entity {
     }
     drawOutline() {
         this.canvasHelper.fillRect(this.location.copy().sub(this.size.copy().multiply(0.5)), this.location.copy().add(this.size.copy().multiply(0.5)), "rgba(255,0,0,100)");
-    }
-}
-class Floor extends Entity {
-    constructor(imageSource = "./assets/images/floorPlain.png", location, rotation, size) {
-        super(imageSource == null ? [] : [imageSource], location, rotation, size);
-    }
-    move() {
-        return;
     }
 }
 class Trampoline extends Entity {
