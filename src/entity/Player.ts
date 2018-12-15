@@ -38,7 +38,7 @@ class Player extends Entity {
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array<InventoryItem>();
-        this.jumpSpeed = 20;
+        this.jumpSpeed = 30;
 
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5)),
