@@ -42,7 +42,7 @@ class Player extends Entity {
 
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5)),
-            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)),
             this.rotation
         )
     }
@@ -95,8 +95,8 @@ class Player extends Entity {
             this.location.x - 1 - other.getSize().x/2 < other.getLoc().x &&
             this.location.x + 1 + other.getSize().x/2 > other.getLoc().x &&
             // Where did this number come     \/ from?      MAGIC!
-            this.location.y + this.size.y/2 - 30 - other.getSize().y/2 < other.getLoc().y &&
-            this.location.y + this.size.y/2 - 30 + other.getSize().y/2 > other.getLoc().y
+            this.location.y + this.size.y/2 - 20 - other.getSize().y/2 < other.getLoc().y &&
+            this.location.y + this.size.y/2 - 20 + other.getSize().y/2 > other.getLoc().y
         )
             return true;
         return false;
