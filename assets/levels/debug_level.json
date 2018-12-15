@@ -1,5 +1,5 @@
 {
-    "background": "./assets/images/map/level.png",
+    "background": "./assets/images/map/debug_level.png",
     "player": {
         "sprites": [
             "./assets/player/anim_walk/PlayerAnim1.png",
