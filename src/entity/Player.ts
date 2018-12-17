@@ -140,6 +140,7 @@ class Player extends Entity {
     }
 
     private kill() {
+        new SoundHelper("./assets/sounds/GameOver.wav")
         this.switchView(new GameOverView())
     }
 }

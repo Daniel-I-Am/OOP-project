@@ -517,6 +517,7 @@ class Player extends Entity {
         this.isLanded = state;
     }
     kill() {
+        new SoundHelper("./assets/sounds/GameOver.wav");
         this.switchView(new GameOverView());
     }
 }
