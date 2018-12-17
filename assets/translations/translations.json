@@ -35,5 +35,37 @@
             "Maak je geen zorgen, ik zal je helpen!",
             "Ja, en ik heb spullen voor je meegebracht:"
         ]
+    },
+    "tooltips": {
+        "items": [
+            "Met de hand kun je voelen voor breuken of kneuzingen en neuzen dichtkijpen!",
+            "Papier kan worden gebruikt om wonden schoon te maken of neuzen te snuiten!",
+            "Een pleister kan worden gebruikt om kleine wondjes tegen vuil te beschermen! ",
+            "Zoutoplossing kan worden gebruikt om verstopte neuzen te openen!",
+            "Een droge doek kan worden gebruikt om iets droog te deppen of als beschermingslaag tussen de huid en zeer koude of warme dingen!",
+            "Een cold pack kan worden gebruikt om zwellingen te verminderen!",
+            "Verband kan worden gebruikt om grotere wonden tegen vuil te beschermen!",
+            "Water kan worden gebruikt om wonden schoon te maken of gewoon om op te drinken!",
+            "Een pincet kan worden gebruikt om grind en splinters voorzichtig weg te halen!",
+            "Betadine kan worden gebruikt om oppervlakkige wondjes te ontsmetten!",
+            "De telefoon kan worden gebruikt om om advies te vragen of een ambulance te bellen!",
+            "Melk kan worden gebruikt om tanden schoon te spoelen of te bewaren of een branderige tong te sussen!",
+            "Witbrood kan worden gebruikt om een branderige tong te sussen!"
+        ],
+        "objects": [
+            "Als je langs een booster loopt, wordt je gelanceerd in de richting van de pijltjes.",
+            "Gebruik de trampoline om hogere platforms te bereiken!",
+            "Platforms staan niet altijd stil. Pas op de vallende vloeren!",
+            "Pas op voor groene smurrie! Als je erin valt, moet je het level op nieuw beginnen en wordt je reputatie geschaad.",
+            "Verzamel alle items die in het level te vinden zijn en lees de beschrijvingen goed door. Je weet maar nooit wat je nodig zult hebben!",
+            "Pas op voor uitstekende spijkers! Als je deze raakt, moet je het level opnieuw beginnen en wordt je reputatie geschaad."
+        ],
+        "mechanics": [
+            "Als je reputatiebalk vol is, krijg je een promotie en kun je punten besteden aan nieuwe vaardigheden!",
+            "Let goed op de item- en missiebeschrijvingen. Je reputatie wordt geschaad als je Harry op de verkeerde manier probeert te behandelen!",
+            "Probeer Zuster Bertha te vermijden; als ze je vangt, moet je het level opnieuw beginnen en wordt je reputatie geschaad.",
+            "Maak je geen zorgen als je per ongeluk een item voorbij loopt. Je kunt ook naar links bewegen!",
+            "Speel alle missies om bonuslevels te ontgrendelen!"
+        ]
     }
 }
