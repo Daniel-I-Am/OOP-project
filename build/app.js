@@ -623,13 +623,7 @@ class CollisionObject extends Entity {
             return true;
         return false;
     }
-    move() {
-        if (Game.DEBUG_MODE)
-            this.drawOutline();
-    }
-    drawOutline() {
-        this.canvasHelper.fillRect(this.location.copy().sub(this.size.copy().multiply(0.5)), this.location.copy().add(this.size.copy().multiply(0.5)), "rgba(255,0,0,100)");
-    }
+    move() { }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
