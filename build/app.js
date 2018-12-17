@@ -26,7 +26,7 @@ class CanvasHelper {
     fillRect(topLeft, bottomRight, color) {
         this.ctx.save();
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - bottomRight.y);
+        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
         this.ctx.restore();
     }
     drawImage(image, location, rotation, size, isCentered = true) {
@@ -623,13 +623,7 @@ class CollisionObject extends Entity {
             return true;
         return false;
     }
-    move() {
-        if (Game.DEBUG_MODE)
-            this.drawOutline();
-    }
-    drawOutline() {
-        this.canvasHelper.fillRect(this.location.copy().sub(this.size.copy().multiply(0.5)), this.location.copy().add(this.size.copy().multiply(0.5)), "rgba(255,0,0,100)");
-    }
+    move() { }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
@@ -684,6 +678,13 @@ class SoundHelper {
 class GameOverView extends BaseView {
     constructor() {
         super();
+        this.shouldClear = false;
+        for (let i = 0; i < 85; i++) {
+            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50 - i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y - 51 - i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
+            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y + 51 + i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50 + i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
+        }
+        this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50), `rgba(0, 0, 0, ${85 / 100})`);
+        this.canvasHelper.writeText("You died!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
     }
     update() { }
     drawGUI() { }
