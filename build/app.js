@@ -26,7 +26,7 @@ class CanvasHelper {
     fillRect(topLeft, bottomRight, color) {
         this.ctx.save();
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - bottomRight.y);
+        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
         this.ctx.restore();
     }
     drawImage(image, location, rotation, size, isCentered = true) {
