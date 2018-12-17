@@ -1,10 +1,12 @@
 class GameView extends BaseView {
     private entities: Array<Entity>;
     private player: Player;
+    private switchView: (newView: BaseView) => void;
 
-    public constructor(levelName: string) {
+    public constructor(levelName: string, switchView: (newView: BaseView) => void) {
         super();
         this.entities = new Array<Entity>();
+        this.switchView = switchView;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();
