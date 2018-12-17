@@ -41,6 +41,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array<InventoryItem>();
         this.jumpSpeed = 30;
+        this.switchView = switchView;
 
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5)),
