@@ -42,7 +42,7 @@ class Player extends Entity {
         this.inventory = new Array<InventoryItem>();
         this.jumpSpeed = 30;
         this.switchView = switchView;
-
+        
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5)),
             this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)),
@@ -88,6 +88,8 @@ class Player extends Entity {
         var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
         this.canvasHelper.offset.x -= 1*10**-17*dx**7
         this.canvasHelper.offset.y -= 1*10**-17*dy**7
+
+        if (this.location.y > 5000) this.kill()
     }
 
 
@@ -135,5 +137,9 @@ class Player extends Entity {
 
     public setIsLanded(state: boolean): void    {
         this.isLanded = state;
+    }
+
+    private kill() {
+        this.switchView(new GameOverView())
     }
 }
