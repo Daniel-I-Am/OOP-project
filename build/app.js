@@ -325,9 +325,10 @@ class Entity {
     }
 }
 class GameView extends BaseView {
-    constructor(levelName) {
+    constructor(levelName, switchView) {
         super();
         this.entities = new Array();
+        this.switchView = switchView;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -341,7 +342,7 @@ class GameView extends BaseView {
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
-        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2);
+        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, this.switchView);
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -443,7 +444,7 @@ class Item extends Entity {
     move() { }
 }
 class Player extends Entity {
-    constructor(imageSources, location, size, gravity, acceleration) {
+    constructor(imageSources, location, size, gravity, acceleration, switchView) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
@@ -451,6 +452,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array();
         this.jumpSpeed = 30;
+        this.switchView = switchView;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
@@ -478,6 +480,8 @@ class Player extends Entity {
         var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
         this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
         this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+        if (this.location.y > 5000)
+            this.kill();
     }
     footCollision(collideWith) {
         let other = collideWith.getCollision();
@@ -511,6 +515,9 @@ class Player extends Entity {
     }
     setIsLanded(state) {
         this.isLanded = state;
+    }
+    kill() {
+        this.switchView(new GameOverView());
     }
 }
 class FallingTile extends Entity {
@@ -563,7 +570,7 @@ class Game {
             this.currentView = newView;
         };
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView(() => { this.switchView(new GameView("debug_level")); });
+        this.currentView = new TitleView(() => { this.switchView(new GameView("debug_level", this.switchView)); });
         this.currentInterval = setInterval(this.loop, 33);
     }
 }
@@ -673,5 +680,13 @@ class SoundHelper {
             this.audioElem.play();
         }
     }
+}
+class GameOverView extends BaseView {
+    constructor() {
+        super();
+    }
+    update() { }
+    drawGUI() { }
+    beforeExit() { }
 }
 //# sourceMappingURL=app.js.map
