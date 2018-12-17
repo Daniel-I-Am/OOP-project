@@ -5,6 +5,7 @@ class Player extends Entity {
     private isJumping: boolean;
     private isLanded: boolean;
     private jumpSpeed: number;
+    private switchView: (newView: BaseView) => void;
 
     /**
      * @constructor
@@ -20,7 +21,8 @@ class Player extends Entity {
         location: Vector,
         size: Vector,
         gravity: number,
-        acceleration: number
+        acceleration: number,
+        switchView: (newView: BaseView) => void,
     ) {
         super(
             imageSources,
