@@ -452,6 +452,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array();
         this.jumpSpeed = 30;
+        this.isAlive = true;
         this.switchView = switchView;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
@@ -476,10 +477,12 @@ class Player extends Entity {
             }
         }
         this.location.add(this.velocity);
-        var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
-        var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
-        this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
-        this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+        if (this.isAlive) {
+            var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
+            var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+            this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
+            this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+        }
         if (this.location.y > 5000)
             this.kill();
     }
@@ -517,8 +520,19 @@ class Player extends Entity {
         this.isLanded = state;
     }
     kill() {
+        if (!this.isAlive)
+            return;
+        this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav");
-        this.switchView(new GameOverView());
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        let oldGravity = this.gravity;
+        this.gravity = 0;
+        setTimeout(() => {
+            this.gravity = oldGravity;
+            this.velocity.y = -20;
+        }, 1750);
+        this.switchView(new GameOverView(this));
     }
 }
 class FallingTile extends Entity {
@@ -677,9 +691,14 @@ class SoundHelper {
     }
 }
 class GameOverView extends BaseView {
-    constructor() {
+    constructor(player) {
         super();
-        this.shouldClear = false;
+        this.player = player;
+    }
+    update() {
+        this.player.update();
+    }
+    drawGUI() {
         for (let i = 0; i < 85; i++) {
             this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50 - i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y - 51 - i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
             this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y + 51 + i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50 + i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
@@ -687,8 +706,6 @@ class GameOverView extends BaseView {
         this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50), `rgba(0, 0, 0, ${85 / 100})`);
         this.canvasHelper.writeText("You died!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
     }
-    update() { }
-    drawGUI() { }
     beforeExit() { }
 }
 //# sourceMappingURL=app.js.map

@@ -5,6 +5,7 @@ class Player extends Entity {
     private isJumping: boolean;
     private isLanded: boolean;
     private jumpSpeed: number;
+    private isAlive: boolean;
     private switchView: (newView: BaseView) => void;
 
     /**
@@ -41,6 +42,7 @@ class Player extends Entity {
         this.isLanded = false;
         this.inventory = new Array<InventoryItem>();
         this.jumpSpeed = 30;
+        this.isAlive = true;
         this.switchView = switchView;
         
         this.collision = new CollisionObject(
@@ -84,10 +86,12 @@ class Player extends Entity {
         this.location.add(this.velocity)
 
         // move the camera
-        var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x
-        var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
-        this.canvasHelper.offset.x -= 1*10**-17*dx**7
-        this.canvasHelper.offset.y -= 1*10**-17*dy**7
+        if (this.isAlive) {
+            var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x
+            var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
+            this.canvasHelper.offset.x -= 1*10**-17*dx**7
+            this.canvasHelper.offset.y -= 1*10**-17*dy**7
+        }
 
         if (this.location.y > 5000) this.kill()
     }
@@ -140,7 +144,17 @@ class Player extends Entity {
     }
 
     private kill() {
+        if (!this.isAlive) return
+        this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav")
-        this.switchView(new GameOverView())
+        this.velocity.x = 0
+        this.velocity.y = 0
+        let oldGravity = this.gravity;
+        this.gravity = 0;
+        setTimeout(() => { 
+            this.gravity = oldGravity;
+            this.velocity.y = -20;
+        }, 1750)
+        this.switchView(new GameOverView(this))
     }
 }
