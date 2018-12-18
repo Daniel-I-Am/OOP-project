@@ -84,7 +84,8 @@ class Player extends Entity {
     /**
      * Function to move the player
      */
-    public move(): void {
+    public move(entites: Array<Entity>): void {
+        let collision = this.playerCollision(entites);
         // if we can move faster, do so
         if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
             this.velocity.x -= this.acceleration;
@@ -123,11 +124,9 @@ class Player extends Entity {
     }
 
 
-    public footCollision(
-        collideWith: Entity
-    ): boolean {
-        let other = collideWith.getCollision()
-        if (other == null) return false;
+    public playerCollision(
+        collideWith: Array<Entity>
+    ): CollisionDirections {
         if (
             this.location.x - 1 - other.getSize().x/2 < other.getLoc().x &&
             this.location.x + 1 + other.getSize().x/2 > other.getLoc().x &&
