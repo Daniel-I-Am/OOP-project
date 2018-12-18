@@ -140,7 +140,14 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
-            
+            if (e instanceof Trampoline && e.collide(this.bottomCollision)) this.trampoline() 
+            if (
+                e instanceof Accelerator &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
+            ) {
+                 this.boost(e);
+                 return;
+            }
             returnValue.left = thisEntityCollision.left || returnValue.left;
             returnValue.right = thisEntityCollision.right || returnValue.right;
             returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
