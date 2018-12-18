@@ -65,8 +65,8 @@ abstract class Entity {
         return this.collision;
     }
 
-    public update(): void {
-        this.move();
+    public update(entities: Array<Entity> = null): void {
+        this.move(entities);
         if (!(this instanceof CollisionObject)) {
             this.getCollision().updateLocation(this.location);
         }
@@ -83,7 +83,7 @@ abstract class Entity {
         this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
 
-    protected abstract move(): void;
+    protected abstract move(entites: Array<Entity>): void;
 
     // Getters & Setters
     public getSize(): Vector {
