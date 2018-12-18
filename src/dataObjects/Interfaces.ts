@@ -6,6 +6,13 @@ interface InventoryItem {
     name: string,
 }
 
+interface CollisionDirections {
+    left: boolean,
+    right: boolean,
+    top: boolean,
+    bottom: boolean
+}
+
 interface Level {
     background: string,
     player: LevelPlayer,
