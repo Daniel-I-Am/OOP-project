@@ -127,15 +127,31 @@ class Player extends Entity {
     public playerCollision(
         collideWith: Array<Entity>
     ): CollisionDirections {
-        if (
-            this.location.x - 1 - other.getSize().x/2 < other.getLoc().x &&
-            this.location.x + 1 + other.getSize().x/2 > other.getLoc().x &&
-            // Where did this number come     \/ from?      MAGIC!
-            this.location.y + this.size.y/2 - 20 - other.getSize().y/2 < other.getLoc().y &&
-            this.location.y + this.size.y/2 - 20 + other.getSize().y/2 > other.getLoc().y
-        )
-            return true;
-        return false;
+        this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x/2, 0)));
+        this.rightCollision.updateLocation(this.location.copy().add(new Vector(this.size.x/2, 0)));
+        this.topCollision.updateLocation(this.location.copy().add(new Vector(0, -this.size.y/2)));
+        this.bottomCollision.updateLocation(this.location.copy().add(new Vector(0, this.size.y/2)));
+        let returnValue = {left: false, right: false, bottom: false, top: false}
+        if (collideWith == null) return returnValue;
+        collideWith.forEach(e => {
+            if (e instanceof Player) return;
+            let thisEntityCollision = {left: false, right: false, top: false, bottom: false}
+            thisEntityCollision.left = e.collide(this.leftCollision);
+            thisEntityCollision.right = e.collide(this.rightCollision);
+            thisEntityCollision.bottom = e.collide(this.bottomCollision);
+            thisEntityCollision.top = e.collide(this.topCollision);
+            
+            returnValue.left = thisEntityCollision.left || returnValue.left;
+            returnValue.right = thisEntityCollision.right || returnValue.right;
+            returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
+            returnValue.top = thisEntityCollision.top || returnValue.top;
+        });
+        if (returnValue.bottom) {
+            this.isLanded = true;
+        } else {
+            this.isLanded = false;
+        }
+        return returnValue;
     }
 
     public boost(booster: Accelerator) {
