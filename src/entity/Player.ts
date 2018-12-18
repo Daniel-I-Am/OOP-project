@@ -60,23 +60,23 @@ class Player extends Entity {
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
 
         this.leftCollision = new CollisionObject(
-            this.location.copy().add(new Vector(-this.size.x/2, -1)),
-            this.location.copy().add(new Vector(-this.size.x/2, 1)),
+            this.location.copy().add(new Vector(-this.size.x/2, -this.size.y/2+1)),
+            this.location.copy().add(new Vector(-this.size.x/2, this.size.y/2-40)),
             this.rotation,
         );
         this.rightCollision = new CollisionObject(
-            this.location.copy().add(new Vector(this.size.x/2, -1)),
-            this.location.copy().add(new Vector(this.size.x/2, 1)),
+            this.location.copy().add(new Vector(this.size.x/2, -this.size.y/2+1)),
+            this.location.copy().add(new Vector(this.size.x/2, this.size.y/2-40)),
             this.rotation,
         );
         this.bottomCollision = new CollisionObject(
-            this.location.copy().add(new Vector(-1, this.size.y/2)),
-            this.location.copy().add(new Vector(1, this.size.y/2)),
+            this.location.copy().add(new Vector(-this.size.x/2+1, this.size.y/2)),
+            this.location.copy().add(new Vector(this.size.x/2-1, this.size.y/2)),
             this.rotation,
         );
         this.topCollision = new CollisionObject(
-            this.location.copy().add(new Vector(-1, -this.size.x/2)),
-            this.location.copy().add(new Vector(1, -this.size.x/2)),
+            this.location.copy().add(new Vector(-this.size.x/2+1, -this.size.x/2)),
+            this.location.copy().add(new Vector(this.size.x/2-1, -this.size.x/2)),
             this.rotation,
         );
         this.previousCollision = {left: false, right: false, top: false, bottom: false};
@@ -112,14 +112,31 @@ class Player extends Entity {
             }
         }
         // update our location
-        if (collision.left)
-            this.velocity.x = Math.max(this.velocity.x, 0);
-        if (collision.right)
-            this.velocity.x = Math.min(this.velocity.x, 0);
-        if (collision.top)
-            this.velocity.y = Math.max(this.velocity.y, 0);
-        if (collision.bottom)
-            this.velocity.y = Math.min(this.velocity.y, 0);
+        if (collision.left) {
+            if (!this.previousCollision.left)
+                this.velocity.x = Math.max(this.velocity.x, this.velocity.x/2);
+            else
+                this.velocity.x = Math.max(this.velocity.x, 0);
+        }
+        if (collision.right) {
+            if (!this.previousCollision.right)
+                this.velocity.x = Math.min(this.velocity.x, this.velocity.x/2);
+            else
+                this.velocity.x = Math.min(this.velocity.x, 0);
+        }
+        if (collision.top) {
+            if (!this.previousCollision.top)
+                this.velocity.y = Math.max(this.velocity.y, this.velocity.y/2);
+            else
+                this.velocity.y = Math.max(this.velocity.y, 0);
+        }
+        if (collision.bottom) {
+            if (!this.previousCollision.bottom)
+                this.velocity.y = Math.min(this.velocity.y, this.velocity.y/2);
+            else
+                this.velocity.y = Math.min(this.velocity.y, 0);
+        }
+        this.previousCollision = collision;
         this.location.add(this.velocity)
 
         // move the camera
