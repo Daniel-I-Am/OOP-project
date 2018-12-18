@@ -81,38 +81,8 @@ class GameView extends BaseView {
     }
 
     protected update(): void {
-        this.player.setIsLanded(false);
         this.entities.forEach(e => {
-            if (e === this.player) return;
-            if (this.player.footCollision(e)){
-                this.player.setIsLanded(true);
-                if(e instanceof FallingTile){
-                    e.activated = true;
-                }
-            }
-            if (e.collide(this.player)) {
-                if(e instanceof Accelerator){
-                    this.player.boost(e);
-                }
-                if(e.collide(this.player) && e instanceof Trampoline){
-                    this.player.trampoline();
-                }
-                this.player.interact(e);
-            }
-            if(e instanceof FallingTile){
-                if(e.getAlive() && e.getFalling()){
-                    let tile = e
-                    this.entities.forEach(e => {
-                        if(!(e instanceof CollisionObject)) return;
-                        if(e.collide(tile.getCollision())) {
-                            tile.kill();
-                        }
-                    });
-                }
-            }
-        });
-        this.entities.forEach(e => {
-            e.update();
+            e.update(this.entities);
         });
     }
 
