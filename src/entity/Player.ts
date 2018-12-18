@@ -12,6 +12,7 @@ class Player extends Entity {
     private rightCollision: CollisionObject;
     private topCollision: CollisionObject;
     private bottomCollision: CollisionObject;
+    private previousCollision: CollisionDirections;
 
     /**
      * @constructor
@@ -78,6 +79,7 @@ class Player extends Entity {
             this.location.copy().add(new Vector(1, -this.size.x/2)),
             this.rotation,
         );
+        this.previousCollision = {left: false, right: false, top: false, bottom: false};
     }
 
 
