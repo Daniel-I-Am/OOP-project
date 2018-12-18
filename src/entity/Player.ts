@@ -8,6 +8,11 @@ class Player extends Entity {
     private isAlive: boolean;
     private switchView: (newView: BaseView) => void;
 
+    private leftCollision: CollisionObject;
+    private rightCollision: CollisionObject;
+    private topCollision: CollisionObject;
+    private bottomCollision: CollisionObject;
+
     /**
      * @constructor
      * @param {Array<string>} imageSources
@@ -46,12 +51,33 @@ class Player extends Entity {
         this.switchView = switchView;
         
         this.collision = new CollisionObject(
-            this.location.copy().sub(this.size.copy().multiply(.5)),
-            this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)),
+            this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))),
+            this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)),
             this.rotation
         )
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
+
+        this.leftCollision = new CollisionObject(
+            this.location.copy().add(new Vector(-this.size.x/2, -1)),
+            this.location.copy().add(new Vector(-this.size.x/2, 1)),
+            this.rotation,
+        );
+        this.rightCollision = new CollisionObject(
+            this.location.copy().add(new Vector(this.size.x/2, -1)),
+            this.location.copy().add(new Vector(this.size.x/2, 1)),
+            this.rotation,
+        );
+        this.bottomCollision = new CollisionObject(
+            this.location.copy().add(new Vector(-1, this.size.y/2)),
+            this.location.copy().add(new Vector(1, this.size.y/2)),
+            this.rotation,
+        );
+        this.topCollision = new CollisionObject(
+            this.location.copy().add(new Vector(-1, -this.size.x/2)),
+            this.location.copy().add(new Vector(1, -this.size.x/2)),
+            this.rotation,
+        );
     }
 
 
