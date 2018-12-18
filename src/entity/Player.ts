@@ -110,6 +110,14 @@ class Player extends Entity {
             }
         }
         // update our location
+        if (collision.left)
+            this.velocity.x = Math.max(this.velocity.x, 0);
+        if (collision.right)
+            this.velocity.x = Math.min(this.velocity.x, 0);
+        if (collision.top)
+            this.velocity.y = Math.max(this.velocity.y, 0);
+        if (collision.bottom)
+            this.velocity.y = Math.min(this.velocity.y, 0);
         this.location.add(this.velocity)
 
         // move the camera
