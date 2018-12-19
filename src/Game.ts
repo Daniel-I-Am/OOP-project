@@ -17,8 +17,10 @@ class Game {
     private currentView: BaseView;
     private currentInterval: number;
     public static readonly DEBUG_MODE: boolean = true;
+    private static reputation: number;
 
     public constructor(canvas: HTMLElement) {
+        Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
         this.currentView = new TitleView(
             () => {this.switchView(new GameView("debug_level", this.switchView))}
@@ -42,10 +44,19 @@ class Game {
         }
         this.currentView = newView;
     }
+
+    public static getReputation(): number {
+        return this.reputation;
+    }
+
+    private static setReputation(amount: number): void {
+        this.reputation = amount;
+    }
 }
 
+let game: Game;
 function init() {
-    const game = new Game(document.getElementById("canvas"));
+    game = new Game(document.getElementById("canvas"));
 }
 
 window.addEventListener('load', init);
