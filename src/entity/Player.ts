@@ -220,6 +220,7 @@ class Player extends Entity {
     }
 
     private kill() {
+        this.keyHelper.destroy()
         if (!this.isAlive) return
         this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav")
