@@ -512,6 +512,8 @@ class Player extends Entity {
             returnValue.right = thisEntityCollision.right || returnValue.right;
             returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
             returnValue.top = thisEntityCollision.top || returnValue.top;
+            if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom)
+                this.location.y++;
         });
         if (returnValue.bottom) {
             this.isLanded = true;
