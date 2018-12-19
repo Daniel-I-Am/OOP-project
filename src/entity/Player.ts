@@ -167,7 +167,8 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
-            if (e instanceof Trampoline && e.collide(this.bottomCollision)) this.trampoline() 
+            if (e instanceof Trampoline && e.collide(this.bottomCollision)) this.trampoline();
+            if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
                 e instanceof Accelerator &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
@@ -179,7 +180,7 @@ class Player extends Entity {
             returnValue.right = thisEntityCollision.right || returnValue.right;
             returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
             returnValue.top = thisEntityCollision.top || returnValue.top;
-            if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom) this.location.y++;
+            if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom) this.location.y--;
         });
         if (returnValue.bottom) {
             this.isLanded = true;
