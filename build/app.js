@@ -296,8 +296,8 @@ class Entity {
     getCollision() {
         return this.collision;
     }
-    update() {
-        this.move();
+    update(entities = null) {
+        this.move(entities);
         if (!(this instanceof CollisionObject)) {
             this.getCollision().updateLocation(this.location);
         }
@@ -361,40 +361,8 @@ class GameView extends BaseView {
         return new Vector((location.x.center ? this.canvasHelper.getCenter().x : 0) + location.x.offset, (location.y.center ? this.canvasHelper.getCenter().y : 0) + location.y.offset);
     }
     update() {
-        this.player.setIsLanded(false);
         this.entities.forEach(e => {
-            if (e === this.player)
-                return;
-            if (this.player.footCollision(e)) {
-                this.player.setIsLanded(true);
-                if (e instanceof FallingTile) {
-                    e.activated = true;
-                }
-            }
-            if (e.collide(this.player)) {
-                if (e instanceof Accelerator) {
-                    this.player.boost(e);
-                }
-                if (e.collide(this.player) && e instanceof Trampoline) {
-                    this.player.trampoline();
-                }
-                this.player.interact(e);
-            }
-            if (e instanceof FallingTile) {
-                if (e.getAlive() && e.getFalling()) {
-                    let tile = e;
-                    this.entities.forEach(e => {
-                        if (!(e instanceof CollisionObject))
-                            return;
-                        if (e.collide(tile.getCollision())) {
-                            tile.kill();
-                        }
-                    });
-                }
-            }
-        });
-        this.entities.forEach(e => {
-            e.update();
+            e.update(this.entities);
         });
     }
     drawGUI() {
@@ -454,11 +422,17 @@ class Player extends Entity {
         this.jumpSpeed = 30;
         this.isAlive = true;
         this.switchView = switchView;
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(0, 20)), this.rotation);
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+        this.leftCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(-this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
+        this.rightCollision = new CollisionObject(this.location.copy().add(new Vector(this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
+        this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, this.size.y / 2)), this.rotation);
+        this.topCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, -this.size.x / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, -this.size.x / 2)), this.rotation);
+        this.previousCollision = { left: false, right: false, top: false, bottom: false };
     }
-    move() {
+    move(entites) {
+        let collision = this.playerCollision(entites);
         if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
             this.velocity.x -= this.acceleration;
         }
@@ -476,6 +450,31 @@ class Player extends Entity {
                 this.velocity.x *= .60;
             }
         }
+        if (collision.left) {
+            if (!this.previousCollision.left)
+                this.velocity.x = Math.max(this.velocity.x, this.velocity.x / 2);
+            else
+                this.velocity.x = Math.max(this.velocity.x, 0);
+        }
+        if (collision.right) {
+            if (!this.previousCollision.right)
+                this.velocity.x = Math.min(this.velocity.x, this.velocity.x / 2);
+            else
+                this.velocity.x = Math.min(this.velocity.x, 0);
+        }
+        if (collision.top) {
+            if (!this.previousCollision.top)
+                this.velocity.y = Math.max(this.velocity.y, this.velocity.y / 2);
+            else
+                this.velocity.y = Math.max(this.velocity.y, 0);
+        }
+        if (collision.bottom) {
+            if (!this.previousCollision.bottom)
+                this.velocity.y = Math.min(this.velocity.y, this.velocity.y / 2);
+            else
+                this.velocity.y = Math.min(this.velocity.y, 0);
+        }
+        this.previousCollision = collision;
         this.location.add(this.velocity);
         if (this.isAlive) {
             var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
@@ -486,16 +485,41 @@ class Player extends Entity {
         if (this.location.y > 5000)
             this.kill();
     }
-    footCollision(collideWith) {
-        let other = collideWith.getCollision();
-        if (other == null)
-            return false;
-        if (this.location.x - 1 - other.getSize().x / 2 < other.getLoc().x &&
-            this.location.x + 1 + other.getSize().x / 2 > other.getLoc().x &&
-            this.location.y + this.size.y / 2 - 20 - other.getSize().y / 2 < other.getLoc().y &&
-            this.location.y + this.size.y / 2 - 20 + other.getSize().y / 2 > other.getLoc().y)
-            return true;
-        return false;
+    playerCollision(collideWith) {
+        this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
+        this.rightCollision.updateLocation(this.location.copy().add(new Vector(this.size.x / 2, 0)));
+        this.topCollision.updateLocation(this.location.copy().add(new Vector(0, -this.size.y / 2)));
+        this.bottomCollision.updateLocation(this.location.copy().add(new Vector(0, this.size.y / 2)));
+        let returnValue = { left: false, right: false, bottom: false, top: false };
+        if (collideWith == null)
+            return returnValue;
+        collideWith.forEach(e => {
+            if (e instanceof Player)
+                return;
+            let thisEntityCollision = { left: false, right: false, top: false, bottom: false };
+            thisEntityCollision.left = e.collide(this.leftCollision);
+            thisEntityCollision.right = e.collide(this.rightCollision);
+            thisEntityCollision.bottom = e.collide(this.bottomCollision);
+            thisEntityCollision.top = e.collide(this.topCollision);
+            if (e instanceof Trampoline && e.collide(this.bottomCollision))
+                this.trampoline();
+            if (e instanceof Accelerator &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
+                this.boost(e);
+                return;
+            }
+            returnValue.left = thisEntityCollision.left || returnValue.left;
+            returnValue.right = thisEntityCollision.right || returnValue.right;
+            returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
+            returnValue.top = thisEntityCollision.top || returnValue.top;
+        });
+        if (returnValue.bottom) {
+            this.isLanded = true;
+        }
+        else {
+            this.isLanded = false;
+        }
+        return returnValue;
     }
     boost(booster) {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
