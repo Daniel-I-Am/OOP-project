@@ -372,6 +372,8 @@ class GameView extends BaseView {
             this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black");
             this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
         }
+        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 100, 75), "white");
+        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
     }
     beforeExit() { }
 }
@@ -503,6 +505,8 @@ class Player extends Entity {
             thisEntityCollision.top = e.collide(this.topCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision))
                 this.trampoline();
+            if (e instanceof FallingTile && e.collide(this.bottomCollision))
+                e.activated = true;
             if (e instanceof Accelerator &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
                 this.boost(e);
@@ -513,7 +517,7 @@ class Player extends Entity {
             returnValue.bottom = thisEntityCollision.bottom || returnValue.bottom;
             returnValue.top = thisEntityCollision.top || returnValue.top;
             if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom)
-                this.location.y++;
+                this.location.y--;
         });
         if (returnValue.bottom) {
             this.isLanded = true;
@@ -565,21 +569,26 @@ class Player extends Entity {
 class FallingTile extends Entity {
     constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, acceleration) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
-        this.countdown = 60;
+        this.countdown = 120;
         this.falling = false;
         this.alive = true;
         this.activated = false;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
-    move() {
-        if (this.activated)
+    move(entites) {
+        if (this.activated) {
             this.countdown -= 1;
+        }
         if (this.countdown == 0) {
             this.falling = true;
         }
         if (this.alive && this.falling) {
             this.offset.y = 0;
             this.velocity.y += this.gravity;
+            entites.forEach(e => {
+                if (e.collide(this))
+                    this.alive = false;
+            });
             this.location.add(this.velocity);
         }
         if (!this.falling && this.activated) {
@@ -611,14 +620,22 @@ class Game {
             }
             this.currentView = newView;
         };
+        Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
         this.currentView = new TitleView(() => { this.switchView(new GameView("debug_level", this.switchView)); });
         this.currentInterval = setInterval(this.loop, 33);
     }
+    static getReputation() {
+        return this.reputation;
+    }
+    static setReputation(amount) {
+        this.reputation = amount;
+    }
 }
 Game.DEBUG_MODE = true;
+let game;
 function init() {
-    const game = new Game(document.getElementById("canvas"));
+    game = new Game(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
 var ItemId;
