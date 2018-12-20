@@ -420,6 +420,7 @@ class TitleView extends BaseView {
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
+            window.removeEventListener('mousemove', _listener);
             this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
             this.menuMusic.toggleLoop();
         };
