@@ -32,6 +32,8 @@ class KeyHelper {
         this.rightPressed = false;
         this.upPressed = false;
         this.downPressed = false;
+        this.spaceBarPressed = false;
+        this.interactPressed = false;
     }
 
     /**
