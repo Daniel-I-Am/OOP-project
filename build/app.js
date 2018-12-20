@@ -849,7 +849,6 @@ class GameOverView extends BaseView {
     }
     update() {
         this.player.update();
-        console.log(this.player['isLanded']);
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
             Game.switchView(new GameView('debug_level'));
         }

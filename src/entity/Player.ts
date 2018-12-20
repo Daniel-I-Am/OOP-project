@@ -238,6 +238,7 @@ class Player extends Entity {
     }
 
     private kill() {
+        this.setIsLanded(true);
         this.keyHelper.destroy();
         if (!this.isAlive) return
         this.isAlive = false;
@@ -247,6 +248,7 @@ class Player extends Entity {
         let oldGravity = this.gravity;
         this.gravity = 0;
         setTimeout(() => { 
+            this.setIsLanded(false);
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
