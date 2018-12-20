@@ -588,7 +588,7 @@ class Player extends Entity {
 class FallingTile extends Entity {
     constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, acceleration) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
-        this.countdown = 120;
+        this.countdown = 60;
         this.falling = false;
         this.alive = true;
         this.activated = false;

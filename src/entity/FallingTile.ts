@@ -1,5 +1,5 @@
 class FallingTile extends Entity{
-    private countdown: number = 120;
+    private countdown: number = 60;
     private falling: boolean = false;
     private alive: boolean = true;
     public activated: boolean = false;
