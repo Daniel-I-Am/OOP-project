@@ -283,12 +283,11 @@ class BaseView {
         this.background = new Image();
     }
     tick() {
+        if (this.shouldClear)
+            this.canvasHelper.clear();
         this.drawBackground();
         this.update();
         this.drawGUI();
-    }
-    getShouldClear() {
-        return this.shouldClear;
     }
     drawBackground() {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
@@ -697,8 +696,6 @@ class Game {
                 return;
             }
             if (Game.currentView) {
-                if (Game.currentView.getShouldClear())
-                    this.canvasHelper.clear();
                 Game.currentView.tick();
             }
         };

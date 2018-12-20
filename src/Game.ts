@@ -43,8 +43,6 @@ class Game {
             return;
         }
         if (Game.currentView) {
-            if (Game.currentView.getShouldClear())
-                this.canvasHelper.clear();
             Game.currentView.tick();
         }
     }

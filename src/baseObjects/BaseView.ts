@@ -10,13 +10,11 @@ abstract class BaseView {
     }
 
     public tick(): void {
+        if (this.shouldClear)
+            this.canvasHelper.clear();
         this.drawBackground();
         this.update();
         this.drawGUI();
-    }
-
-    public getShouldClear(): boolean {
-        return this.shouldClear;
     }
 
     /**
