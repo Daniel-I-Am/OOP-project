@@ -350,6 +350,9 @@ class Entity {
     getVelocity() {
         return this.velocity;
     }
+    getRot() {
+        return this.rotation;
+}
 }
 class GameView extends BaseView {
     constructor(levelName, switchView) {
