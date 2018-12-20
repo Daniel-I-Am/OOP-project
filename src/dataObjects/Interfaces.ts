@@ -27,7 +27,8 @@ interface LevelPlayer {
     sprites: Array<string>,
     location: LevelLocations,
     size: LevelSize,
-    gravity: number
+    gravity: number,
+    maxJumps: number
 }
 
 interface LevelFallingTile {
