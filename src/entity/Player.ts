@@ -219,12 +219,12 @@ class Player extends Entity {
     }
 
     private kill() {
-        this.keyHelper.destroy()
+        this.keyHelper.destroy();
         if (!this.isAlive) return
         this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav")
-        this.velocity.x = 0
-        this.velocity.y = 0
+        this.velocity.x = 0;
+        this.velocity.y = 0;
         let oldGravity = this.gravity;
         this.gravity = 0;
         setTimeout(() => { 
