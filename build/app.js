@@ -666,6 +666,8 @@ class FallingTile extends Entity {
                         return;
                     if (e instanceof Player)
                         return;
+                    if (e instanceof Enemy_Bertha)
+                        return;
                     this.alive = false;
                 }
             });

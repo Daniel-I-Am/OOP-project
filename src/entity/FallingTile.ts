@@ -35,6 +35,7 @@ class FallingTile extends Entity{
                 if (e.collide(this)) {
                     if (e == this) return;
                     if (e instanceof Player) return;
+                    if (e instanceof Enemy_Bertha) return;
                     this.alive = false;
                 }
             });
