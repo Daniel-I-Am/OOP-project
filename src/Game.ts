@@ -25,7 +25,7 @@ class Game {
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
         this.currentView = new TitleView(
-            () => {this.switchView(new GameView("debug_level", this.switchView))}
+            () => {Game.pause(); this.switchView(new GameView("debug_level", this.switchView))}
         );
         this.currentInterval = setInterval(this.loop, 33);
     }
@@ -54,6 +54,11 @@ class Game {
 
     private static setReputation(amount: number): void {
         this.reputation = amount;
+    }
+
+    public static pause() {
+        if      (Game.GAME_STATE == GameState.PLAYING) Game.GAME_STATE = GameState.PAUSED;
+        else if (Game.GAME_STATE == GameState.PAUSED) Game.GAME_STATE = GameState.PLAYING;
     }
 }
 

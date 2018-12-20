@@ -646,7 +646,7 @@ class Game {
         };
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView(() => { this.switchView(new GameView("debug_level", this.switchView)); });
+        this.currentView = new TitleView(() => { Game.pause(); this.switchView(new GameView("debug_level", this.switchView)); });
         this.currentInterval = setInterval(this.loop, 33);
     }
     static getReputation() {
@@ -654,6 +654,12 @@ class Game {
     }
     static setReputation(amount) {
         this.reputation = amount;
+    }
+    static pause() {
+        if (Game.GAME_STATE == GameState.PLAYING)
+            Game.GAME_STATE = GameState.PAUSED;
+        else if (Game.GAME_STATE == GameState.PAUSED)
+            Game.GAME_STATE = GameState.PLAYING;
     }
 }
 Game.DEBUG_MODE = true;
