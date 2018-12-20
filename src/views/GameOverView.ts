@@ -3,10 +3,11 @@ class GameOverView extends BaseView {
     private entities: Array<Entity>;
 
     public constructor(
-        player: Player, entities: Array<Entity>
+        player: Player, entities: Array<Entity>, background: HTMLImageElement
     ) {
         super();
         this.player = player;
+        this.background = background
         this.entities = entities.filter(e => !(e instanceof CollisionObject));
         this.entities.forEach(e => {
             e.removeCollision();

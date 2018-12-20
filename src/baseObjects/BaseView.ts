@@ -26,6 +26,10 @@ abstract class BaseView {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
     }
 
+    public getBackground(): HTMLImageElement {
+        return this.background;
+    }
+
     /**
      * Does whatever needs to be done in a tick
      * @abstract

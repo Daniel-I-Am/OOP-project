@@ -70,6 +70,10 @@ class Game {
         if      (Game.GAME_STATE == GameState.PLAYING) Game.GAME_STATE = GameState.PAUSED;
         else if (Game.GAME_STATE == GameState.PAUSED) Game.GAME_STATE = GameState.PLAYING;
     }
+
+    public static getBackground(): HTMLImageElement {
+        return this.currentView.getBackground();
+    }
 }
 
 function init() {

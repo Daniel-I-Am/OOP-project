@@ -252,6 +252,6 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        Game.switchView(new GameOverView(this, entites))
+        Game.switchView(new GameOverView(this, entites, Game.getBackground()))
     }
 }

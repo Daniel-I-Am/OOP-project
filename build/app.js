@@ -291,6 +291,9 @@ class BaseView {
     drawBackground() {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
     }
+    getBackground() {
+        return this.background;
+    }
 }
 class Entity {
     constructor(imageSources = ["./assets/images/default.png"], location, rotation, size, gravity = 0, velocity = new Vector(0, 0), acceleration = 0, maxSpeed = 0, direction = new Rotation(0)) {
@@ -633,7 +636,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        Game.switchView(new GameOverView(this, entites));
+        Game.switchView(new GameOverView(this, entites, Game.getBackground()));
     }
 }
 class FallingTile extends Entity {
@@ -714,6 +717,9 @@ class Game {
             Game.GAME_STATE = GameState.PAUSED;
         else if (Game.GAME_STATE == GameState.PAUSED)
             Game.GAME_STATE = GameState.PLAYING;
+    }
+    static getBackground() {
+        return this.currentView.getBackground();
     }
 }
 Game.DEBUG_MODE = true;
@@ -848,9 +854,10 @@ class SoundHelper {
     }
 }
 class GameOverView extends BaseView {
-    constructor(player, entities) {
+    constructor(player, entities, background) {
         super();
         this.player = player;
+        this.background = background;
         this.entities = entities.filter(e => !(e instanceof CollisionObject));
         this.entities.forEach(e => {
             e.removeCollision();
