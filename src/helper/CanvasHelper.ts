@@ -73,6 +73,35 @@ class CanvasHelper {
         this.ctx.restore();
     }
 
+    public addProgressBar(
+        location: Vector,
+        size: Vector,
+        filledColor: string,
+        emptyColor: string,
+        outlineColor: string,
+        filledPct: number
+    ): void {
+        filledPct = Math.min(Math.max(filledPct, 0), 1)
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)),
+            location.copy().add(size.copy().multiply(.5)),
+            outlineColor
+        );
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)),
+            location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)),
+            emptyColor
+        );
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)),
+            new Vector(
+                location.x - size.x * .5 + 1 + filledPct * (size.x - 1),
+                location.y + size.y * .5 - 1
+            ),
+            filledColor
+        );
+    }
+
     /**
      * Draws an image to the canvas
      * @param image Image to draw

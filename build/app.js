@@ -47,6 +47,12 @@ class CanvasHelper {
         this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
         this.ctx.restore();
     }
+    addProgressBar(location, size, filledColor, emptyColor, outlineColor, filledPct) {
+        filledPct = Math.min(Math.max(filledPct, 0), 1);
+        this.fillRect(location.copy().sub(size.copy().multiply(.5)), location.copy().add(size.copy().multiply(.5)), outlineColor);
+        this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)), emptyColor);
+        this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), new Vector(location.x - size.x * .5 + 1 + filledPct * (size.x - 1), location.y + size.y * .5 - 1), filledColor);
+    }
     drawImage(image, location, rotation, size, isCentered = true) {
         this.ctx.save();
         this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
@@ -360,6 +366,8 @@ class GameView extends BaseView {
     }
     makeLevel(levelJSON) {
         this.background.src = levelJSON.background;
+        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
+        this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
@@ -393,11 +401,11 @@ class GameView extends BaseView {
             this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black");
             this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
         }
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 201, 49), new Vector(this.canvasHelper.getWidth() - 99, 76), "black");
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 100, 75), "white");
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
+        this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }
-    beforeExit() { }
+    beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
     onPause() {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }
@@ -562,6 +570,7 @@ class Player extends Entity {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
     }
     trampoline() {
+        new SoundHelper("./assets/sounds/jump.wav");
         this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
     }
     jump() {
@@ -738,17 +747,21 @@ class Trampoline extends Entity {
     move() { }
 }
 class SoundHelper {
-    constructor(src) {
+    constructor(src, volume = 1) {
         this.audioElem = document.createElement("audio");
         this.audioElem.setAttribute("preload", "auto");
         this.audioElem.setAttribute("controls", "none");
         this.audioElem.style.display = "none";
         this.state = PlayingStat.PLAYING;
         this.audioElem.src = src;
+        this.audioElem.volume = volume;
         this.audioElem.play();
     }
     play() {
         this.audioElem.play();
+    }
+    toggleLoop() {
+        this.audioElem.loop = !this.audioElem.loop;
     }
     pause(state = null) {
         if (this.state == PlayingStat.STOPPED)
