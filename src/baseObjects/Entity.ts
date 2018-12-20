@@ -97,4 +97,8 @@ abstract class Entity {
     public getVelocity(): Vector {
         return this.velocity;
     }
+
+    public getRot(): Rotation {
+        return this.rotation;
+    }
 }

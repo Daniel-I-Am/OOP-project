@@ -350,6 +350,9 @@ class Entity {
     getVelocity() {
         return this.velocity;
     }
+    getRot() {
+        return this.rotation;
+    }
 }
 class GameView extends BaseView {
     constructor(levelName, switchView) {
@@ -414,6 +417,7 @@ class GameView extends BaseView {
 class TitleView extends BaseView {
     constructor(buttonCallback) {
         super();
+        this.active = true;
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
@@ -422,6 +426,8 @@ class TitleView extends BaseView {
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
             window.removeEventListener('mousemove', _listener);
+            if (!this.active)
+                return;
             this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
             this.menuMusic.toggleLoop();
         };
@@ -430,7 +436,9 @@ class TitleView extends BaseView {
     update() { }
     drawGUI() { }
     beforeExit() {
-        this.menuMusic.pause();
+        this.active = false;
+        if (this.menuMusic)
+            this.menuMusic.pause();
     }
     onPause() { }
 }
@@ -544,7 +552,7 @@ class Player extends Entity {
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                this.trampoline();
+                this.trampoline(e);
                 thisEntityCollision.bottom = false;
             }
             if (e instanceof Enemy_Bertha &&
@@ -565,7 +573,7 @@ class Player extends Entity {
             if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom)
                 this.location.y--;
         });
-        if (returnValue.bottom) {
+        if (returnValue.bottom && this.velocity.y <= 0) {
             this.isLanded = true;
         }
         else {
@@ -576,9 +584,9 @@ class Player extends Entity {
     boost(booster) {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
     }
-    trampoline() {
+    trampoline(entity) {
         new SoundHelper("./assets/sounds/jump.wav");
-        this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
+        this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5).rotate(entity.getRot().getValue());
     }
     jump() {
         new SoundHelper("./assets/sounds/jump.wav");

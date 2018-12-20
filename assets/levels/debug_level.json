@@ -143,6 +143,24 @@
                 "x": 259,
                 "y": 135
             }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": -50
+                },
+                "y": {
+                    "center": false,
+                    "offset": 590
+                }
+            },
+            "rotation": 45,
+            "size": {
+                "x": 259,
+                "y": 135
+            }
         }
     ],
     "Collisions": [
