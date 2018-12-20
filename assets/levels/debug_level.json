@@ -21,7 +21,9 @@
             "x": 58.5,
             "y": 150
         },
-        "gravity": 1
+        "gravity": 1,
+        "jumpHeight": 15,
+        "maxJumps": 2
     },
     "FallingTiles": [
         {

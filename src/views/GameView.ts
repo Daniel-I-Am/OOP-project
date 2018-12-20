@@ -31,6 +31,8 @@ class GameView extends BaseView {
             new Vector(levelJSON.player.size.x, levelJSON.player.size.y),
             levelJSON.player.gravity,
             2,
+            levelJSON.player.jumpHeight,
+            levelJSON.player.maxJumps,
             this.switchView
         );
         levelJSON.FallingTiles.forEach(e => {
@@ -99,4 +101,8 @@ class GameView extends BaseView {
     }
 
     public beforeExit(): void {}
+
+    public onPause(): void {
+        this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black")
+    }
 }

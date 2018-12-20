@@ -19,4 +19,5 @@ class TitleView extends BaseView {
     protected update() {}
     protected drawGUI() {}
     public beforeExit() {}
+    public onPause() {}
 }

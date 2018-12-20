@@ -1,5 +1,5 @@
 class FallingTile extends Entity{
-    private countdown: number = 120;
+    private countdown: number = 60;
     private falling: boolean = false;
     private alive: boolean = true;
     public activated: boolean = false;
@@ -34,6 +34,7 @@ class FallingTile extends Entity{
             entites.forEach(e => {
                 if (e.collide(this)) {
                     if (e == this) return;
+                    if (e instanceof Player) return;
                     this.alive = false;
                 }
             });

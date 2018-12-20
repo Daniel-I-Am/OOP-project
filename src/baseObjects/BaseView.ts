@@ -43,4 +43,9 @@ abstract class BaseView {
      * @abstract
      */
     public abstract beforeExit(): void;
+
+    /**
+     * Called when the game is paused on an update
+     */
+    public abstract onPause(): void;
 }

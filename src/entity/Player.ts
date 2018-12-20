@@ -1,10 +1,11 @@
 class Player extends Entity {
     private keyHelper: KeyHelper;
     private inventory: Array<InventoryItem>;
-    private jumpHeight: number;
     private isJumping: boolean;
     private isLanded: boolean;
     private jumpSpeed: number;
+    private maxJumps: number;
+    private jumpCount: number;
     private isAlive: boolean;
     private switchView: (newView: BaseView) => void;
 
@@ -29,6 +30,8 @@ class Player extends Entity {
         size: Vector,
         gravity: number,
         acceleration: number,
+        jumpHeight: number,
+        maxJumps: number,
         switchView: (newView: BaseView) => void,
     ) {
         super(
@@ -47,7 +50,9 @@ class Player extends Entity {
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array<InventoryItem>();
-        this.jumpSpeed = 30;
+        this.maxJumps = maxJumps;
+        this.jumpCount = 0;
+        this.jumpSpeed = jumpHeight;
         this.isAlive = true;
         this.switchView = switchView;
         
@@ -96,8 +101,11 @@ class Player extends Entity {
             this.velocity.x += this.acceleration;
         }
         // if we can jump, do so
-        if (this.keyHelper.getSpaceBarPressed() && this.isLanded) {
+        if (this.isLanded) this.jumpCount = 0;
+        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps) {
             this.velocity.y -= this.jumpSpeed;
+            this.keyHelper.resetSpaceBar()
+            this.jumpCount++;
         }
         // *Booooo* gravity
         this.velocity.y += this.gravity;
@@ -167,7 +175,10 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
-            if (e instanceof Trampoline && e.collide(this.bottomCollision)) this.trampoline();
+            if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
+                this.trampoline();
+                thisEntityCollision.bottom = false;
+            }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
                 e instanceof Accelerator &&
