@@ -16,8 +16,9 @@ class GameOverView extends BaseView {
 
     public update() {
         this.entities.forEach(e => {
-            e.update(this.entities);
+            e.draw();
         });
+        this.player.update();
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
             Game.switchView(new GameView('debug_level'));
         }
