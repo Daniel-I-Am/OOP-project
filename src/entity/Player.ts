@@ -102,11 +102,7 @@ class Player extends Entity {
         }
         // if we can jump, do so
         if (this.isLanded) this.jumpCount = 0;
-        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps) {
-            this.velocity.y -= this.jumpSpeed;
-            this.keyHelper.resetSpaceBar()
-            this.jumpCount++;
-        }
+        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps) this.jump();
         // *Booooo* gravity
         this.velocity.y += this.gravity;
         // if we're landed, don't phase through the floor and use friction
@@ -207,6 +203,13 @@ class Player extends Entity {
 
     public trampoline() {
         this.velocity = new Vector(this.velocity.x,-this.velocity.y-5);
+    }
+
+    private jump() {
+        new SoundHelper("./assets/sounds/jump.wav")
+        this.velocity.y -= this.jumpSpeed;
+        this.keyHelper.resetSpaceBar()
+        this.jumpCount++;
     }
 
     /**
