@@ -19,4 +19,5 @@ class GameOverView extends BaseView {
     }
 
     public beforeExit() {}
+    public onPause() {}
 }

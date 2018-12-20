@@ -43,4 +43,6 @@ abstract class BaseView {
      * @abstract
      */
     public abstract beforeExit(): void;
+
+    public abstract onPause(): void;
 }

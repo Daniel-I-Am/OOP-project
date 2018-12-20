@@ -99,4 +99,8 @@ class GameView extends BaseView {
     }
 
     public beforeExit(): void {}
+
+    public onPause(): void {
+        this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black")
+    }
 }

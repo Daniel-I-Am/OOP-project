@@ -31,7 +31,10 @@ class Game {
     }
 
     private loop = (): void => {
-        if (Game.GAME_STATE == GameState.PAUSED) return;
+        if (Game.GAME_STATE == GameState.PAUSED) {
+            this.currentView.onPause();
+            return;
+        }
         if (this.currentView) {
             if (this.currentView.getShouldClear())
                 this.canvasHelper.clear();

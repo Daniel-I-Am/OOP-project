@@ -395,6 +395,9 @@ class GameView extends BaseView {
         this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
     }
     beforeExit() { }
+    onPause() {
+        this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
+    }
 }
 class TitleView extends BaseView {
     constructor(buttonCallback) {
@@ -409,6 +412,7 @@ class TitleView extends BaseView {
     update() { }
     drawGUI() { }
     beforeExit() { }
+    onPause() { }
 }
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, acceleration) {
@@ -632,8 +636,10 @@ class FallingTile extends Entity {
 class Game {
     constructor(canvas) {
         this.loop = () => {
-            if (Game.GAME_STATE == GameState.PAUSED)
+            if (Game.GAME_STATE == GameState.PAUSED) {
+                this.currentView.onPause();
                 return;
+            }
             if (this.currentView) {
                 if (this.currentView.getShouldClear())
                     this.canvasHelper.clear();
@@ -771,5 +777,6 @@ class GameOverView extends BaseView {
         this.canvasHelper.writeText("Game over!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
     }
     beforeExit() { }
+    onPause() { }
 }
 //# sourceMappingURL=app.js.map
