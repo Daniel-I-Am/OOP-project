@@ -163,6 +163,7 @@ class Player extends Entity {
         if (collideWith == null) return returnValue;
         collideWith.forEach(e => {
             if (e instanceof Player) return;
+            
             let thisEntityCollision = {left: false, right: false, top: false, bottom: false}
             thisEntityCollision.left = e.collide(this.leftCollision);
             thisEntityCollision.right = e.collide(this.rightCollision);
@@ -171,6 +172,10 @@ class Player extends Entity {
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
                 this.trampoline(e);
                 thisEntityCollision.bottom = false;
+            }
+            if (e instanceof Enemy_Bertha &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
+                this.kill()
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
