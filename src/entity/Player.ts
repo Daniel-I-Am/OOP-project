@@ -202,6 +202,7 @@ class Player extends Entity {
     }
 
     public trampoline() {
+        new SoundHelper("./assets/sounds/jump.wav")
         this.velocity = new Vector(this.velocity.x,-this.velocity.y-5);
     }
 

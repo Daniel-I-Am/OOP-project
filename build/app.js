@@ -562,6 +562,7 @@ class Player extends Entity {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
     }
     trampoline() {
+        new SoundHelper("./assets/sounds/jump.wav");
         this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
     }
     jump() {
