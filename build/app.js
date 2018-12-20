@@ -596,7 +596,7 @@ class Player extends Entity {
         return returnValue;
     }
     boost(booster) {
-        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
+        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRot().getValue());
     }
     trampoline(entity) {
         new SoundHelper("./assets/sounds/jump.wav");
@@ -748,9 +748,6 @@ class Accelerator extends Entity {
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
-    getRotation() {
-        return this.rotation;
-    }
     getYeet() {
         return this.yeet;
     }

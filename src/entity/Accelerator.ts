@@ -20,10 +20,6 @@ class Accelerator extends Entity{
 
     protected move(): void{}
 
-    public getRotation(): Rotation {
-        return this.rotation;
-    }
-
     public getYeet(): number {
         return this.yeet;
     }
