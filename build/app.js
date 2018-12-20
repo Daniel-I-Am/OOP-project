@@ -813,6 +813,7 @@ class GameOverView extends BaseView {
     constructor(player) {
         super();
         this.player = player;
+        this.player.setIsLanded(false);
     }
     update() {
         this.player.update();

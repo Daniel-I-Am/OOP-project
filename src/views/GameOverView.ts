@@ -6,6 +6,7 @@ class GameOverView extends BaseView {
     ) {
         super();
         this.player = player;
+        this.player.setIsLanded(false);
     }
 
     public update() {
