@@ -238,6 +238,7 @@ class Player extends Entity {
     }
 
     private kill(entites: Array<Entity>) {
+        if (!this.isAlive) return
         this.keyHelper.destroy();
         this.setIsLanded(true);
         this.isAlive = false;

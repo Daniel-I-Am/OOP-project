@@ -625,6 +625,8 @@ class Player extends Entity {
         this.isLanded = state;
     }
     kill(entites) {
+        if (!this.isAlive)
+            return;
         this.keyHelper.destroy();
         this.setIsLanded(true);
         this.isAlive = false;
