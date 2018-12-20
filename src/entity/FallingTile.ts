@@ -1,5 +1,5 @@
 class FallingTile extends Entity{
-    private countdown: number = 60;
+    private countdown: number = 120;
     private falling: boolean = false;
     private alive: boolean = true;
     public activated: boolean = false;
@@ -21,14 +21,22 @@ class FallingTile extends Entity{
         )
     }
 
-    protected move():void{
-        if(this.activated) this.countdown -= 1;
+    protected move(entites: Array<Entity>):void {
+        if(this.activated) {
+            this.countdown -= 1;
+        }
         if(this.countdown == 0){
             this.falling = true;
         }
         if(this.alive && this.falling){ //replace with collide shit later on
             this.offset.y = 0;
             this.velocity.y += this.gravity;
+            entites.forEach(e => {
+                if (e.collide(this)) {
+                    if (e == this) return;
+                    this.alive = false;
+                }
+            });
             this.location.add(this.velocity);
         }
         if(!this.falling && this.activated) {

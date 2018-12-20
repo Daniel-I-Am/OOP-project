@@ -1,5 +1,3 @@
-enum PlayingStat {PLAYING = 0, PAUSED, STOPPED}
-
 class SoundHelper {
     private audioElem: HTMLAudioElement;
     private state: number;
