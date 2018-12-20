@@ -26,24 +26,44 @@
         "jumpHeight": 15,
         "maxJumps": 2
     },
-    "bertha": {
-        "sprites": null,
-        "location": {
-            "x": {
-                "center": false,
-                "offset": 1200
+    "berthas": [
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1200
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1500                
+                }
             },
-            "y": {
-                "center": false,
-                "offset": 1500                
-            }
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
         },
-        "size": {
-            "x": 58.5,
-            "y": 150
-        },
-        "gravity": 1
-    },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1900
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1500                
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        }
+    ],
     "FallingTiles": [
         {
             "sprites": null,

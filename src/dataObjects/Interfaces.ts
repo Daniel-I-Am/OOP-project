@@ -17,7 +17,7 @@ interface Level {
     background: string,
     backgroundMusic: string,
     player: LevelPlayer,
-    bertha: LevelBertha,
+    berthas: Array<LevelBertha>,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,

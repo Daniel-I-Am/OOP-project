@@ -386,7 +386,9 @@ class GameView extends BaseView {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
         this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
-        this.entities.push(new Enemy_Bertha(((levelJSON.bertha.sprites == null) ? undefined : levelJSON.bertha.sprites), this.parseLocation(levelJSON.bertha.location), new Vector(levelJSON.bertha.size.x, levelJSON.bertha.size.y), levelJSON.bertha.gravity));
+        levelJSON.berthas.forEach(e => {
+            this.entities.push(new Enemy_Bertha(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Vector(e.size.x, e.size.y), e.gravity));
+        });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
