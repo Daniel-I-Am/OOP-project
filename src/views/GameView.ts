@@ -2,12 +2,10 @@ class GameView extends BaseView {
     private entities: Array<Entity>;
     private player: Player;
     private backgroundMusic: SoundHelper;
-    private switchView: (newView: BaseView) => void;
 
-    public constructor(levelName: string, switchView: (newView: BaseView) => void) {
+    public constructor(levelName: string) {
         super();
         this.entities = new Array<Entity>();
-        this.switchView = switchView;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();
@@ -35,8 +33,7 @@ class GameView extends BaseView {
             levelJSON.player.gravity,
             2,
             levelJSON.player.jumpHeight,
-            levelJSON.player.maxJumps,
-            this.switchView
+            levelJSON.player.maxJumps
         );
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(

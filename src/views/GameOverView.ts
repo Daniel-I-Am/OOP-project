@@ -1,12 +1,18 @@
 class GameOverView extends BaseView {
     private player: Player;
 
-    public constructor(player: Player) {
+    public constructor(
+        player: Player
+    ) {
         super();
         this.player = player;
     }
+
     public update() {
         this.player.update();
+        if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
+            Game.switchView(new GameView('debug_level'));
+        }
     }
     
     public drawGUI() {

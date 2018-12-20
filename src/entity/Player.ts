@@ -7,7 +7,6 @@ class Player extends Entity {
     private maxJumps: number;
     private jumpCount: number;
     private isAlive: boolean;
-    private switchView: (newView: BaseView) => void;
 
     private leftCollision: CollisionObject;
     private rightCollision: CollisionObject;
@@ -32,7 +31,6 @@ class Player extends Entity {
         acceleration: number,
         jumpHeight: number,
         maxJumps: number,
-        switchView: (newView: BaseView) => void,
     ) {
         super(
             imageSources,
@@ -54,7 +52,6 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
-        this.switchView = switchView;
         
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))),
@@ -248,6 +245,6 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        this.switchView(new GameOverView(this))
+        Game.switchView(new GameOverView(this))
     }
 }

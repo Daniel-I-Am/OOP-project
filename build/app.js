@@ -355,10 +355,9 @@ class Entity {
     }
 }
 class GameView extends BaseView {
-    constructor(levelName, switchView) {
+    constructor(levelName) {
         super();
         this.entities = new Array();
-        this.switchView = switchView;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -374,7 +373,7 @@ class GameView extends BaseView {
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
-        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps, this.switchView);
+        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -464,7 +463,7 @@ class Item extends Entity {
     move() { }
 }
 class Player extends Entity {
-    constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps, switchView) {
+    constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
@@ -475,7 +474,6 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
-        this.switchView = switchView;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
@@ -625,7 +623,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        this.switchView(new GameOverView(this));
+        Game.switchView(new GameOverView(this));
     }
 }
 class FallingTile extends Entity {
@@ -814,6 +812,9 @@ class GameOverView extends BaseView {
     }
     update() {
         this.player.update();
+        if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
+            Game.switchView(new GameView('debug_level'));
+        }
     }
     drawGUI() {
         for (let i = 0; i < 85; i++) {
