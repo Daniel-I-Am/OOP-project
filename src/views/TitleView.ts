@@ -18,7 +18,7 @@ class TitleView extends BaseView {
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
             this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
-            window.removeEventListener('mousemove', _listener);
+            this.menuMusic.toggleLoop();
         }
         window.addEventListener('mousemove', _listener);
     }
