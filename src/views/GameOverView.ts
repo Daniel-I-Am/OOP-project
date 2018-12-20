@@ -1,15 +1,22 @@
 class GameOverView extends BaseView {
     private player: Player;
+    private entities: Array<Entity>;
 
     public constructor(
-        player: Player
+        player: Player, entities: Array<Entity>
     ) {
         super();
         this.player = player;
+        this.entities = entities.filter(e => !(e instanceof CollisionObject));
+        this.entities.forEach(e => {
+            e.removeCollision();
+        });
     }
 
     public update() {
-        this.player.update();
+        this.entities.forEach(e => {
+            e.update(this.entities);
+        });
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
             Game.switchView(new GameView('debug_level'));
         }

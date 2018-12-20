@@ -65,12 +65,18 @@ abstract class Entity {
         return this.collision;
     }
 
+    public removeCollision() {
+        this.collision = null;
+    }
+
     public update(entities: Array<Entity> = null): void {
         this.move(entities);
-        if (!(this instanceof CollisionObject)) {
-            this.getCollision().updateLocation(this.location);
+        if (this.getCollision()) {
+            if (!(this instanceof CollisionObject)) {
+                this.getCollision().updateLocation(this.location);
+            }
+            this.getCollision().draw();
         }
-        this.getCollision().draw();
         this.animationCounter++;
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)

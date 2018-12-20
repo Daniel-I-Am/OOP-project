@@ -148,7 +148,7 @@ class Player extends Entity {
             this.canvasHelper.offset.y -= 1*10**-17*dy**7
         }
 
-        if (this.location.y > 5000) this.kill()
+        if (this.location.y > 5000) this.kill(entites)
     }
 
 
@@ -175,7 +175,7 @@ class Player extends Entity {
             }
             if (e instanceof Enemy_Bertha &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
-                this.kill()
+                this.kill(collideWith)
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
@@ -237,7 +237,7 @@ class Player extends Entity {
         this.isLanded = state;
     }
 
-    private kill() {
+    private kill(entites: Array<Entity>) {
         this.setIsLanded(true);
         this.keyHelper.destroy();
         if (!this.isAlive) return
@@ -252,6 +252,6 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        Game.switchView(new GameOverView(this))
+        Game.switchView(new GameOverView(this, entites))
     }
 }

@@ -327,12 +327,17 @@ class Entity {
     getCollision() {
         return this.collision;
     }
+    removeCollision() {
+        this.collision = null;
+    }
     update(entities = null) {
         this.move(entities);
-        if (!(this instanceof CollisionObject)) {
-            this.getCollision().updateLocation(this.location);
+        if (this.getCollision()) {
+            if (!(this instanceof CollisionObject)) {
+                this.getCollision().updateLocation(this.location);
+            }
+            this.getCollision().draw();
         }
-        this.getCollision().draw();
         this.animationCounter++;
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
@@ -535,7 +540,7 @@ class Player extends Entity {
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
         }
         if (this.location.y > 5000)
-            this.kill();
+            this.kill(entites);
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -559,7 +564,7 @@ class Player extends Entity {
             }
             if (e instanceof Enemy_Bertha &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                this.kill();
+                this.kill(collideWith);
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
                 e.activated = true;
@@ -612,7 +617,7 @@ class Player extends Entity {
     setIsLanded(state) {
         this.isLanded = state;
     }
-    kill() {
+    kill(entites) {
         this.setIsLanded(true);
         this.keyHelper.destroy();
         if (!this.isAlive)
@@ -628,7 +633,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        Game.switchView(new GameOverView(this));
+        Game.switchView(new GameOverView(this, entites));
     }
 }
 class FallingTile extends Entity {
@@ -843,12 +848,18 @@ class SoundHelper {
     }
 }
 class GameOverView extends BaseView {
-    constructor(player) {
+    constructor(player, entities) {
         super();
         this.player = player;
+        this.entities = entities.filter(e => !(e instanceof CollisionObject));
+        this.entities.forEach(e => {
+            e.removeCollision();
+        });
     }
     update() {
-        this.player.update();
+        this.entities.forEach(e => {
+            e.update(this.entities);
+        });
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
             Game.switchView(new GameView('debug_level'));
         }
