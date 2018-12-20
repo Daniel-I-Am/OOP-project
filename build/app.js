@@ -743,13 +743,14 @@ class Trampoline extends Entity {
     move() { }
 }
 class SoundHelper {
-    constructor(src) {
+    constructor(src, volume = 1) {
         this.audioElem = document.createElement("audio");
         this.audioElem.setAttribute("preload", "auto");
         this.audioElem.setAttribute("controls", "none");
         this.audioElem.style.display = "none";
         this.state = PlayingStat.PLAYING;
         this.audioElem.src = src;
+        this.audioElem.volume = volume;
         this.audioElem.play();
     }
     play() {
