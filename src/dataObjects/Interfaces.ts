@@ -15,6 +15,7 @@ interface CollisionDirections {
 
 interface Level {
     background: string,
+    backgroundMusic: string,
     player: LevelPlayer,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,

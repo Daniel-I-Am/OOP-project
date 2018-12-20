@@ -360,6 +360,8 @@ class GameView extends BaseView {
     }
     makeLevel(levelJSON) {
         this.background.src = levelJSON.background;
+        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic);
+        this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
@@ -397,7 +399,9 @@ class GameView extends BaseView {
         this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 100, 75), "white");
         this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
     }
-    beforeExit() { }
+    beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
     onPause() {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }

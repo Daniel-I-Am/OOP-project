@@ -1,6 +1,7 @@
 class GameView extends BaseView {
     private entities: Array<Entity>;
     private player: Player;
+    private backgroundMusic: SoundHelper;
     private switchView: (newView: BaseView) => void;
 
     public constructor(levelName: string, switchView: (newView: BaseView) => void) {
@@ -18,6 +19,8 @@ class GameView extends BaseView {
 
     private makeLevel(levelJSON: Level) {
         this.background.src = levelJSON.background;
+        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic);
+        this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(
                 this.parseLocation(e.topLeft),
@@ -100,7 +103,9 @@ class GameView extends BaseView {
         this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
     }
 
-    public beforeExit(): void {}
+    public beforeExit(): void {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
 
     public onPause(): void {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black")
