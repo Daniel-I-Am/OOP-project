@@ -419,10 +419,17 @@ class TitleView extends BaseView {
             this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
+        let _listener = () => {
+            this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
+            window.removeEventListener('mousemove', _listener);
+        };
+        window.addEventListener('mousemove', _listener);
     }
     update() { }
     drawGUI() { }
-    beforeExit() { }
+    beforeExit() {
+        this.menuMusic.pause();
+    }
     onPause() { }
 }
 class Enemy extends Entity {

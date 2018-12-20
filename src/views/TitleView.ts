@@ -1,4 +1,6 @@
 class TitleView extends BaseView {
+    private menuMusic: SoundHelper;
+
     public constructor(
         buttonCallback: (event: MouseEvent) => void
     ) {
@@ -14,11 +16,17 @@ class TitleView extends BaseView {
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
-        //new SoundHelper("./assets/sounds/CupcakeRain.mp3")
+        let _listener = () => {
+            this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
+            window.removeEventListener('mousemove', _listener);
+        }
+        window.addEventListener('mousemove', _listener);
     }
     
     protected update() {}
     protected drawGUI() {}
-    public beforeExit() {}
+    public beforeExit() {
+        this.menuMusic.pause();
+    }
     public onPause() {}
 }
