@@ -137,4 +137,11 @@ class KeyHelper {
     public getInteractPressed(): boolean {
         return this.interactPressed;
     }
+    
+    /**
+     * Reset the jump state
+     */
+    public resetSpaceBar(): void {
+        this.spaceBarPressed = false;
+    }
 }

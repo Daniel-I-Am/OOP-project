@@ -183,6 +183,9 @@ class KeyHelper {
     getInteractPressed() {
         return this.interactPressed;
     }
+    resetSpaceBar() {
+        this.spaceBarPressed = false;
+    }
 }
 class MathHelper {
     static randomNumber(min, max, digits = 0) {
@@ -360,7 +363,7 @@ class GameView extends BaseView {
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
-        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, this.switchView);
+        this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps, this.switchView);
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -437,14 +440,16 @@ class Item extends Entity {
     move() { }
 }
 class Player extends Entity {
-    constructor(imageSources, location, size, gravity, acceleration, switchView) {
+    constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps, switchView) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
         this.isLanded = false;
         this.inventory = new Array();
-        this.jumpSpeed = 30;
+        this.maxJumps = maxJumps;
+        this.jumpCount = 0;
+        this.jumpSpeed = jumpHeight;
         this.isAlive = true;
         this.switchView = switchView;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
@@ -464,8 +469,12 @@ class Player extends Entity {
         if (this.keyHelper.getRightPressed() && this.velocity.x < this.maxSpeed) {
             this.velocity.x += this.acceleration;
         }
-        if (this.keyHelper.getSpaceBarPressed() && this.isLanded) {
+        if (this.isLanded)
+            this.jumpCount = 0;
+        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps) {
             this.velocity.y -= this.jumpSpeed;
+            this.keyHelper.resetSpaceBar();
+            this.jumpCount++;
         }
         this.velocity.y += this.gravity;
         if (this.isLanded) {
@@ -526,8 +535,10 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
-            if (e instanceof Trampoline && e.collide(this.bottomCollision))
+            if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
                 this.trampoline();
+                thisEntityCollision.bottom = false;
+            }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
                 e.activated = true;
             if (e instanceof Accelerator &&

@@ -28,7 +28,8 @@ interface LevelPlayer {
     location: LevelLocations,
     size: LevelSize,
     gravity: number,
-    maxJumps: number
+    maxJumps: number,
+    jumpHeight: number
 }
 
 interface LevelFallingTile {
