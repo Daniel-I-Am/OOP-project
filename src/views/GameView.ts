@@ -99,5 +99,4 @@ class GameView extends BaseView {
     }
 
     public beforeExit(): void {}
-
 }
