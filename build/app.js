@@ -734,7 +734,7 @@ Game.switchView = (newView) => {
     Game.currentView = newView;
 };
 function init() {
-    const game = Game.Instance(document.getElementById("canvas"));
+    Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
 class Accelerator extends Entity {
