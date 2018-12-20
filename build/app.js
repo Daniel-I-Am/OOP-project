@@ -170,6 +170,10 @@ class KeyHelper {
     destroy() {
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
+        this.leftPressed = false;
+        this.rightPressed = false;
+        this.upPressed = false;
+        this.downPressed = false;
     }
     getLeftPressed() {
         return this.leftPressed;

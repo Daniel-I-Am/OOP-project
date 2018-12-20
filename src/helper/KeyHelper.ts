@@ -28,6 +28,10 @@ class KeyHelper {
     public destroy(): void {
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
+        this.leftPressed = false;
+        this.rightPressed = false;
+        this.upPressed = false;
+        this.downPressed = false;
     }
 
     /**
