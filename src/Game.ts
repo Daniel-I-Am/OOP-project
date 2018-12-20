@@ -1,3 +1,4 @@
+///<reference path="dataObjects/Enums.ts"/>
 ///<reference path="helper/CanvasHelper.ts"/>
 ///<reference path="helper/KeyHelper.ts"/>
 ///<reference path="helper/MathHelper.ts"/>
@@ -17,6 +18,7 @@ class Game {
     private currentView: BaseView;
     private currentInterval: number;
     public static readonly DEBUG_MODE: boolean = true;
+    private static GAME_STATE: number = GameState.PAUSED;
     private static reputation: number;
 
     public constructor(canvas: HTMLElement) {
@@ -29,6 +31,7 @@ class Game {
     }
 
     private loop = (): void => {
+        if (Game.GAME_STATE == GameState.PAUSED) return;
         if (this.currentView) {
             if (this.currentView.getShouldClear())
                 this.canvasHelper.clear();

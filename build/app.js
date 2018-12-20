@@ -1,3 +1,21 @@
+var ItemId;
+(function (ItemId) {
+    ItemId[ItemId["NONE"] = 0] = "NONE";
+    ItemId[ItemId["BANDAGE"] = 1] = "BANDAGE";
+    ItemId[ItemId["IODINE"] = 2] = "IODINE";
+    ItemId[ItemId["WATER"] = 3] = "WATER";
+})(ItemId || (ItemId = {}));
+var PlayingStat;
+(function (PlayingStat) {
+    PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
+    PlayingStat[PlayingStat["PAUSED"] = 1] = "PAUSED";
+    PlayingStat[PlayingStat["STOPPED"] = 2] = "STOPPED";
+})(PlayingStat || (PlayingStat = {}));
+var GameState;
+(function (GameState) {
+    GameState[GameState["PAUSED"] = 0] = "PAUSED";
+    GameState[GameState["PLAYING"] = 1] = "PLAYING";
+})(GameState || (GameState = {}));
 class CanvasHelper {
     constructor(canvas) {
         this.canvas = canvas;
@@ -612,6 +630,8 @@ class FallingTile extends Entity {
 class Game {
     constructor(canvas) {
         this.loop = () => {
+            if (Game.GAME_STATE == GameState.PAUSED)
+                return;
             if (this.currentView) {
                 if (this.currentView.getShouldClear())
                     this.canvasHelper.clear();
@@ -637,24 +657,12 @@ class Game {
     }
 }
 Game.DEBUG_MODE = true;
+Game.GAME_STATE = GameState.PAUSED;
 let game;
 function init() {
     game = new Game(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
-var ItemId;
-(function (ItemId) {
-    ItemId[ItemId["NONE"] = 0] = "NONE";
-    ItemId[ItemId["BANDAGE"] = 1] = "BANDAGE";
-    ItemId[ItemId["IODINE"] = 2] = "IODINE";
-    ItemId[ItemId["WATER"] = 3] = "WATER";
-})(ItemId || (ItemId = {}));
-var PlayingStat;
-(function (PlayingStat) {
-    PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
-    PlayingStat[PlayingStat["PAUSED"] = 1] = "PAUSED";
-    PlayingStat[PlayingStat["STOPPED"] = 2] = "STOPPED";
-})(PlayingStat || (PlayingStat = {}));
 class Accelerator extends Entity {
     constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, yeet) {
         super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
