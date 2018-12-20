@@ -19,7 +19,7 @@ class GameView extends BaseView {
 
     private makeLevel(levelJSON: Level) {
         this.background.src = levelJSON.background;
-        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic);
+        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
         this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(
