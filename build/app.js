@@ -490,8 +490,8 @@ class Player extends Entity {
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
         this.leftCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(-this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
         this.rightCollision = new CollisionObject(this.location.copy().add(new Vector(this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
-        this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, this.size.y / 2)), this.rotation);
-        this.topCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, -this.size.x / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, -this.size.x / 2)), this.rotation);
+        this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 8, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 8, this.size.y / 2)), this.rotation);
+        this.topCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 8, -this.size.x / 2)), this.location.copy().add(new Vector(this.size.x / 8, -this.size.x / 2)), this.rotation);
         this.previousCollision = { left: false, right: false, top: false, bottom: false };
     }
     move(entites) {
