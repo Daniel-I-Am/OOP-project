@@ -32,22 +32,6 @@ class Enemy extends Entity {
             acceleration
         );
     }
-
-
-    /**
-     * Function to move the enemy right
-     */
-    public moveRight() {
-        this.velocity = new Vector(this.acceleration, 0)
-    }
-
-    /**
-     * Function to move the enemy left
-     */
-    public moveLeft() {
-        this.velocity = new Vector(this.acceleration, 0)
-    }
-
     /**
      *
      */

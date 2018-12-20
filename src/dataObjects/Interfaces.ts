@@ -17,6 +17,7 @@ interface Level {
     background: string,
     backgroundMusic: string,
     player: LevelPlayer,
+    bertha: LevelBertha,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,
@@ -31,6 +32,13 @@ interface LevelPlayer {
     gravity: number,
     maxJumps: number,
     jumpHeight: number
+}
+
+interface LevelBertha {
+    sprites: Array<string>,
+    location: LevelLocations,
+    size: LevelSize,
+    gravity: number
 }
 
 interface LevelFallingTile {

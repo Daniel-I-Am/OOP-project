@@ -372,6 +372,7 @@ class GameView extends BaseView {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
         this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps, this.switchView);
+        this.entities.push(new Enemy_Bertha(((levelJSON.bertha.sprites == null) ? undefined : levelJSON.bertha.sprites), this.parseLocation(levelJSON.bertha.location), new Vector(levelJSON.bertha.size.x, levelJSON.bertha.size.y), levelJSON.bertha.gravity));
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -436,12 +437,6 @@ class TitleView extends BaseView {
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, acceleration) {
         super([imageSource], new Vector(xPos, yPos), new Rotation(0), new Vector(width, height), gravity, undefined, 2, acceleration);
-    }
-    moveRight() {
-        this.velocity = new Vector(this.acceleration, 0);
-    }
-    moveLeft() {
-        this.velocity = new Vector(this.acceleration, 0);
     }
     move() {
         this.location.add(this.velocity);
@@ -551,6 +546,10 @@ class Player extends Entity {
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
                 this.trampoline();
                 thisEntityCollision.bottom = false;
+            }
+            if (e instanceof Enemy_Bertha &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
+                this.kill();
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
                 e.activated = true;
@@ -746,6 +745,38 @@ class CollisionObject extends Entity {
         return false;
     }
     move() { }
+}
+class Enemy_Bertha extends Entity {
+    constructor(imageSources = ["./assets/images/bertha.png"], location, size, gravity) {
+        super(imageSources, location, new Rotation(0), size, gravity, undefined, 2);
+        this.walkSpeed = 3;
+        this.landed = false;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.velocity.x = this.walkSpeed;
+    }
+    move(entities) {
+        this.landed = false;
+        entities.forEach(e => {
+            if (this.collide(e) && e !== this) {
+                this.landed = true;
+            }
+        });
+        if (!this.landed) {
+            this.velocity.x *= -1;
+        }
+        else {
+            this.velocity.y = 0;
+        }
+        this.location.add(this.velocity);
+        entities.forEach(e => {
+            if (this.collide(e) && e !== this) {
+                this.landed = true;
+            }
+        });
+        if (!this.landed) {
+            this.velocity.y += this.gravity;
+        }
+    }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {

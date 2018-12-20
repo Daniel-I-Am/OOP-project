@@ -38,6 +38,12 @@ class GameView extends BaseView {
             levelJSON.player.maxJumps,
             this.switchView
         );
+        this.entities.push(new Enemy_Bertha(
+            ((levelJSON.bertha.sprites == null) ? undefined : levelJSON.bertha.sprites),
+            this.parseLocation(levelJSON.bertha.location),
+            new Vector(levelJSON.bertha.size.x, levelJSON.bertha.size.y),
+            levelJSON.bertha.gravity,
+        ));
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(
                 ((e.sprites == null) ? undefined : e.sprites),
