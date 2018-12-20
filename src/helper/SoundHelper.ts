@@ -16,6 +16,10 @@ class SoundHelper {
     public play() {
         this.audioElem.play();
     }
+
+    public toggleLoop() {
+        this.audioElem.loop = !this.audioElem.loop;
+    }
     
     public pause(state: number = null): void {
         if (this.state == PlayingStat.STOPPED) return;
