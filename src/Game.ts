@@ -14,41 +14,48 @@
 ///<reference path="entity/FallingTile.ts"/>
 
 class Game {
+    private static instance: Game;
+
     private canvasHelper: CanvasHelper;
-    private currentView: BaseView;
+    private static currentView: BaseView;
     private currentInterval: number;
     public static readonly DEBUG_MODE: boolean = true;
     private static GAME_STATE: number = GameState.PAUSED;
     private static reputation: number;
 
-    public constructor(canvas: HTMLElement) {
+    private constructor(canvas: HTMLElement) {
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView(
-            () => {Game.pause(); this.switchView(new GameView("debug_level", this.switchView))}
+        Game.currentView = new TitleView(
+            () => {Game.pause(); Game.switchView(new GameView("debug_level"))}
         );
         this.currentInterval = setInterval(this.loop, 33);
     }
 
+    public static Instance(canvas: HTMLElement = null): Game {
+        if (!this.instance) this.instance = new Game(canvas)
+        return this.instance;
+    }
+
     private loop = (): void => {
         if (Game.GAME_STATE == GameState.PAUSED) {
-            this.currentView.onPause();
+            Game.currentView.onPause();
             return;
         }
-        if (this.currentView) {
-            if (this.currentView.getShouldClear())
+        if (Game.currentView) {
+            if (Game.currentView.getShouldClear())
                 this.canvasHelper.clear();
-            this.currentView.tick();
+            Game.currentView.tick();
         }
     }
 
-    private switchView = (
+    public static switchView = (
         newView: BaseView,
     ): void => {
-        if (this.currentView) {
-            this.currentView.beforeExit();
+        if (Game.currentView) {
+            Game.currentView.beforeExit();
         }
-        this.currentView = newView;
+        Game.currentView = newView;
     }
 
     public static getReputation(): number {
@@ -65,9 +72,8 @@ class Game {
     }
 }
 
-let game: Game;
 function init() {
-    game = new Game(document.getElementById("canvas"));
+    const game = Game.Instance(document.getElementById("canvas"));
 }
 
 window.addEventListener('load', init);

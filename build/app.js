@@ -676,25 +676,24 @@ class Game {
     constructor(canvas) {
         this.loop = () => {
             if (Game.GAME_STATE == GameState.PAUSED) {
-                this.currentView.onPause();
+                Game.currentView.onPause();
                 return;
             }
-            if (this.currentView) {
-                if (this.currentView.getShouldClear())
+            if (Game.currentView) {
+                if (Game.currentView.getShouldClear())
                     this.canvasHelper.clear();
-                this.currentView.tick();
+                Game.currentView.tick();
             }
-        };
-        this.switchView = (newView) => {
-            if (this.currentView) {
-                this.currentView.beforeExit();
-            }
-            this.currentView = newView;
         };
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView(() => { Game.pause(); this.switchView(new GameView("debug_level", this.switchView)); });
+        Game.currentView = new TitleView(() => { Game.pause(); Game.switchView(new GameView("debug_level")); });
         this.currentInterval = setInterval(this.loop, 33);
+    }
+    static Instance(canvas = null) {
+        if (!this.instance)
+            this.instance = new Game(canvas);
+        return this.instance;
     }
     static getReputation() {
         return this.reputation;
@@ -711,9 +710,14 @@ class Game {
 }
 Game.DEBUG_MODE = true;
 Game.GAME_STATE = GameState.PAUSED;
-let game;
+Game.switchView = (newView) => {
+    if (Game.currentView) {
+        Game.currentView.beforeExit();
+    }
+    Game.currentView = newView;
+};
 function init() {
-    game = new Game(document.getElementById("canvas"));
+    const game = Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
 class Accelerator extends Entity {
