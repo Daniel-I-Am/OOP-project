@@ -98,9 +98,14 @@ class GameView extends BaseView {
             this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black")
             this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black")
         }
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 201, 49), new Vector(this.canvasHelper.getWidth() - 99, 76), "black");
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 100, 75), "white");
-        this.canvasHelper.fillRect(new Vector(this.canvasHelper.getWidth() - 200, 50), new Vector(this.canvasHelper.getWidth() - 200 + 100 * Game.getReputation(), 75), "green");
+        this.canvasHelper.addProgressBar(
+            new Vector(this.canvasHelper.getWidth()-100, 20),
+            new Vector(180, 20),
+            "green",
+            "white",
+            "black",
+            Game.getReputation()
+        );
     }
 
     public beforeExit(): void {
