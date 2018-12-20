@@ -14,6 +14,7 @@ class TitleView extends BaseView {
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
+        //new SoundHelper("./assets/sounds/CupcakeRain.mp3")
     }
     
     protected update() {}
