@@ -413,6 +413,7 @@ class GameView extends BaseView {
 class TitleView extends BaseView {
     constructor(buttonCallback) {
         super();
+        this.active = true;
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
@@ -421,6 +422,8 @@ class TitleView extends BaseView {
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
             window.removeEventListener('mousemove', _listener);
+            if (!this.active)
+                return;
             this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
             this.menuMusic.toggleLoop();
         };
@@ -429,6 +432,8 @@ class TitleView extends BaseView {
     update() { }
     drawGUI() { }
     beforeExit() {
+        this.active = false;
+        if (this.menuMusic)
         this.menuMusic.pause();
     }
     onPause() { }
