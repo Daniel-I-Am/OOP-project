@@ -160,7 +160,7 @@ class Player extends Entity {
         this.topCollision.updateLocation(this.location.copy().add(new Vector(0, -this.size.y/2)));
         this.bottomCollision.updateLocation(this.location.copy().add(new Vector(0, this.size.y/2)));
         let returnValue = {left: false, right: false, bottom: false, top: false}
-        if (collideWith == null) return returnValue;
+        if (collideWith == null || !this.isAlive) return returnValue;
         collideWith.forEach(e => {
             if (e instanceof Player) return;
             
@@ -238,9 +238,8 @@ class Player extends Entity {
     }
 
     private kill(entites: Array<Entity>) {
-        this.setIsLanded(true);
         this.keyHelper.destroy();
-        if (!this.isAlive) return
+        this.setIsLanded(true);
         this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav")
         this.velocity.x = 0;

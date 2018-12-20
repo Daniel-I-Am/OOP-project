@@ -555,7 +555,7 @@ class Player extends Entity {
         this.topCollision.updateLocation(this.location.copy().add(new Vector(0, -this.size.y / 2)));
         this.bottomCollision.updateLocation(this.location.copy().add(new Vector(0, this.size.y / 2)));
         let returnValue = { left: false, right: false, bottom: false, top: false };
-        if (collideWith == null)
+        if (collideWith == null || !this.isAlive)
             return returnValue;
         collideWith.forEach(e => {
             if (e instanceof Player)
@@ -625,10 +625,8 @@ class Player extends Entity {
         this.isLanded = state;
     }
     kill(entites) {
-        this.setIsLanded(true);
         this.keyHelper.destroy();
-        if (!this.isAlive)
-            return;
+        this.setIsLanded(true);
         this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav");
         this.velocity.x = 0;
@@ -874,6 +872,7 @@ class GameOverView extends BaseView {
             e.draw();
         });
         this.player.update();
+        console.log(this.player['isLanded']);
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
             Game.switchView(new GameView('debug_level'));
         }
