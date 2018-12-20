@@ -18,7 +18,7 @@ class Accelerator extends Entity{
         )
     }
 
-    protected move(): void{}
+    protected move(): void {}
 
     public getYeet(): number {
         return this.yeet;

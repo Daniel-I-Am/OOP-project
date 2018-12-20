@@ -200,7 +200,7 @@ class Player extends Entity {
     }
 
     public boost(booster: Accelerator) {
-        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
+        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRot().getValue());
     }
 
     public trampoline(entity: Trampoline) {

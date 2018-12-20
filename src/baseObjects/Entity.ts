@@ -89,6 +89,10 @@ abstract class Entity {
         this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
     }
 
+    /**
+     * Called once per update, needs to handle movement and collision
+     * @param entites List of entities to collide with
+     */
     protected abstract move(entites: Array<Entity>): void;
 
     // Getters & Setters

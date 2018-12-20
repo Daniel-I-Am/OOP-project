@@ -41,22 +41,22 @@ class Enemy_Bertha extends Entity {
         this.landed = false;
         
         entities.forEach(e => {
-            if(this.collide(e) && e !== this){
+            if(this.collide(e) && e !== this) {
                 this.landed = true;
             }
         })
-        if(!this.landed){
+        if(!this.landed) {
             this.velocity.x *=-1;
         } else {
             this.velocity.y = 0;
         }
         this.location.add(this.velocity)
         entities.forEach(e => {
-            if(this.collide(e) && e !== this){
+            if(this.collide(e) && e !== this) {
                 this.landed = true;
             }
         })
-        if(!this.landed){
+        if(!this.landed) {
             this.velocity.y += this.gravity;
         }
     }
