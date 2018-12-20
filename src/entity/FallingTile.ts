@@ -34,6 +34,7 @@ class FallingTile extends Entity{
             entites.forEach(e => {
                 if (e.collide(this)) {
                     if (e == this) return;
+                    if (e instanceof Player) return;
                     this.alive = false;
                 }
             });
