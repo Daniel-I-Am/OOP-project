@@ -471,11 +471,8 @@ class Player extends Entity {
         }
         if (this.isLanded)
             this.jumpCount = 0;
-        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps) {
-            this.velocity.y -= this.jumpSpeed;
-            this.keyHelper.resetSpaceBar();
-            this.jumpCount++;
-        }
+        if (this.keyHelper.getSpaceBarPressed() && this.jumpCount < this.maxJumps)
+            this.jump();
         this.velocity.y += this.gravity;
         if (this.isLanded) {
             this.velocity.y = Math.min(this.velocity.y, 0);
@@ -566,6 +563,12 @@ class Player extends Entity {
     }
     trampoline() {
         this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
+    }
+    jump() {
+        new SoundHelper("./assets/sounds/jump.wav");
+        this.velocity.y -= this.jumpSpeed;
+        this.keyHelper.resetSpaceBar();
+        this.jumpCount++;
     }
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
