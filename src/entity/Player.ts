@@ -172,7 +172,7 @@ class Player extends Entity {
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                this.trampoline();
+                this.trampoline(e);
                 thisEntityCollision.bottom = false;
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
@@ -201,9 +201,9 @@ class Player extends Entity {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
     }
 
-    public trampoline() {
+    public trampoline(entity: Trampoline) {
         new SoundHelper("./assets/sounds/jump.wav")
-        this.velocity = new Vector(this.velocity.x,-this.velocity.y-5);
+        this.velocity = new Vector(this.velocity.x,-this.velocity.y-5).rotate(entity.getRot().getValue());
     }
 
     private jump() {

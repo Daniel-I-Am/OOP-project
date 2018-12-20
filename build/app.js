@@ -352,7 +352,7 @@ class Entity {
     }
     getRot() {
         return this.rotation;
-}
+    }
 }
 class GameView extends BaseView {
     constructor(levelName, switchView) {
@@ -437,7 +437,7 @@ class TitleView extends BaseView {
     beforeExit() {
         this.active = false;
         if (this.menuMusic)
-        this.menuMusic.pause();
+            this.menuMusic.pause();
     }
     onPause() { }
 }
@@ -557,7 +557,7 @@ class Player extends Entity {
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                this.trampoline();
+                this.trampoline(e);
                 thisEntityCollision.bottom = false;
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
@@ -585,9 +585,9 @@ class Player extends Entity {
     boost(booster) {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
     }
-    trampoline() {
+    trampoline(entity) {
         new SoundHelper("./assets/sounds/jump.wav");
-        this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5);
+        this.velocity = new Vector(this.velocity.x, -this.velocity.y - 5).rotate(entity.getRot().getValue());
     }
     jump() {
         new SoundHelper("./assets/sounds/jump.wav");
