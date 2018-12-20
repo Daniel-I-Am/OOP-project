@@ -649,6 +649,12 @@ var ItemId;
     ItemId[ItemId["IODINE"] = 2] = "IODINE";
     ItemId[ItemId["WATER"] = 3] = "WATER";
 })(ItemId || (ItemId = {}));
+var PlayingStat;
+(function (PlayingStat) {
+    PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
+    PlayingStat[PlayingStat["PAUSED"] = 1] = "PAUSED";
+    PlayingStat[PlayingStat["STOPPED"] = 2] = "STOPPED";
+})(PlayingStat || (PlayingStat = {}));
 class Accelerator extends Entity {
     constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, yeet) {
         super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
@@ -695,12 +701,6 @@ class Trampoline extends Entity {
     }
     move() { }
 }
-var PlayingStat;
-(function (PlayingStat) {
-    PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
-    PlayingStat[PlayingStat["PAUSED"] = 1] = "PAUSED";
-    PlayingStat[PlayingStat["STOPPED"] = 2] = "STOPPED";
-})(PlayingStat || (PlayingStat = {}));
 class SoundHelper {
     constructor(src) {
         this.audioElem = document.createElement("audio");
