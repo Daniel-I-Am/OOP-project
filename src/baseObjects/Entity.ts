@@ -14,6 +14,9 @@ abstract class Entity {
     protected gravity: number;
     protected canvasHelper: CanvasHelper;
     protected collision: CollisionObject;
+    public shouldCollide: boolean = true;
+    protected drawOnDeath: boolean = true;
+    protected isAlive: boolean = true;
 
     protected constructor(
         imageSources: Array<string> = ["./assets/images/default.png"],
@@ -81,7 +84,8 @@ abstract class Entity {
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage+1) % this.images.length;
-        this.draw();
+        if (this.drawOnDeath || this.isAlive)
+            this.draw();
     };
 
     public draw(): void {
@@ -110,5 +114,17 @@ abstract class Entity {
 
     public getRot(): Rotation {
         return this.rotation;
+    }
+
+    public getAlive(): boolean {
+        return this.isAlive;
+    }
+
+    public kill(): void {
+        this.isAlive = false;
+    }
+
+    public revive(): void {
+        this.isAlive = true;
     }
 }

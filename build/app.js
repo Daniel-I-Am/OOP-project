@@ -291,6 +291,9 @@ class BaseView {
 }
 class Entity {
     constructor(imageSources = ["./assets/images/default.png"], location, rotation, size, gravity = 0, velocity = new Vector(0, 0), acceleration = 0, maxSpeed = 0, direction = new Rotation(0)) {
+        this.shouldCollide = true;
+        this.drawOnDeath = true;
+        this.isAlive = true;
         this.canvasHelper = CanvasHelper.Instance();
         this.images = new Array();
         this.activeImage = 0;
@@ -339,6 +342,7 @@ class Entity {
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage + 1) % this.images.length;
+        if (this.drawOnDeath || this.isAlive)
         this.draw();
     }
     ;
@@ -358,6 +362,15 @@ class Entity {
     }
     getRot() {
         return this.rotation;
+    }
+    getAlive() {
+        return this.isAlive;
+}
+    kill() {
+        this.isAlive = false;
+    }
+    revive() {
+        this.isAlive = true;
     }
 }
 class GameView extends BaseView {
