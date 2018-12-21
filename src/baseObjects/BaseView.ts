@@ -26,7 +26,7 @@ abstract class BaseView {
      * Draws background
      */
     protected drawBackground(): void {
-        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
+        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
     }
 
     /**

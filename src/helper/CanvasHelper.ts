@@ -114,6 +114,7 @@ class CanvasHelper {
         location: Vector,
         rotation: Rotation,
         size: Vector,
+        scale: Vector = new Vector(1, 1),
         isCentered: boolean = true,
         isGUI: boolean = false,
         opacity: number = 1,
@@ -126,6 +127,7 @@ class CanvasHelper {
             this.ctx.translate(location.x, location.y);
         }
         this.ctx.rotate(rotation.getValue());
+        this.ctx.scale(scale.x, scale.y);
         if (Math.min(...size.toArray()) < 0) {
             if (isCentered)
                 this.ctx.drawImage(image, -image.width/2, -image.height/2);

@@ -112,7 +112,7 @@ class CanvasHelper {
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)), emptyColor);
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), new Vector(location.x - size.x * .5 + 1 + filledPct * (size.x - 1), location.y + size.y * .5 - 1), filledColor);
     }
-    drawImage(image, location, rotation, size, isCentered = true, isGUI = false, opacity = 1) {
+    drawImage(image, location, rotation, size, scale = new Vector(1, 1), isCentered = true, isGUI = false, opacity = 1) {
         this.ctx.save();
         this.ctx.globalAlpha = opacity;
         if (!isGUI) {
@@ -122,6 +122,7 @@ class CanvasHelper {
             this.ctx.translate(location.x, location.y);
         }
         this.ctx.rotate(rotation.getValue());
+        this.ctx.scale(scale.x, scale.y);
         if (Math.min(...size.toArray()) < 0) {
             if (isCentered)
                 this.ctx.drawImage(image, -image.width / 2, -image.height / 2);
@@ -330,7 +331,7 @@ class BaseView {
         this.drawGUI();
     }
     drawBackground() {
-        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
+        this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
     }
     getBackground() {
         return this.background;
@@ -399,7 +400,7 @@ class Entity {
     draw() {
         if (this.images.length <= 0)
             return;
-        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined));
     }
     getSize() {
         return this.size;
@@ -888,11 +889,11 @@ class Player extends Entity {
     }
     drawInventory() {
         this.inventory.forEach((e, i) => {
-            this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), true, true);
+            this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), undefined, true, true);
         });
     }
     drawOverlay() {
-        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, undefined, undefined, this.fireCounter / 150 * .6);
+        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, undefined, undefined, undefined, this.fireCounter / 150 * .6);
     }
     setIsLanded(state) {
         this.isLanded = state;
