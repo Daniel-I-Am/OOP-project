@@ -343,7 +343,7 @@ class Entity {
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage + 1) % this.images.length;
         if (this.drawOnDeath || this.isAlive)
-        this.draw();
+            this.draw();
     }
     ;
     draw() {
@@ -365,7 +365,7 @@ class Entity {
     }
     getAlive() {
         return this.isAlive;
-}
+    }
     kill() {
         this.isAlive = false;
     }
@@ -472,24 +472,36 @@ class Enemy extends Entity {
 }
 class Item extends Entity {
     constructor(imageSource, location, rotation, size, name) {
-        super([imageSource], location, rotation, size);
-        this.id = (Item.itemIDs.map((e) => {
+        let itemData = (Item.itemIDs.map((e) => {
             if (e.internalName == name)
                 return e;
             return null;
         })).filter(e => {
             return e;
         })[0] || Item.itemIDs[0];
+        super([itemData.spriteSrc], location, rotation, size);
+        this.drawOnDeath = false;
+        this.isAlive = true;
+        this.shouldCollide = false;
+        this.itemData = itemData;
+        this.itemID = Item.itemIDs.map((e, i) => {
+            if (e === itemData)
+                return i;
+            return 0;
+        }).reduce((s, e) => { return s + e; });
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() {
         const d = new Date();
         this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
     }
+    getItemID() {
+        return this.itemID;
+    }
 }
 Item.itemIDs = [
     { internalName: "none", displayName: "None", spriteSrc: null },
-    { internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/bandage.png" },
+    { internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png" },
     { internalName: "", displayName: "", spriteSrc: "" },
 ];
 class Player extends Entity {
@@ -566,7 +578,7 @@ class Player extends Entity {
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
         }
         if (this.location.y > 5000)
-            this.kill(entites);
+            this.playerKill(entites);
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -579,6 +591,9 @@ class Player extends Entity {
         collideWith.forEach(e => {
             if (e instanceof Player)
                 return;
+            this.interact(e);
+            if (!e.shouldCollide)
+                return;
             let thisEntityCollision = { left: false, right: false, top: false, bottom: false };
             thisEntityCollision.left = e.collide(this.leftCollision);
             thisEntityCollision.right = e.collide(this.rightCollision);
@@ -590,7 +605,7 @@ class Player extends Entity {
             }
             if (e instanceof Enemy_Bertha &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                this.kill(collideWith);
+                this.playerKill(collideWith);
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
                 e.activated = true;
@@ -628,26 +643,30 @@ class Player extends Entity {
         this.jumpCount++;
     }
     interact(entity) {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
+            entity.kill();
+            this.inventory.push(this.newInventoryItem(entity.getItemID()));
             console.log('interacting');
             console.log(this.inventory);
         }
     }
-    newInventoryItem(name) {
+    newInventoryItem(id) {
         return {
-            id: this.inventory.length - 1,
-            name: name
+            id: id,
+            internalName: Item.itemIDs[id].internalName,
+            displayName: Item.itemIDs[id].displayName,
+            spriteSrc: Item.itemIDs[id].spriteSrc
         };
     }
     setIsLanded(state) {
         this.isLanded = state;
     }
-    kill(entites) {
+    playerKill(entites) {
         if (!this.isAlive)
             return;
         this.keyHelper.destroy();
         this.setIsLanded(true);
-        this.isAlive = false;
+        this.kill();
         new SoundHelper("./assets/sounds/GameOver.wav");
         this.velocity.x = 0;
         this.velocity.y = 0;

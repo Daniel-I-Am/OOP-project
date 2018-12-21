@@ -6,7 +6,6 @@ class Player extends Entity {
     private jumpSpeed: number;
     private maxJumps: number;
     private jumpCount: number;
-    private isAlive: boolean;
 
     private leftCollision: CollisionObject;
     private rightCollision: CollisionObject;
@@ -148,7 +147,7 @@ class Player extends Entity {
             this.canvasHelper.offset.y -= 1*10**-17*dy**7
         }
 
-        if (this.location.y > 5000) this.kill(entites)
+        if (this.location.y > 5000) this.playerKill(entites)
     }
 
 
@@ -163,6 +162,8 @@ class Player extends Entity {
         if (collideWith == null || !this.isAlive) return returnValue;
         collideWith.forEach(e => {
             if (e instanceof Player) return;
+            this.interact(e);
+            if (!e.shouldCollide) return;
             
             let thisEntityCollision = {left: false, right: false, top: false, bottom: false}
             thisEntityCollision.left = e.collide(this.leftCollision);
@@ -175,7 +176,7 @@ class Player extends Entity {
             }
             if (e instanceof Enemy_Bertha &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
-                this.kill(collideWith)
+                this.playerKill(collideWith)
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
@@ -219,17 +220,20 @@ class Player extends Entity {
      * Function to interact
      */
     public interact(entity: Entity): void {
-        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
-            // this.inventory.push(this.newInventoryItem(entity.name))
+        if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
+            entity.kill();
+            this.inventory.push(this.newInventoryItem(entity.getItemID()))
             console.log('interacting');
             console.log(this.inventory)
         }
     }
 
-    private newInventoryItem(name: string): InventoryItem {
+    private newInventoryItem(id: number): InventoryItem {
         return {
-            id: this.inventory.length - 1,
-            name: name
+            id: id,
+            internalName: Item.itemIDs[id].internalName,
+            displayName: Item.itemIDs[id].displayName,
+            spriteSrc: Item.itemIDs[id].spriteSrc
         }
     }
 
@@ -237,11 +241,11 @@ class Player extends Entity {
         this.isLanded = state;
     }
 
-    private kill(entites: Array<Entity>) {
+    private playerKill(entites: Array<Entity>) {
         if (!this.isAlive) return
         this.keyHelper.destroy();
         this.setIsLanded(true);
-        this.isAlive = false;
+        this.kill()
         new SoundHelper("./assets/sounds/GameOver.wav")
         this.velocity.x = 0;
         this.velocity.y = 0;

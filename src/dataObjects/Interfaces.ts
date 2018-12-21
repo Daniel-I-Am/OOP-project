@@ -3,7 +3,9 @@
 
 interface InventoryItem {
     id: number,
-    name: string,
+    internalName: string,
+    displayName: string,
+    spriteSrc: string,
 }
 
 interface ItemDefinition {
