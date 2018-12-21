@@ -579,6 +579,7 @@ class Player extends Entity {
         }
         if (this.location.y > 5000)
             this.playerKill(entites);
+        this.drawInventory();
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -658,6 +659,11 @@ class Player extends Entity {
             internalName: Item.itemIDs[id].internalName,
             displayName: Item.itemIDs[id].displayName,
             image: img
+        });
+    }
+    drawInventory() {
+        this.inventory.forEach((e, i) => {
+            this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), true, true);
         });
     }
     setIsLanded(state) {

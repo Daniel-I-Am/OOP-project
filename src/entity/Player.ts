@@ -148,6 +148,7 @@ class Player extends Entity {
         }
 
         if (this.location.y > 5000) this.playerKill(entites)
+        this.drawInventory();
     }
 
 
@@ -237,7 +238,19 @@ class Player extends Entity {
             displayName: Item.itemIDs[id].displayName,
             image: img
         });
-        }
+    }
+
+    private drawInventory(): void {
+        this.inventory.forEach((e, i) => {
+            this.canvasHelper.drawImage(
+                e.image,
+                new Vector(this.canvasHelper.getWidth() - 50*(i+1), 70),
+                new Rotation(0),
+                new Vector(50, 50),
+                true,
+                true
+            );
+        });
     }
 
     public setIsLanded(state: boolean): void    {
