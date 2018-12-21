@@ -1,10 +1,3 @@
-var ItemId;
-(function (ItemId) {
-    ItemId[ItemId["NONE"] = 0] = "NONE";
-    ItemId[ItemId["BANDAGE"] = 1] = "BANDAGE";
-    ItemId[ItemId["IODINE"] = 2] = "IODINE";
-    ItemId[ItemId["WATER"] = 3] = "WATER";
-})(ItemId || (ItemId = {}));
 var PlayingStat;
 (function (PlayingStat) {
     PlayingStat[PlayingStat["PLAYING"] = 0] = "PLAYING";
@@ -468,7 +461,13 @@ class Enemy extends Entity {
 class Item extends Entity {
     constructor(imageSource, location, rotation, size, name) {
         super([imageSource], location, rotation, size);
-        this.name = name;
+        this.id = (Item.itemIDs.map((e) => {
+            if (e.internalName == name)
+                return e;
+            return null;
+        })).filter(e => {
+            return e;
+        })[0] || Item.itemIDs[0];
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() {
@@ -476,6 +475,11 @@ class Item extends Entity {
         this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
     }
 }
+Item.itemIDs = [
+    { internalName: "none", displayName: "None", spriteSrc: null },
+    { internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/bandage.png" },
+    { internalName: "", displayName: "", spriteSrc: "" },
+];
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
@@ -613,7 +617,6 @@ class Player extends Entity {
     }
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
-            this.inventory.push(this.newInventoryItem(entity.name));
             console.log('interacting');
             console.log(this.inventory);
         }
