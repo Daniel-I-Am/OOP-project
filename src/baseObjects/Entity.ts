@@ -72,6 +72,8 @@ abstract class Entity {
         this.collision = null;
     }
 
+    public abstract onPlayerCollision(player: Player): void;
+
     public update(entities: Array<Entity> = null): void {
         this.move(entities);
         if (this.getCollision()) {
