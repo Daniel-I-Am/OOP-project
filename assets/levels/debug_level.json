@@ -69,6 +69,26 @@
             "gravity": 1
         }
     ],
+    "Fires": [
+        {
+            "sprites": null,
+            "location": {
+                "x":{
+                    "center": false,
+                    "offset": 670
+                },
+                "y":{
+                    "center": false,
+                    "offset": 1700
+                }
+            },
+            "rotation": 0,
+            "size":{
+                "x": 340,
+                "y": 440
+            }
+        }
+    ],
     "FallingTiles": [
         {
             "sprites": null,

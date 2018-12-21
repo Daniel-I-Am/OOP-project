@@ -9,6 +9,72 @@ var GameState;
     GameState[GameState["PAUSED"] = 0] = "PAUSED";
     GameState[GameState["PLAYING"] = 1] = "PLAYING";
 })(GameState || (GameState = {}));
+class Rotation {
+    constructor(value, isRadian = false) {
+        if (isRadian)
+            this.value = value;
+        else
+            this.value = MathHelper.toRadian(value);
+    }
+    getValue() {
+        return this.value;
+    }
+    getDegree() {
+        return this.value * (180 / Math.PI);
+    }
+}
+class Vector {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    copy() {
+        return new Vector(this.x, this.y);
+    }
+    toArray() {
+        return [this.x, this.y];
+    }
+    getSize() {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+    add(vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        return this;
+    }
+    sub(vector) {
+        return this.add(vector.multiply(-1));
+    }
+    multiply(scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
+        return this;
+    }
+    normalize() {
+        this.multiply(1 / this.getSize());
+        return this;
+    }
+    max(n) {
+        if (this.getSize() > n)
+            this.multiply(n / this.getSize());
+        return this;
+    }
+    min(n) {
+        if (this.getSize() < n)
+            this.multiply(n / this.getSize());
+        return this;
+    }
+    rotate(radians) {
+        let myValue = this.toArray();
+        let x = myValue[0], y = myValue[1];
+        this.x = x * Math.cos(radians) - y * Math.sin(radians);
+        this.y = x * Math.sin(radians) + y * Math.cos(radians);
+        return this;
+    }
+    toString() {
+        return `[${this.toArray().map(e => e.toString()).join(", ")}]`;
+    }
+}
 class CanvasHelper {
     constructor(canvas) {
         this.canvas = canvas;
@@ -208,70 +274,45 @@ class MathHelper {
         return Math.floor(n * (Math.pow(10, digits))) / (Math.pow(10, digits));
     }
 }
-class Rotation {
-    constructor(value, isRadian = false) {
-        if (isRadian)
-            this.value = value;
-        else
-            this.value = MathHelper.toRadian(value);
+class SoundHelper {
+    constructor(src, volume = 1) {
+        this.audioElem = document.createElement("audio");
+        this.audioElem.setAttribute("preload", "auto");
+        this.audioElem.setAttribute("controls", "none");
+        this.audioElem.style.display = "none";
+        this.state = PlayingStat.PLAYING;
+        this.audioElem.src = src;
+        this.audioElem.volume = volume;
+        this.audioElem.play();
     }
-    getValue() {
-        return this.value;
+    play() {
+        this.audioElem.play();
     }
-    getDegree() {
-        return this.value * (180 / Math.PI);
+    toggleLoop() {
+        this.audioElem.loop = !this.audioElem.loop;
     }
-}
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    copy() {
-        return new Vector(this.x, this.y);
-    }
-    toArray() {
-        return [this.x, this.y];
-    }
-    getSize() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-    }
-    add(vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        return this;
-    }
-    sub(vector) {
-        return this.add(vector.multiply(-1));
-    }
-    multiply(scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        return this;
-    }
-    normalize() {
-        this.multiply(1 / this.getSize());
-        return this;
-    }
-    max(n) {
-        if (this.getSize() > n)
-            this.multiply(n / this.getSize());
-        return this;
-    }
-    min(n) {
-        if (this.getSize() < n)
-            this.multiply(n / this.getSize());
-        return this;
-    }
-    rotate(radians) {
-        let myValue = this.toArray();
-        let x = myValue[0], y = myValue[1];
-        this.x = x * Math.cos(radians) - y * Math.sin(radians);
-        this.y = x * Math.sin(radians) + y * Math.cos(radians);
-        return this;
-    }
-    toString() {
-        return `[${this.toArray().map(e => e.toString()).join(", ")}]`;
+    pause(state = null) {
+        if (this.state == PlayingStat.STOPPED)
+            return;
+        if (state) {
+            switch (state) {
+                case PlayingStat.PLAYING:
+                    this.audioElem.play();
+                    break;
+                case PlayingStat.PAUSED:
+                    this.audioElem.pause();
+                    break;
+            }
+            return;
+        }
+        if (this.state == PlayingStat.PLAYING) {
+            this.state = PlayingStat.PAUSED;
+            this.audioElem.pause();
+        }
+        else if (this.state == PlayingStat.PAUSED) {
+            this.state = PlayingStat.PLAYING;
+            this.audioElem.play();
+        }
     }
 }
 class BaseView {
@@ -378,6 +419,34 @@ class Entity {
         this.isAlive = true;
     }
 }
+class TitleView extends BaseView {
+    constructor(buttonCallback) {
+        super();
+        this.active = true;
+        this.shouldClear = false;
+        let buttonImage = new Image();
+        buttonImage.addEventListener('load', () => {
+            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
+        });
+        buttonImage.src = "./assets/images/buttonGreen.png";
+        let _listener = () => {
+            window.removeEventListener('mousemove', _listener);
+            if (!this.active)
+                return;
+            this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
+            this.menuMusic.toggleLoop();
+        };
+        window.addEventListener('mousemove', _listener);
+    }
+    update() { }
+    drawGUI() { }
+    beforeExit() {
+        this.active = false;
+        if (this.menuMusic)
+            this.menuMusic.pause();
+    }
+    onPause() { }
+}
 class GameView extends BaseView {
     constructor(levelName) {
         super();
@@ -400,6 +469,9 @@ class GameView extends BaseView {
         this.player = new Player(levelJSON.player.sprites, this.parseLocation(levelJSON.player.location), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
         levelJSON.berthas.forEach(e => {
             this.entities.push(new Enemy_Bertha(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Vector(e.size.x, e.size.y), e.gravity));
+        });
+        levelJSON.Fires.forEach(e => {
+            this.entities.push(new Fire(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(0), new Vector(e.size.x, e.size.y), 0));
         });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
@@ -439,33 +511,72 @@ class GameView extends BaseView {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }
 }
-class TitleView extends BaseView {
-    constructor(buttonCallback) {
+class GameOverView extends BaseView {
+    constructor(player, entities, background) {
         super();
-        this.active = true;
-        this.shouldClear = false;
-        let buttonImage = new Image();
-        buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
+        this.player = player;
+        this.background = background;
+        this.entities = entities.filter(e => !(e instanceof CollisionObject));
+        this.entities.forEach(e => {
+            e.removeCollision();
         });
-        buttonImage.src = "./assets/images/buttonGreen.png";
-        let _listener = () => {
-            window.removeEventListener('mousemove', _listener);
-            if (!this.active)
-                return;
-            this.menuMusic = new SoundHelper("./assets/sounds/CupcakeRain.mp3");
-            this.menuMusic.toggleLoop();
-        };
-        window.addEventListener('mousemove', _listener);
     }
-    update() { }
-    drawGUI() { }
-    beforeExit() {
-        this.active = false;
-        if (this.menuMusic)
-            this.menuMusic.pause();
+    update() {
+        this.entities.forEach(e => {
+            e.draw();
+        });
+        this.player.update();
+        console.log(this.player['isLanded']);
+        if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
+            Game.switchView(new GameView('debug_level'));
+        }
     }
+    drawGUI() {
+        for (let i = 0; i < 85; i++) {
+            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50 - i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y - 51 - i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
+            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y + 51 + i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50 + i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
+        }
+        this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50), `rgba(0, 0, 0, ${85 / 100})`);
+        this.canvasHelper.writeText("Game over!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
+    }
+    beforeExit() { }
     onPause() { }
+}
+class Accelerator extends Entity {
+    constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, yeet) {
+        super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
+        this.animationCounterMax = 10;
+        this.yeet = yeet;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+    }
+    move() { }
+    getYeet() {
+        return this.yeet;
+    }
+}
+class CollisionObject extends Entity {
+    constructor(topLeft, bottomRight, rotation, onCollide = null) {
+        let textures = (Game.DEBUG_MODE ? ["./assets/images/default.png"] : []);
+        super(textures, new Vector((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2), rotation, new Vector(Math.abs(bottomRight.x - topLeft.x), Math.abs(bottomRight.y - topLeft.y)), undefined, undefined, undefined, undefined, new Rotation(0));
+        this.collideFunction = onCollide;
+        this.collision = this;
+    }
+    onCollide(entity) {
+        if (this.collideFunction)
+            this.collideFunction(entity);
+    }
+    updateLocation(location) {
+        this.location = location;
+    }
+    collide(collideWith) {
+        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
+            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
+            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
+            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
+            return true;
+        return false;
+    }
+    move() { }
 }
 class Enemy extends Entity {
     constructor(canvas, imageSource, xPos, yPos, height, width, gravity, acceleration) {
@@ -473,6 +584,90 @@ class Enemy extends Entity {
     }
     move() {
         this.location.add(this.velocity);
+    }
+}
+class Enemy_Bertha extends Entity {
+    constructor(imageSources = [
+        "./assets/bertha/anim_walk/1.png",
+        "./assets/bertha/anim_walk/2.png",
+        "./assets/bertha/anim_walk/1.png",
+        "./assets/bertha/anim_walk/3.png"
+    ], location, size, gravity) {
+        super(imageSources, location, new Rotation(0), size, gravity, undefined, 2);
+        this.walkSpeed = 3;
+        this.landed = false;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.velocity.x = this.walkSpeed;
+        this.animationCounterMax = 4;
+    }
+    move(entities) {
+        this.landed = false;
+        entities.forEach(e => {
+            if (this.collide(e) && e !== this) {
+                this.landed = true;
+            }
+        });
+        if (!this.landed) {
+            this.velocity.x *= -1;
+        }
+        else {
+            this.velocity.y = 0;
+        }
+        this.location.add(this.velocity);
+        entities.forEach(e => {
+            if (this.collide(e) && e !== this) {
+                this.landed = true;
+            }
+        });
+        if (!this.landed) {
+            this.velocity.y += this.gravity;
+        }
+    }
+}
+class FallingTile extends Entity {
+    constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, acceleration) {
+        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
+        this.countdown = 60;
+        this.falling = false;
+        this.alive = true;
+        this.activated = false;
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+    }
+    move(entites) {
+        if (this.activated) {
+            this.countdown -= 1;
+        }
+        if (this.countdown == 0) {
+            this.falling = true;
+        }
+        if (this.alive && this.falling) {
+            this.offset.y = 0;
+            this.velocity.y += this.gravity;
+            entites.forEach(e => {
+                if (e.collide(this)) {
+                    if (e == this)
+                        return;
+                    if (e instanceof Player)
+                        return;
+                    if (e instanceof Enemy_Bertha)
+                        return;
+                    this.alive = false;
+                }
+            });
+            this.location.add(this.velocity);
+        }
+        if (!this.falling && this.activated) {
+            this.offset.y = MathHelper.randomNumber(-2, 2, 2);
+        }
+    }
+    getFalling() {
+        return this.falling;
+    }
+    kill() {
+        this.alive = false;
+    }
+    getAlive() {
+        return this.alive;
     }
 }
 class Item extends Entity {
@@ -520,6 +715,7 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
+        this.fireCounter = 0;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
@@ -612,6 +808,14 @@ class Player extends Entity {
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
                 this.playerKill(collideWith);
             }
+            if (e instanceof Fire &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
+                this.fireCounter++;
+                if (this.fireCounter == 150) {
+                    this.playerKill(collideWith);
+                }
+                console.log("FAYAA");
+            }
             if (e instanceof FallingTile && e.collide(this.bottomCollision))
                 e.activated = true;
             if (e instanceof Accelerator &&
@@ -692,51 +896,12 @@ class Player extends Entity {
         Game.switchView(new GameOverView(this, entites, Game.getBackground()));
     }
 }
-class FallingTile extends Entity {
-    constructor(imageSource = ["./assets/images/fallingTile1.png"], location, rotation, size, gravity, acceleration) {
-        super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
-        this.countdown = 60;
-        this.falling = false;
-        this.alive = true;
-        this.activated = false;
+class Trampoline extends Entity {
+    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
+        super(imageSource, location, rotation, size, gravity, undefined, undefined);
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
-    move(entites) {
-        if (this.activated) {
-            this.countdown -= 1;
-        }
-        if (this.countdown == 0) {
-            this.falling = true;
-        }
-        if (this.alive && this.falling) {
-            this.offset.y = 0;
-            this.velocity.y += this.gravity;
-            entites.forEach(e => {
-                if (e.collide(this)) {
-                    if (e == this)
-                        return;
-                    if (e instanceof Player)
-                        return;
-                    if (e instanceof Enemy_Bertha)
-                        return;
-                    this.alive = false;
-                }
-            });
-            this.location.add(this.velocity);
-        }
-        if (!this.falling && this.activated) {
-            this.offset.y = MathHelper.randomNumber(-2, 2, 2);
-        }
-    }
-    getFalling() {
-        return this.falling;
-    }
-    kill() {
-        this.alive = false;
-    }
-    getAlive() {
-        return this.alive;
-    }
+    move() { }
 }
 class Game {
     constructor(canvas) {
@@ -787,157 +952,11 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
-class Accelerator extends Entity {
-    constructor(imageSource = ["./assets/images/Anim_accelerator/1.png", "./assets/images/Anim_accelerator/2.png", "./assets/images/Anim_accelerator/3.png"], location, rotation, size, yeet) {
-        super(imageSource, location, rotation, size, undefined, undefined, undefined, undefined);
-        this.animationCounterMax = 10;
-        this.yeet = yeet;
+class Fire extends Entity {
+    constructor(imageSources = ["./assets/images/fire.png"], location, rotation, size, gravity) {
+        super(imageSources, location, rotation, size, gravity, undefined, undefined);
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
-    getYeet() {
-        return this.yeet;
-    }
-}
-class CollisionObject extends Entity {
-    constructor(topLeft, bottomRight, rotation, onCollide = null) {
-        let textures = (Game.DEBUG_MODE ? ["./assets/images/default.png"] : []);
-        super(textures, new Vector((topLeft.x + bottomRight.x) / 2, (topLeft.y + bottomRight.y) / 2), rotation, new Vector(Math.abs(bottomRight.x - topLeft.x), Math.abs(bottomRight.y - topLeft.y)), undefined, undefined, undefined, undefined, new Rotation(0));
-        this.collideFunction = onCollide;
-        this.collision = this;
-    }
-    onCollide(entity) {
-        if (this.collideFunction)
-            this.collideFunction(entity);
-    }
-    updateLocation(location) {
-        this.location = location;
-    }
-    collide(collideWith) {
-        if (this.location.x - this.size.x / 2 - collideWith.getSize().x / 2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x / 2 + collideWith.getSize().x / 2 > collideWith.getLoc().x &&
-            this.location.y - this.size.y / 2 - collideWith.getSize().y / 2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y / 2 + collideWith.getSize().y / 2 > collideWith.getLoc().y)
-            return true;
-        return false;
-    }
-    move() { }
-}
-class Enemy_Bertha extends Entity {
-    constructor(imageSources = [
-        "./assets/bertha/anim_walk/1.png",
-        "./assets/bertha/anim_walk/2.png",
-        "./assets/bertha/anim_walk/1.png",
-        "./assets/bertha/anim_walk/3.png"
-    ], location, size, gravity) {
-        super(imageSources, location, new Rotation(0), size, gravity, undefined, 2);
-        this.walkSpeed = 3;
-        this.landed = false;
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
-        this.velocity.x = this.walkSpeed;
-        this.animationCounterMax = 4;
-    }
-    move(entities) {
-        this.landed = false;
-        entities.forEach(e => {
-            if (this.collide(e) && e !== this) {
-                this.landed = true;
-            }
-        });
-        if (!this.landed) {
-            this.velocity.x *= -1;
-        }
-        else {
-            this.velocity.y = 0;
-        }
-        this.location.add(this.velocity);
-        entities.forEach(e => {
-            if (this.collide(e) && e !== this) {
-                this.landed = true;
-            }
-        });
-        if (!this.landed) {
-            this.velocity.y += this.gravity;
-        }
-    }
-}
-class Trampoline extends Entity {
-    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
-        super(imageSource, location, rotation, size, gravity, undefined, undefined);
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
-    }
-    move() { }
-}
-class SoundHelper {
-    constructor(src, volume = 1) {
-        this.audioElem = document.createElement("audio");
-        this.audioElem.setAttribute("preload", "auto");
-        this.audioElem.setAttribute("controls", "none");
-        this.audioElem.style.display = "none";
-        this.state = PlayingStat.PLAYING;
-        this.audioElem.src = src;
-        this.audioElem.volume = volume;
-        this.audioElem.play();
-    }
-    play() {
-        this.audioElem.play();
-    }
-    toggleLoop() {
-        this.audioElem.loop = !this.audioElem.loop;
-    }
-    pause(state = null) {
-        if (this.state == PlayingStat.STOPPED)
-            return;
-        if (state) {
-            switch (state) {
-                case PlayingStat.PLAYING:
-                    this.audioElem.play();
-                    break;
-                case PlayingStat.PAUSED:
-                    this.audioElem.pause();
-                    break;
-            }
-            return;
-        }
-        if (this.state == PlayingStat.PLAYING) {
-            this.state = PlayingStat.PAUSED;
-            this.audioElem.pause();
-        }
-        else if (this.state == PlayingStat.PAUSED) {
-            this.state = PlayingStat.PLAYING;
-            this.audioElem.play();
-        }
-    }
-}
-class GameOverView extends BaseView {
-    constructor(player, entities, background) {
-        super();
-        this.player = player;
-        this.background = background;
-        this.entities = entities.filter(e => !(e instanceof CollisionObject));
-        this.entities.forEach(e => {
-            e.removeCollision();
-        });
-    }
-    update() {
-        this.entities.forEach(e => {
-            e.draw();
-        });
-        this.player.update();
-        console.log(this.player['isLanded']);
-        if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
-            Game.switchView(new GameView('debug_level'));
-        }
-    }
-    drawGUI() {
-        for (let i = 0; i < 85; i++) {
-            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50 - i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y - 51 - i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
-            this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y + 51 + i), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50 + i), `rgba(0, 0, 0, ${(85 - i) / 100})`);
-        }
-        this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50), `rgba(0, 0, 0, ${85 / 100})`);
-        this.canvasHelper.writeText("Game over!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
-    }
-    beforeExit() { }
-    onPause() { }
 }
 //# sourceMappingURL=app.js.map

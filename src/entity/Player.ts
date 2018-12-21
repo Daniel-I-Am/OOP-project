@@ -6,6 +6,7 @@ class Player extends Entity {
     private jumpSpeed: number;
     private maxJumps: number;
     private jumpCount: number;
+    private fireCounter: number;
 
     private leftCollision: CollisionObject;
     private rightCollision: CollisionObject;
@@ -51,6 +52,7 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
+        this.fireCounter = 0;
         
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))),
@@ -178,6 +180,15 @@ class Player extends Entity {
             if (e instanceof Enemy_Bertha &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
                 this.playerKill(collideWith)
+            }
+            if (e instanceof Fire &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
+                this.fireCounter++
+
+                if(this.fireCounter == 150){
+                    this.playerKill(collideWith);
+                }
+                console.log("FAYAA");
             }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (

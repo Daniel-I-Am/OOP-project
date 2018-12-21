@@ -43,6 +43,15 @@ class GameView extends BaseView {
                 e.gravity,
             ));
         });
+        levelJSON.Fires.forEach(e => {
+            this.entities.push(new Fire(
+                ((e.sprites == null) ? undefined : e.sprites),
+                this.parseLocation(e.location),
+                new Rotation(0),
+                new Vector(e.size.x, e.size.y),
+                0
+            ));
+        });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(
                 ((e.sprites == null) ? undefined : e.sprites),

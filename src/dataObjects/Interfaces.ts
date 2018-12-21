@@ -26,6 +26,7 @@ interface Level {
     backgroundMusic: string,
     player: LevelPlayer,
     berthas: Array<LevelBertha>,
+    Fires: Array<LevelFire>,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,
@@ -47,6 +48,12 @@ interface LevelBertha {
     location: LevelLocations,
     size: LevelSize,
     gravity: number
+}
+interface LevelFire {
+    sprites: Array<string>,
+    location: LevelLocations,
+    rotation: number,
+    size: LevelSize
 }
 
 interface LevelFallingTile {
