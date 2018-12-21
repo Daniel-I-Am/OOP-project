@@ -9,14 +9,15 @@ abstract class BaseView {
         this.background = new Image();
     }
 
+    /**
+     * Will be called every game tick, makes sure everything does what it has to do
+     */
     public tick(): void {
+        if (this.shouldClear)
+            this.canvasHelper.clear();
         this.drawBackground();
         this.update();
         this.drawGUI();
-    }
-
-    public getShouldClear(): boolean {
-        return this.shouldClear;
     }
 
     /**
@@ -26,6 +27,10 @@ abstract class BaseView {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
     }
 
+    /**
+     * Gets the background image
+     * @returns {HTMLImageElement} background image
+     */
     public getBackground(): HTMLImageElement {
         return this.background;
     }
@@ -50,6 +55,7 @@ abstract class BaseView {
 
     /**
      * Called when the game is paused on an update
+     * @abstract
      */
     public abstract onPause(): void;
 }

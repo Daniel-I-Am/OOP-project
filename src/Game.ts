@@ -43,8 +43,6 @@ class Game {
             return;
         }
         if (Game.currentView) {
-            if (Game.currentView.getShouldClear())
-                this.canvasHelper.clear();
             Game.currentView.tick();
         }
     }
@@ -77,7 +75,7 @@ class Game {
 }
 
 function init() {
-    const game = Game.Instance(document.getElementById("canvas"));
+    Game.Instance(document.getElementById("canvas"));
 }
 
 window.addEventListener('load', init);

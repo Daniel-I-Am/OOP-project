@@ -72,13 +72,13 @@ class Player extends Entity {
             this.rotation,
         );
         this.bottomCollision = new CollisionObject(
-            this.location.copy().add(new Vector(-this.size.x/2+1, this.size.y/2)),
-            this.location.copy().add(new Vector(this.size.x/2-1, this.size.y/2)),
+            this.location.copy().add(new Vector(-this.size.x/8, this.size.y/2)),
+            this.location.copy().add(new Vector(this.size.x/8, this.size.y/2)),
             this.rotation,
         );
         this.topCollision = new CollisionObject(
-            this.location.copy().add(new Vector(-this.size.x/2+1, -this.size.x/2)),
-            this.location.copy().add(new Vector(this.size.x/2-1, -this.size.x/2)),
+            this.location.copy().add(new Vector(-this.size.x/8, -this.size.x/2)),
+            this.location.copy().add(new Vector(this.size.x/8, -this.size.x/2)),
             this.rotation,
         );
         this.previousCollision = {left: false, right: false, top: false, bottom: false};
@@ -200,7 +200,7 @@ class Player extends Entity {
     }
 
     public boost(booster: Accelerator) {
-        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
+        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRot().getValue());
     }
 
     public trampoline(entity: Trampoline) {

@@ -25,10 +25,10 @@ class FallingTile extends Entity{
         if(this.activated) {
             this.countdown -= 1;
         }
-        if(this.countdown == 0){
+        if(this.countdown == 0) {
             this.falling = true;
         }
-        if(this.alive && this.falling){ //replace with collide shit later on
+        if(this.alive && this.falling) { //replace with collide shit later on
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             entites.forEach(e => {
@@ -45,13 +45,13 @@ class FallingTile extends Entity{
             this.offset.y = MathHelper.randomNumber(-2, 2, 2);
         }
     }
-    public getFalling(){
+    public getFalling() {
         return this.falling;
     }
-    public kill(){
+    public kill() {
         this.alive=false;
     }
-    public getAlive(){
+    public getAlive() {
         return this.alive;
     }
 }

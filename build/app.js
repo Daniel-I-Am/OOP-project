@@ -276,12 +276,11 @@ class BaseView {
         this.background = new Image();
     }
     tick() {
+        if (this.shouldClear)
+            this.canvasHelper.clear();
         this.drawBackground();
         this.update();
         this.drawGUI();
-    }
-    getShouldClear() {
-        return this.shouldClear;
     }
     drawBackground() {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), false);
@@ -497,8 +496,8 @@ class Player extends Entity {
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
         this.leftCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(-this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
         this.rightCollision = new CollisionObject(this.location.copy().add(new Vector(this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
-        this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, this.size.y / 2)), this.rotation);
-        this.topCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2 + 1, -this.size.x / 2)), this.location.copy().add(new Vector(this.size.x / 2 - 1, -this.size.x / 2)), this.rotation);
+        this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 8, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 8, this.size.y / 2)), this.rotation);
+        this.topCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 8, -this.size.x / 2)), this.location.copy().add(new Vector(this.size.x / 8, -this.size.x / 2)), this.rotation);
         this.previousCollision = { left: false, right: false, top: false, bottom: false };
     }
     move(entites) {
@@ -603,7 +602,7 @@ class Player extends Entity {
         return returnValue;
     }
     boost(booster) {
-        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRotation().getValue());
+        this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRot().getValue());
     }
     trampoline(entity) {
         new SoundHelper("./assets/sounds/jump.wav");
@@ -703,8 +702,6 @@ class Game {
                 return;
             }
             if (Game.currentView) {
-                if (Game.currentView.getShouldClear())
-                    this.canvasHelper.clear();
                 Game.currentView.tick();
             }
         };
@@ -743,7 +740,7 @@ Game.switchView = (newView) => {
     Game.currentView = newView;
 };
 function init() {
-    const game = Game.Instance(document.getElementById("canvas"));
+    Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
 class Accelerator extends Entity {
@@ -754,9 +751,6 @@ class Accelerator extends Entity {
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
-    getRotation() {
-        return this.rotation;
-    }
     getYeet() {
         return this.yeet;
     }

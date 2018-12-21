@@ -16,5 +16,5 @@ class Trampoline extends Entity{
         )
     }
 
-    protected move(): void{}
+    protected move(): void {}
 }
