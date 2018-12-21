@@ -470,6 +470,9 @@ class GameView extends BaseView {
         levelJSON.berthas.forEach(e => {
             this.entities.push(new Enemy_Bertha(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Vector(e.size.x, e.size.y), e.gravity));
         });
+        levelJSON.Fires.forEach(e => {
+            this.entities.push(new Fire(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(0), new Vector(e.size.x, e.size.y), 0));
+        });
         levelJSON.FallingTiles.forEach(e => {
             this.entities.push(new FallingTile(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, 0));
         });
@@ -730,6 +733,7 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
+        this.fireCounter = 0;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
         this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
         this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
@@ -828,6 +832,12 @@ class Player extends Entity {
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) {
                 e.onPlayerCollision(this);
             }
+            if (e instanceof Fire &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
+                e.onPlayerCollision(this);
+            }
+            if (e instanceof FallingTile && e.collide(this.bottomCollision))
+                e.activated = true;
             if (e instanceof Accelerator &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
                 e.onPlayerCollision(this);
@@ -908,6 +918,12 @@ class Player extends Entity {
     onPlayerCollision(player) {
         return;
     }
+    incFireCounter() {
+        this.fireCounter++;
+    }
+    getFireCounter() {
+        return this.fireCounter;
+    }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
@@ -971,4 +987,18 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
+class Fire extends Entity {
+    constructor(imageSources = ["./assets/images/fire.png"], location, rotation, size, gravity) {
+        super(imageSources, location, rotation, size, gravity, undefined, undefined);
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+    }
+    move() { }
+    onPlayerCollision(player) {
+        player.incFireCounter();
+        if (player.getFireCounter() >= 150) {
+            player.kill();
+        }
+        console.log("FAYAA");
+    }
+}
 //# sourceMappingURL=app.js.map

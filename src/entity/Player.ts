@@ -6,6 +6,7 @@ class Player extends Entity {
     private jumpSpeed: number;
     private maxJumps: number;
     private jumpCount: number;
+    private fireCounter: number;
 
     private leftCollision: CollisionObject;
     private rightCollision: CollisionObject;
@@ -51,6 +52,7 @@ class Player extends Entity {
         this.jumpCount = 0;
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
+        this.fireCounter = 0;
         
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))),
@@ -187,6 +189,11 @@ class Player extends Entity {
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) {
                 e.onPlayerCollision(this);
             }
+            if (e instanceof Fire &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
+                e.onPlayerCollision(this);
+            }
+            if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
                 e instanceof Accelerator &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
@@ -284,5 +291,13 @@ class Player extends Entity {
 
     public onPlayerCollision(player: Player): void {
         return; // duh :)
+    }
+
+    public incFireCounter(): void {
+        this.fireCounter++;
+    }
+
+    public getFireCounter(): number {
+        return this.fireCounter;
     }
 }
