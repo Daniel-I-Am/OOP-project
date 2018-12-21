@@ -74,4 +74,8 @@ class Item extends Entity {
     public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
         return;
     }
+
+    public removeHitBox(): void {
+        this.collision = null;
+    }
 }
