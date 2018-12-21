@@ -49,7 +49,7 @@ class CanvasHelper {
     drawImage(image, location, rotation, size, isCentered = true, isGUI = false) {
         this.ctx.save();
         if (!isGUI) {
-        this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
+            this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         }
         else {
             this.ctx.translate(location.x, location.y);
@@ -486,7 +486,6 @@ class Item extends Entity {
         })[0] || Item.itemIDs[0];
         super([itemData.spriteSrc], location, rotation, size);
         this.drawOnDeath = false;
-        this.isAlive = true;
         this.shouldCollide = false;
         this.itemData = itemData;
         this.itemID = Item.itemIDs.map((e, i) => {

@@ -39,7 +39,6 @@ class Item extends Entity {
             size
         );
         this.drawOnDeath = false;
-        this.isAlive = true;
         this.shouldCollide = false;
         this.itemData = itemData;
         this.itemID = Item.itemIDs.map((e, i) => {
