@@ -46,9 +46,14 @@ class CanvasHelper {
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)), emptyColor);
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), new Vector(location.x - size.x * .5 + 1 + filledPct * (size.x - 1), location.y + size.y * .5 - 1), filledColor);
     }
-    drawImage(image, location, rotation, size, isCentered = true) {
+    drawImage(image, location, rotation, size, isCentered = true, isGUI = false) {
         this.ctx.save();
+        if (!isGUI) {
         this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
+        }
+        else {
+            this.ctx.translate(location.x, location.y);
+        }
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             if (isCentered)

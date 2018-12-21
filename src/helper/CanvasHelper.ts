@@ -115,9 +115,14 @@ class CanvasHelper {
         rotation: Rotation,
         size: Vector,
         isCentered: boolean = true,
+        isGUI: boolean = false,
     ): void {
         this.ctx.save();
+        if (!isGUI) {
         this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
+        } else {
+            this.ctx.translate(location.x, location.y);
+        }
         this.ctx.rotate(rotation.getValue());
         if (Math.min(...size.toArray()) < 0) {
             if (isCentered)
