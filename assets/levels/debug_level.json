@@ -168,6 +168,44 @@
                 "y": 64
             },
             "name": "bandage"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 600
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "bandage"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "bandage"
         }
     ],
     "Trampolines": [
