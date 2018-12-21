@@ -222,18 +222,19 @@ class Player extends Entity {
     public interact(entity: Entity): void {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
             entity.kill();
-            this.inventory.push(this.newInventoryItem(entity.getItemID()))
+            this.newInventoryItem(entity.getItemID());
             console.log('interacting');
             console.log(this.inventory)
         }
     }
 
-    private newInventoryItem(id: number): InventoryItem {
-        return {
+    private newInventoryItem(id: number): void {
+        this.inventory.push({
             id: id,
             internalName: Item.itemIDs[id].internalName,
             displayName: Item.itemIDs[id].displayName,
             spriteSrc: Item.itemIDs[id].spriteSrc
+        });
         }
     }
 

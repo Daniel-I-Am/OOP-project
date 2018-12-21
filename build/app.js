@@ -645,18 +645,18 @@ class Player extends Entity {
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
             entity.kill();
-            this.inventory.push(this.newInventoryItem(entity.getItemID()));
+            this.newInventoryItem(entity.getItemID());
             console.log('interacting');
             console.log(this.inventory);
         }
     }
     newInventoryItem(id) {
-        return {
+        this.inventory.push({
             id: id,
             internalName: Item.itemIDs[id].internalName,
             displayName: Item.itemIDs[id].displayName,
             spriteSrc: Item.itemIDs[id].spriteSrc
-        };
+        });
     }
     setIsLanded(state) {
         this.isLanded = state;
