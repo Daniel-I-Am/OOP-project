@@ -34,7 +34,7 @@ class Game {
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
         Game.currentView = new TitleView(
-            () => {Game.pause(); Game.switchView(new GameView("debug_level"))}
+            () => {Game.pause(); Game.switchView(new LevelSelectView())}
         );
         this.currentInterval = setInterval(this.loop, 33);
     }
