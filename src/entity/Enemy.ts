@@ -39,7 +39,8 @@ class Enemy extends Entity {
         this.location.add(this.velocity)
     }
 
-    public onPlayerCollision(player: Player): void {
-        player.kill();
+    public onPlayerCollision(player: Player, _: CollisionDirections): void {
+        if (this.collide(player))
+            player.kill();
     }
 }

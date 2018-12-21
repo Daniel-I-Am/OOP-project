@@ -548,13 +548,15 @@ class Accelerator extends Entity {
         this.animationCounterMax = 10;
         this.yeet = yeet;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.shouldCollide = false;
     }
     move() { }
     getYeet() {
         return this.yeet;
     }
-    onPlayerCollision(player) {
-        player.boost(this);
+    onPlayerCollision(player, collisionSides) {
+        if (this.collide(player))
+            player.boost(this);
     }
 }
 class CollisionObject extends Entity {
@@ -580,7 +582,7 @@ class CollisionObject extends Entity {
         return false;
     }
     move() { }
-    onPlayerCollision(player) {
+    onPlayerCollision(player, collisionSides) {
         return;
     }
 }
@@ -591,8 +593,9 @@ class Enemy extends Entity {
     move() {
         this.location.add(this.velocity);
     }
-    onPlayerCollision(player) {
-        player.kill();
+    onPlayerCollision(player, _) {
+        if (this.collide(player))
+            player.kill();
     }
 }
 class Enemy_Bertha extends Entity {
@@ -632,8 +635,9 @@ class Enemy_Bertha extends Entity {
             this.velocity.y += this.gravity;
         }
     }
-    onPlayerCollision(player) {
-        player.kill();
+    onPlayerCollision(player, collisionSides) {
+        if (collisionSides.left || collisionSides.right || collisionSides.top || collisionSides.bottom)
+            player.kill();
     }
 }
 class FallingTile extends Entity {
@@ -681,8 +685,9 @@ class FallingTile extends Entity {
     getAlive() {
         return this.alive;
     }
-    onPlayerCollision(player) {
-        this.activated = true;
+    onPlayerCollision(player, collisionSides) {
+        if (collisionSides.bottom)
+            this.activated = true;
     }
 }
 class Item extends Entity {
@@ -712,7 +717,7 @@ class Item extends Entity {
     getItemID() {
         return this.itemID;
     }
-    onPlayerCollision(player) {
+    onPlayerCollision(player, collisionSides) {
         return;
     }
 }
@@ -813,7 +818,7 @@ class Player extends Entity {
             this.interact(e);
             if (!e.shouldCollide) {
                 if (e.collide(this))
-                    e.onPlayerCollision(this);
+                    e.onPlayerCollision(this, null);
                 return;
             }
             let thisEntityCollision = { left: false, right: false, top: false, bottom: false };
@@ -821,30 +826,11 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
+            e.onPlayerCollision(this, thisEntityCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                e.onPlayerCollision(this);
                 thisEntityCollision.bottom = false;
             }
-            if (e instanceof Enemy_Bertha &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof FallingTile && e.collide(this.bottomCollision)) {
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof Fire &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof Fire &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof FallingTile && e.collide(this.bottomCollision))
-                e.activated = true;
-            if (e instanceof Accelerator &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)) {
-                e.onPlayerCollision(this);
+            if (e instanceof Accelerator) {
                 return;
             }
             returnValue.left = thisEntityCollision.left || returnValue.left;
@@ -919,7 +905,7 @@ class Player extends Entity {
         }, 1750);
         Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()));
     }
-    onPlayerCollision(player) {
+    onPlayerCollision(player, collisionSides) {
         return;
     }
     incFireCounter() {
@@ -935,8 +921,9 @@ class Trampoline extends Entity {
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
-    onPlayerCollision(player) {
-        player.trampoline(this);
+    onPlayerCollision(player, collisionSides) {
+        if (collisionSides.bottom)
+            player.trampoline(this);
     }
 }
 class Game {
@@ -995,14 +982,17 @@ class Fire extends Entity {
     constructor(imageSources = ["./assets/images/fire.png"], location, rotation, size, gravity) {
         super(imageSources, location, rotation, size, gravity, undefined, undefined);
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.shouldCollide = false;
     }
     move() { }
-    onPlayerCollision(player) {
-        player.incFireCounter();
-        if (player.getFireCounter() >= 150) {
-            player.kill();
+    onPlayerCollision(player, collisionSides) {
+        if (this.collide(player)) {
+            player.incFireCounter();
+            if (player.getFireCounter() >= 150) {
+                player.kill();
+            }
+            console.log("FAYAA");
         }
-        console.log("FAYAA");
     }
 }
 //# sourceMappingURL=app.js.map

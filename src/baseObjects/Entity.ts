@@ -72,7 +72,7 @@ abstract class Entity {
         this.collision = null;
     }
 
-    public abstract onPlayerCollision(player: Player): void;
+    public abstract onPlayerCollision(player: Player, collisionSides: CollisionDirections): void;
 
     public update(entities: Array<Entity> = null): void {
         this.move(entities);

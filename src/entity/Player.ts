@@ -168,7 +168,7 @@ class Player extends Entity {
             this.interact(e);
             if (!e.shouldCollide) {
                 if (e.collide(this))
-                    e.onPlayerCollision(this);
+                    e.onPlayerCollision(this, null);
                 return;
             }
             
@@ -177,32 +177,13 @@ class Player extends Entity {
             thisEntityCollision.right = e.collide(this.rightCollision);
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
+            e.onPlayerCollision(this, thisEntityCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                e.onPlayerCollision(this);
                 thisEntityCollision.bottom = false;
             }
-            if (e instanceof Enemy_Bertha &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
-            ){
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof FallingTile && e.collide(this.bottomCollision)) {
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof Fire &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof Fire &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
-                e.onPlayerCollision(this);
-            }
-            if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
-                e instanceof Accelerator &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
+                e instanceof Accelerator
             ) {
-                e.onPlayerCollision(this);
                 return;
             }
             returnValue.left = thisEntityCollision.left || returnValue.left;
@@ -293,7 +274,7 @@ class Player extends Entity {
         Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()))
     }
 
-    public onPlayerCollision(player: Player): void {
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
         return; // duh :)
     }
 

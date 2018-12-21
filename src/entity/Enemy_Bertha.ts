@@ -67,7 +67,8 @@ class Enemy_Bertha extends Entity {
         }
     }
 
-    public onPlayerCollision(player: Player): void {
-        player.kill();
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
+        if (collisionSides.left || collisionSides.right || collisionSides.top || collisionSides.bottom)
+            player.kill();
     }
 }

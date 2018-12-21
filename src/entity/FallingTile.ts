@@ -55,7 +55,8 @@ class FallingTile extends Entity{
         return this.alive;
     }
 
-    public onPlayerCollision(player: Player): void {
-        this.activated = true;
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
+        if (collisionSides.bottom)
+            this.activated = true;
     }
 }

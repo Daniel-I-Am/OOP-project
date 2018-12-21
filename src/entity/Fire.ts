@@ -14,17 +14,19 @@ class Fire extends Entity{
             this.location.copy().add(this.size.copy().multiply(.5)),
             this.rotation
         )
-        //this.shouldCollide = false;
+        this.shouldCollide = false;
     }
 
     protected move(): void {}
 
-    public onPlayerCollision(player: Player): void {
-        player.incFireCounter()
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
+        if (this.collide(player)) {
+            player.incFireCounter()
 
-        if(player.getFireCounter() >= 150){
-            player.kill();
+            if(player.getFireCounter() >= 150){
+                player.kill();
+            }
+            console.log("FAYAA");
         }
-        console.log("FAYAA");
     }
 }

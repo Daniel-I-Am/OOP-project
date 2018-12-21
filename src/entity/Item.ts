@@ -62,7 +62,7 @@ class Item extends Entity {
         return this.itemID;
     }
 
-    public onPlayerCollision(player: Player): void {
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
         return;
     }
 }

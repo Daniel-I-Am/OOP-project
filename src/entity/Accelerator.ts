@@ -16,6 +16,7 @@ class Accelerator extends Entity{
             this.location.copy().add(this.size.copy().multiply(.5)),
             this.rotation
         )
+        this.shouldCollide = false;
     }
 
     protected move(): void {}
@@ -24,7 +25,8 @@ class Accelerator extends Entity{
         return this.yeet;
     }
 
-    public onPlayerCollision(player: Player): void {
-        player.boost(this);
+    public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {
+        if (this.collide(player))
+            player.boost(this);
     } 
 }
