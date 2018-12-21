@@ -1,19 +1,19 @@
 class Player extends Entity {
-    private keyHelper: KeyHelper;
-    private inventory: Array<InventoryItem>;
-    private isJumping: boolean;
-    private isLanded: boolean;
-    private jumpSpeed: number;
-    private maxJumps: number;
-    private jumpCount: number;
-    private fireCounter: number;
-    private darkOverlay: HTMLImageElement;
+    protected keyHelper: KeyHelper;
+    protected inventory: Array<InventoryItem>;
+    protected isJumping: boolean;
+    protected isLanded: boolean;
+    protected jumpSpeed: number;
+    protected maxJumps: number;
+    protected jumpCount: number;
+    protected fireCounter: number;
+    protected darkOverlay: HTMLImageElement;
 
-    private leftCollision: CollisionObject;
-    private rightCollision: CollisionObject;
-    private topCollision: CollisionObject;
-    private bottomCollision: CollisionObject;
-    private previousCollision: CollisionDirections;
+    protected leftCollision: CollisionObject;
+    protected rightCollision: CollisionObject;
+    protected topCollision: CollisionObject;
+    protected bottomCollision: CollisionObject;
+    protected previousCollision: CollisionDirections;
 
     /**
      * @constructor
@@ -213,7 +213,7 @@ class Player extends Entity {
         this.velocity = new Vector(this.velocity.x,-this.velocity.y-5).rotate(entity.getRot().getValue());
     }
 
-    private jump() {
+    protected jump() {
         new SoundHelper("./assets/sounds/jump.wav")
         this.velocity.y -= this.jumpSpeed;
         this.keyHelper.resetSpaceBar()
@@ -232,7 +232,7 @@ class Player extends Entity {
         }
     }
 
-    private newInventoryItem(id: number): void {
+    protected newInventoryItem(id: number): void {
         let img = new Image()
         img.src = Item.itemIDs[id].spriteSrc;
         this.inventory.push({
@@ -243,7 +243,7 @@ class Player extends Entity {
         });
     }
 
-    private drawInventory(): void {
+    protected drawInventory(): void {
         this.inventory.forEach((e, i) => {
             this.canvasHelper.drawImage(
                 e.image,
