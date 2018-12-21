@@ -1,4 +1,6 @@
 abstract class BaseView {
+    public entities: Array<Entity>;
+    public player: Player;
     protected canvasHelper: CanvasHelper;
     protected shouldClear: boolean;
     protected background: HTMLImageElement;

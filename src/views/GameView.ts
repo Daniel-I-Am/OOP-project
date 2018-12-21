@@ -1,6 +1,4 @@
 class GameView extends BaseView {
-    private entities: Array<Entity>;
-    private player: Player;
     private backgroundMusic: SoundHelper;
 
     public constructor(levelName: string) {

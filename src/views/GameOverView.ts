@@ -1,6 +1,4 @@
 class GameOverView extends BaseView {
-    private player: Player;
-    private entities: Array<Entity>;
 
     public constructor(
         player: Player, entities: Array<Entity>, background: HTMLImageElement
