@@ -227,9 +227,8 @@ class Player extends Entity {
     public interact(entity: Entity): void {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
             entity.kill();
+            entity.removeHitBox();
             this.newInventoryItem(entity.getItemID());
-            console.log('interacting');
-            console.log(this.inventory)
         }
     }
 
@@ -255,7 +254,8 @@ class Player extends Entity {
                         this.location.copy(),
                         this.rotation.copy(),
                         new Vector(64, 64),
-                        droppedItem.internalName
+                        droppedItem.internalName,
+                        this.gravity
                     ));
                 }
             }
