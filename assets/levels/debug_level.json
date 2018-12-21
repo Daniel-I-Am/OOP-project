@@ -23,7 +23,7 @@
             "y": 150
         },
         "gravity": 1,
-        "jumpHeight": 15,
+        "jumpHeight": 16,
         "maxJumps": 2
     },
     "berthas": [
