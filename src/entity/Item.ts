@@ -1,5 +1,11 @@
 class Item extends Entity {
-    public name: string;
+    private id: ItemDefinition;
+
+    private static itemIDs: Array<ItemDefinition> = [
+        {internalName: "none", displayName: "None", spriteSrc: null},
+        {internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/bandage.png"},
+        {internalName: "", displayName: "", spriteSrc: ""},
+    ]
 
     /**
      * @constructor
@@ -24,7 +30,13 @@ class Item extends Entity {
             rotation,
             size
         );
-        this.name = name;
+        this.id = (Item.itemIDs.map((e) => {
+            if (e.internalName == name)
+                return e;
+            return null;
+        })).filter(e => {
+            return e;
+        })[0] || Item.itemIDs[0];
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5)),
             this.location.copy().add(this.size.copy().multiply(.5)),
@@ -32,5 +44,8 @@ class Item extends Entity {
         )
     }
 
-    public move(): void {}
+    public move(): void {
+        const d = new Date();
+        this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
+    }
 }

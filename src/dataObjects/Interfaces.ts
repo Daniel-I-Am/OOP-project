@@ -6,6 +6,12 @@ interface InventoryItem {
     name: string,
 }
 
+interface ItemDefinition {
+    internalName: string,
+    displayName: string,
+    spriteSrc: string,
+}
+
 interface CollisionDirections {
     left: boolean,
     right: boolean,

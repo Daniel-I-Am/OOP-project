@@ -220,7 +220,7 @@ class Player extends Entity {
      */
     public interact(entity: Entity): void {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item) {
-            this.inventory.push(this.newInventoryItem(entity.name))
+            // this.inventory.push(this.newInventoryItem(entity.name))
             console.log('interacting');
             console.log(this.inventory)
         }
