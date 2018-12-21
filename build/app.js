@@ -471,7 +471,10 @@ class Item extends Entity {
         this.name = name;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
-    move() { }
+    move() {
+        const d = new Date();
+        this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
+    }
 }
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {

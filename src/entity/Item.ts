@@ -32,5 +32,8 @@ class Item extends Entity {
         )
     }
 
-    public move(): void {}
+    public move(): void {
+        const d = new Date();
+        this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
+    }
 }
