@@ -824,12 +824,18 @@ class CollisionObject extends Entity {
     move() { }
 }
 class Enemy_Bertha extends Entity {
-    constructor(imageSources = ["./assets/images/bertha.png"], location, size, gravity) {
+    constructor(imageSources = [
+        "./assets/bertha/anim_walk/1.png",
+        "./assets/bertha/anim_walk/2.png",
+        "./assets/bertha/anim_walk/1.png",
+        "./assets/bertha/anim_walk/3.png"
+    ], location, size, gravity) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, 2);
         this.walkSpeed = 3;
         this.landed = false;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
         this.velocity.x = this.walkSpeed;
+        this.animationCounterMax = 4;
     }
     move(entities) {
         this.landed = false;

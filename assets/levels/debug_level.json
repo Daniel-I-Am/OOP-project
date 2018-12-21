@@ -28,7 +28,12 @@
     },
     "berthas": [
         {
-            "sprites": null,
+            "sprites": [
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/2.png",
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/3.png"
+            ],
             "location": {
                 "x": {
                     "center": false,

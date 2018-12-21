@@ -15,7 +15,12 @@ class Enemy_Bertha extends Entity {
     private landed: boolean = false;
     
     public constructor(
-        imageSources: Array<string> = ["./assets/images/bertha.png"],
+        imageSources: Array<string> = [
+            "./assets/bertha/anim_walk/1.png",
+            "./assets/bertha/anim_walk/2.png",
+            "./assets/bertha/anim_walk/1.png",
+            "./assets/bertha/anim_walk/3.png"
+        ],
         location: Vector,
         size: Vector,
         gravity: number
@@ -35,6 +40,7 @@ class Enemy_Bertha extends Entity {
             this.rotation
         )
         this.velocity.x = this.walkSpeed;
+        this.animationCounterMax = 4;
     }
 
     protected move(entities: Array<Entity>): void {
