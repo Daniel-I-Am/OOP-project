@@ -950,7 +950,7 @@ class Game {
         };
         Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        Game.currentView = new TitleView(() => { Game.pause(); Game.switchView(new GameView("debug_level")); });
+        Game.currentView = new TitleView(() => { Game.pause(); Game.switchView(new LevelSelectView()); });
         this.currentInterval = setInterval(this.loop, 33);
     }
     static Instance(canvas = null) {
@@ -1004,6 +1004,36 @@ class Fire extends Entity {
             }
             console.log("FAYAA");
         }
+    }
+}
+class MapPlayer extends Player {
+    constructor() {
+        super(["./assets/player/mapPlayer.png"], CanvasHelper.Instance().getCenter(), new Vector(64, 64), 0, 0, 0, 0);
+        this.maxSpeed = 3;
+    }
+    move() {
+        if (this.keyHelper.leftPressed)
+            this.location.x -= this.maxSpeed;
+        if (this.keyHelper.rightPressed)
+            this.location.x += this.maxSpeed;
+        if (this.keyHelper.upPressed)
+            this.location.y -= this.maxSpeed;
+        if (this.keyHelper.downPressed)
+            this.location.y += this.maxSpeed;
+    }
+}
+class LevelSelectView extends BaseView {
+    constructor() {
+        super();
+        this.player = new MapPlayer();
+    }
+    update() {
+        this.player.update();
+    }
+    beforeExit() { }
+    drawGUI() { }
+    onPause() {
+        Game.pause();
     }
 }
 //# sourceMappingURL=app.js.map
