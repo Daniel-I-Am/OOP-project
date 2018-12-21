@@ -707,7 +707,7 @@ class FallingTile extends Entity {
     }
 }
 class Item extends Entity {
-    constructor(imageSource, location, rotation, size, name) {
+    constructor(imageSource, location, rotation, size, name, gravity = 0) {
         let itemData = (Item.itemIDs.map((e) => {
             if (e.internalName == name)
                 return e;
@@ -715,7 +715,7 @@ class Item extends Entity {
         })).filter(e => {
             return e;
         })[0] || Item.itemIDs[0];
-        super([itemData.spriteSrc], location, rotation, size);
+        super([itemData.spriteSrc], location, rotation, size, gravity);
         this.drawOnDeath = false;
         this.shouldCollide = false;
         this.itemData = itemData;
@@ -729,12 +729,23 @@ class Item extends Entity {
     move() {
         const d = new Date();
         this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
+        this.velocity.y += this.gravity;
+        Game.getCurrentView().entities.forEach(e => {
+            if (e === this)
+                return;
+            if (e.collide(this))
+                this.velocity.y = 0;
+        });
+        this.location.add(this.velocity);
     }
     getItemID() {
         return this.itemID;
     }
     onPlayerCollision(player, collisionSides) {
         return;
+    }
+    removeHitBox() {
+        this.collision = null;
     }
 }
 Item.itemIDs = [
@@ -884,9 +895,8 @@ class Player extends Entity {
     interact(entity) {
         if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Item && entity.getAlive()) {
             entity.kill();
+            entity.removeHitBox();
             this.newInventoryItem(entity.getItemID());
-            console.log('interacting');
-            console.log(this.inventory);
         }
     }
     newInventoryItem(id) {
@@ -905,7 +915,7 @@ class Player extends Entity {
                 this.keyHelper.numberKeys[i] = false;
                 const droppedItem = this.inventory.splice(i - 1, 1)[0];
                 if (droppedItem) {
-                    Game.getCurrentView().entities.push(new Item(droppedItem.image.src, this.location.copy(), this.rotation.copy(), new Vector(64, 64), droppedItem.internalName));
+                    Game.getCurrentView().entities.push(new Item(droppedItem.image.src, this.location.copy(), this.rotation.copy(), new Vector(64, 64), droppedItem.internalName, this.gravity));
                 }
             }
         }
