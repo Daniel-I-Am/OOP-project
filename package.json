@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "uml": "tsuml --glob ./src/*.ts"
+    "uml": "tsuml --glob ./src/Game.ts"
   },
   "devDependencies": {
     "typescript": "^3.1.6",

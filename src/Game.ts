@@ -1,17 +1,24 @@
 ///<reference path="dataObjects/Enums.ts"/>
+///<reference path="dataObjects/Interfaces.ts"/>
+///<reference path="dataObjects/Rotation.ts"/>
+///<reference path="dataObjects/Vector.ts"/>
 ///<reference path="helper/CanvasHelper.ts"/>
 ///<reference path="helper/KeyHelper.ts"/>
 ///<reference path="helper/MathHelper.ts"/>
-///<reference path="dataObjects/Rotation.ts"/>
-///<reference path="dataObjects/Vector.ts"/>
+///<reference path="helper/SoundHelper.ts"/>
 ///<reference path="baseObjects/BaseView.ts"/>
 ///<reference path="baseObjects/Entity.ts"/>
-///<reference path="views/GameView.ts"/>
 ///<reference path="views/TitleView.ts"/>
+///<reference path="views/GameView.ts"/>
+///<reference path="views/GameOverView.ts"/>
+///<reference path="entity/Accelerator.ts"/>
+///<reference path="entity/CollisionObject.ts"/>
 ///<reference path="entity/Enemy.ts"/>
+///<reference path="entity/Enemy_Bertha.ts"/>
+///<reference path="entity/FallingTile.ts"/>
 ///<reference path="entity/Item.ts"/>
 ///<reference path="entity/Player.ts"/>
-///<reference path="entity/FallingTile.ts"/>
+///<reference path="entity/Trampoline.ts"/>
 
 class Game {
     private static instance: Game;
