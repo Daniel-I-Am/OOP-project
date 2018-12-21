@@ -79,6 +79,10 @@ class Game {
     public static getBackground(): HTMLImageElement {
         return this.currentView.getBackground();
     }
+
+    public static getCurrentView(): BaseView {
+        return Game.currentView;
+    }
 }
 
 function init() {
