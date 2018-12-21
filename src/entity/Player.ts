@@ -153,6 +153,7 @@ class Player extends Entity {
         }
 
         if (this.location.y > 5000) this.kill()
+        this.checkInventory();
         this.drawInventory();
         this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
     }
@@ -241,6 +242,24 @@ class Player extends Entity {
             displayName: Item.itemIDs[id].displayName,
             image: img
         });
+    }
+
+    public checkInventory(): void {
+        for (let i = 0; i < 10; i++) {
+            if (this.keyHelper.numberKeys[i]) {
+                this.keyHelper.numberKeys[i] = false;
+                const droppedItem = this.inventory.splice(i-1, 1)[0];
+                if (droppedItem) {
+                    Game.getCurrentView().entities.push(new Item(
+                        droppedItem.image.src,
+                        this.location.copy(),
+                        this.rotation.copy(),
+                        new Vector(64, 64),
+                        droppedItem.internalName
+                    ));
+                }
+            }
+        }
     }
 
     protected drawInventory(): void {

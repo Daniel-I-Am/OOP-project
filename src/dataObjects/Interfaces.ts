@@ -8,6 +8,10 @@ interface InventoryItem {
     image: HTMLImageElement,
 }
 
+interface NumberKeyPresses {
+    [key: number]: boolean
+}
+
 interface ItemDefinition {
     internalName: string,
     displayName: string,

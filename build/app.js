@@ -22,6 +22,9 @@ class Rotation {
     getDegree() {
         return this.value * (180 / Math.PI);
     }
+    copy() {
+        return new Rotation(this.getValue(), true);
+    }
 }
 class Vector {
     constructor(x, y) {
@@ -197,6 +200,8 @@ class KeyHelper {
                     this.interactPressed = true;
                     break;
             }
+            if (event.keyCode >= 48 && event.keyCode <= 57)
+                this.numberKeys[event.keyCode - 48] = true;
         };
         this.keyUpHandler = (event) => {
             switch (event.keyCode) {
@@ -223,6 +228,8 @@ class KeyHelper {
                     this.interactPressed = false;
                     break;
             }
+            if (event.keyCode >= 48 && event.keyCode <= 57)
+                this.numberKeys[event.keyCode - 48] = false;
         };
         this.leftPressed = false;
         this.upPressed = false;
@@ -230,6 +237,10 @@ class KeyHelper {
         this.downPressed = false;
         this.spaceBarPressed = false;
         this.interactPressed = false;
+        this.numberKeys = {
+            1: false, 2: false, 3: false, 4: false, 5: false,
+            6: false, 7: false, 8: false, 9: false, 0: false,
+        };
         window.addEventListener("keydown", this.keyDownHandler);
         window.addEventListener("keyup", this.keyUpHandler);
     }
@@ -809,6 +820,7 @@ class Player extends Entity {
         }
         if (this.location.y > 5000)
             this.kill();
+        this.checkInventory();
         this.drawInventory();
         this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
     }
@@ -886,6 +898,17 @@ class Player extends Entity {
             displayName: Item.itemIDs[id].displayName,
             image: img
         });
+    }
+    checkInventory() {
+        for (let i = 0; i < 10; i++) {
+            if (this.keyHelper.numberKeys[i]) {
+                this.keyHelper.numberKeys[i] = false;
+                const droppedItem = this.inventory.splice(i - 1, 1)[0];
+                if (droppedItem) {
+                    Game.getCurrentView().entities.push(new Item(droppedItem.image.src, this.location.copy(), this.rotation.copy(), new Vector(64, 64), droppedItem.internalName));
+                }
+            }
+        }
     }
     drawInventory() {
         this.inventory.forEach((e, i) => {

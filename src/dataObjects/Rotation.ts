@@ -26,4 +26,8 @@ class Rotation {
     public getDegree(): number {
         return this.value * (180 / Math.PI);
     }
+
+    public copy(): Rotation {
+        return new Rotation(this.getValue(), true);
+    }
 }
