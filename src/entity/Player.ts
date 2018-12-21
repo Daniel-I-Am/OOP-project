@@ -147,7 +147,7 @@ class Player extends Entity {
             this.canvasHelper.offset.y -= 1*10**-17*dy**7
         }
 
-        if (this.location.y > 5000) this.playerKill(entites)
+        if (this.location.y > 5000) this.kill()
         this.drawInventory();
     }
 
@@ -192,7 +192,7 @@ class Player extends Entity {
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
             ) {
                 e.onPlayerCollision(this);
-                 return;
+                return;
             }
             returnValue.left = thisEntityCollision.left || returnValue.left;
             returnValue.right = thisEntityCollision.right || returnValue.right;
@@ -264,11 +264,11 @@ class Player extends Entity {
         this.isLanded = state;
     }
 
-    private playerKill(entites: Array<Entity>) {
+    public kill() {
         if (!this.isAlive) return
         this.keyHelper.destroy();
         this.setIsLanded(true);
-        this.kill()
+        this.isAlive = false;
         new SoundHelper("./assets/sounds/GameOver.wav")
         this.velocity.x = 0;
         this.velocity.y = 0;
@@ -279,6 +279,10 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        Game.switchView(new GameOverView(this, entites, Game.getBackground()))
+        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()))
+    }
+
+    public onPlayerCollision(player: Player): void {
+        return; // duh :)
     }
 }
