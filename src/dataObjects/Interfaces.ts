@@ -5,7 +5,7 @@ interface InventoryItem {
     id: number,
     internalName: string,
     displayName: string,
-    spriteSrc: string,
+    image: HTMLImageElement,
 }
 
 interface ItemDefinition {

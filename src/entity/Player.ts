@@ -229,11 +229,13 @@ class Player extends Entity {
     }
 
     private newInventoryItem(id: number): void {
+        let img = new Image()
+        img.src = Item.itemIDs[id].spriteSrc;
         this.inventory.push({
             id: id,
             internalName: Item.itemIDs[id].internalName,
             displayName: Item.itemIDs[id].displayName,
-            spriteSrc: Item.itemIDs[id].spriteSrc
+            image: img
         });
         }
     }
