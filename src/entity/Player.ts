@@ -193,6 +193,10 @@ class Player extends Entity {
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
                 e.onPlayerCollision(this);
             }
+            if (e instanceof Fire &&
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
+                e.onPlayerCollision(this);
+            }
             if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
             if (
                 e instanceof Accelerator &&
