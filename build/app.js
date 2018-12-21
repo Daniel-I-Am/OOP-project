@@ -112,8 +112,9 @@ class CanvasHelper {
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)), emptyColor);
         this.fillRect(location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)), new Vector(location.x - size.x * .5 + 1 + filledPct * (size.x - 1), location.y + size.y * .5 - 1), filledColor);
     }
-    drawImage(image, location, rotation, size, isCentered = true, isGUI = false) {
+    drawImage(image, location, rotation, size, isCentered = true, isGUI = false, opacity = 1) {
         this.ctx.save();
+        this.ctx.globalAlpha = opacity;
         if (!isGUI) {
             this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         }
@@ -388,8 +389,11 @@ class Entity {
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage + 1) % this.images.length;
-        if (this.drawOnDeath || this.isAlive)
+        if (this.drawOnDeath || this.isAlive) {
             this.draw();
+            if (this instanceof Player)
+                this.drawOverlay();
+        }
     }
     ;
     draw() {
@@ -729,6 +733,8 @@ Item.itemIDs = [
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
+        this.darkOverlay = new Image();
+        this.darkOverlay.src = "./assets/player/darkOverlay.png";
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
         this.isJumping = false;
@@ -803,6 +809,7 @@ class Player extends Entity {
         if (this.location.y > 5000)
             this.kill();
         this.drawInventory();
+        this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -883,6 +890,9 @@ class Player extends Entity {
         this.inventory.forEach((e, i) => {
             this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), true, true);
         });
+    }
+    drawOverlay() {
+        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, undefined, undefined, this.fireCounter / 150 * .6);
     }
     setIsLanded(state) {
         this.isLanded = state;

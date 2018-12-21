@@ -7,6 +7,7 @@ class Player extends Entity {
     private maxJumps: number;
     private jumpCount: number;
     private fireCounter: number;
+    private darkOverlay: HTMLImageElement;
 
     private leftCollision: CollisionObject;
     private rightCollision: CollisionObject;
@@ -42,6 +43,8 @@ class Player extends Entity {
             acceleration,
             15
         );
+        this.darkOverlay = new Image();
+        this.darkOverlay.src = "./assets/player/darkOverlay.png";
 
         this.keyHelper = new KeyHelper();
         this.animationCounterMax = 4;
@@ -151,6 +154,7 @@ class Player extends Entity {
 
         if (this.location.y > 5000) this.kill()
         this.drawInventory();
+        this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
     }
 
 
@@ -250,6 +254,12 @@ class Player extends Entity {
                 true
             );
         });
+    }
+
+    public drawOverlay(): void {
+        this.canvasHelper.drawImage(
+            this.darkOverlay, this.location, this.rotation, this.size, undefined, undefined, this.fireCounter/150 * .6
+        )
     }
 
     public setIsLanded(state: boolean): void    {

@@ -86,8 +86,11 @@ abstract class Entity {
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage+1) % this.images.length;
-        if (this.drawOnDeath || this.isAlive)
+        if (this.drawOnDeath || this.isAlive) {
             this.draw();
+            if (this instanceof Player)
+                this.drawOverlay();
+        }
     };
 
     public draw(): void {

@@ -116,8 +116,10 @@ class CanvasHelper {
         size: Vector,
         isCentered: boolean = true,
         isGUI: boolean = false,
+        opacity: number = 1,
     ): void {
         this.ctx.save();
+        this.ctx.globalAlpha = opacity
         if (!isGUI) {
         this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         } else {
