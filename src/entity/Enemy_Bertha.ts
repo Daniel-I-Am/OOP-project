@@ -66,4 +66,8 @@ class Enemy_Bertha extends Entity {
             this.velocity.y += this.gravity;
         }
     }
+
+    public onPlayerCollision(player: Player): void {
+        player.kill();
+    }
 }

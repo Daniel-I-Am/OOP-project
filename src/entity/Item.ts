@@ -61,4 +61,8 @@ class Item extends Entity {
     public getItemID(): number {
         return this.itemID;
     }
+
+    public onPlayerCollision(player: Player): void {
+        return;
+    }
 }

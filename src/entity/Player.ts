@@ -87,8 +87,8 @@ class Player extends Entity {
     /**
      * Function to move the player
      */
-    public move(entites: Array<Entity>): void {
-        let collision = this.playerCollision(entites);
+    public move(): void {
+        let collision = this.playerCollision(Game.getCurrentView().entities);
         // if we can move faster, do so
         if (this.keyHelper.getLeftPressed() && this.velocity.x > -this.maxSpeed) {
             this.velocity.x -= this.acceleration;
@@ -159,12 +159,16 @@ class Player extends Entity {
         this.rightCollision.updateLocation(this.location.copy().add(new Vector(this.size.x/2, 0)));
         this.topCollision.updateLocation(this.location.copy().add(new Vector(0, -this.size.y/2)));
         this.bottomCollision.updateLocation(this.location.copy().add(new Vector(0, this.size.y/2)));
-        let returnValue = {left: false, right: false, bottom: false, top: false}
+        let returnValue = {left: false, right: false, bottom: false, top: false};
         if (collideWith == null || !this.isAlive) return returnValue;
         collideWith.forEach(e => {
             if (e instanceof Player) return;
             this.interact(e);
-            if (!e.shouldCollide) return;
+            if (!e.shouldCollide) {
+                if (e.collide(this))
+                    e.onPlayerCollision(this);
+                return;
+            }
             
             let thisEntityCollision = {left: false, right: false, top: false, bottom: false}
             thisEntityCollision.left = e.collide(this.leftCollision);
@@ -172,19 +176,22 @@ class Player extends Entity {
             thisEntityCollision.bottom = e.collide(this.bottomCollision);
             thisEntityCollision.top = e.collide(this.topCollision);
             if (e instanceof Trampoline && e.collide(this.bottomCollision)) {
-                this.trampoline(e);
+                e.onPlayerCollision(this);
                 thisEntityCollision.bottom = false;
             }
             if (e instanceof Enemy_Bertha &&
-                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)){
-                this.playerKill(collideWith)
+                (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
+            ){
+                e.onPlayerCollision(this);
             }
-            if (e instanceof FallingTile && e.collide(this.bottomCollision)) e.activated = true;
+            if (e instanceof FallingTile && e.collide(this.bottomCollision)) {
+                e.onPlayerCollision(this);
+            }
             if (
                 e instanceof Accelerator &&
                 (thisEntityCollision.left || thisEntityCollision.right || thisEntityCollision.top || thisEntityCollision.bottom)
             ) {
-                 this.boost(e);
+                e.onPlayerCollision(this);
                  return;
             }
             returnValue.left = thisEntityCollision.left || returnValue.left;

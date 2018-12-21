@@ -54,4 +54,8 @@ class FallingTile extends Entity{
     public getAlive() {
         return this.alive;
     }
+
+    public onPlayerCollision(player: Player): void {
+        this.activated = true;
+    }
 }

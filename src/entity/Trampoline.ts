@@ -17,4 +17,8 @@ class Trampoline extends Entity{
     }
 
     protected move(): void {}
+
+    public onPlayerCollision(player: Player): void {
+        player.trampoline(this);
+    }
 }

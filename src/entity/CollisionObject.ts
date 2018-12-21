@@ -41,4 +41,8 @@ class CollisionObject extends Entity {
     }
 
     public move() {}
+
+    public onPlayerCollision(player: Player): void {
+        return; // don't think we need this to do anything, it's all handled in Player anyways
+    }
 }

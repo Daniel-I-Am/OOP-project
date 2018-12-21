@@ -38,4 +38,8 @@ class Enemy extends Entity {
     protected move(): void {
         this.location.add(this.velocity)
     }
+
+    public onPlayerCollision(player: Player): void {
+        player.kill();
+    }
 }

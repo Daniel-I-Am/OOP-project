@@ -23,4 +23,8 @@ class Accelerator extends Entity{
     public getYeet(): number {
         return this.yeet;
     }
+
+    public onPlayerCollision(player: Player): void {
+        player.boost(this);
+    } 
 }
