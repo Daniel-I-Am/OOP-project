@@ -278,7 +278,7 @@ class Player extends Entity {
 
     public drawOverlay(): void {
         this.canvasHelper.drawImage(
-            this.darkOverlay, this.location, this.rotation, this.size, undefined, undefined, undefined, this.fireCounter/150 * .6
+            this.darkOverlay, this.location, this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined), undefined, undefined, this.fireCounter/150 * .6
         )
     }
 
