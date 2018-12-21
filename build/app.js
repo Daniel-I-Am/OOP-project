@@ -848,7 +848,7 @@ class Player extends Entity {
             if (thisEntityCollision.left && thisEntityCollision.right && thisEntityCollision.bottom)
                 this.location.y--;
         });
-        if (returnValue.bottom && this.velocity.y <= 0) {
+        if (returnValue.bottom && this.velocity.y >= 0) {
             this.isLanded = true;
         }
         else {
