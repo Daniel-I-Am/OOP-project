@@ -23,7 +23,8 @@ class Item extends Entity {
         location: Vector,
         rotation: Rotation,
         size: Vector,
-        name: string
+        name: string,
+        gravity: number = 0,
     ) {
         let itemData = (Item.itemIDs.map((e) => {
             if (e.internalName == name)
@@ -36,7 +37,8 @@ class Item extends Entity {
             [itemData.spriteSrc],
             location,
             rotation,
-            size
+            size,
+            gravity
         );
         this.drawOnDeath = false;
         this.shouldCollide = false;
@@ -56,6 +58,13 @@ class Item extends Entity {
     public move(): void {
         const d = new Date();
         this.offset.y = 5 * Math.sin((1000 * d.getSeconds() + d.getMilliseconds()) * 0.0008 * Math.PI);
+        this.velocity.y += this.gravity;
+        Game.getCurrentView().entities.forEach(e => {
+            if (e === this) return;
+            if (e.collide(this))
+                this.velocity.y = 0;
+        });
+        this.location.add(this.velocity);
     }
 
     public getItemID(): number {
