@@ -28,7 +28,7 @@
     },
     "patient": {
         "sprites": [
-            "./assets/player/anim_walk/PlayerAnim1.png"
+            "./assets/images/harry.png"
         ],
         "size": {
             "x": 58.5,
