@@ -96,7 +96,6 @@ interface LevelTrampoline {
 }
 
 interface LevelItem {
-    sprite: string,
     location: LevelLocations,
     rotation: number,
     size: LevelSize,

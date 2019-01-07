@@ -80,7 +80,6 @@ class GameView extends BaseView {
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(
-                ((e.sprite == null) ? undefined : e.sprite),
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),

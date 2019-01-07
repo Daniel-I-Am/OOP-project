@@ -5,15 +5,14 @@ class Item extends Entity {
     public static readonly itemIDs: Array<ItemDefinition> = [
         {internalName: "none", displayName: "None", spriteSrc: null},
         {internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png"},
-        {internalName: "citroen", displayName: "Citroen", spriteSrc: ".assets/images/items/citroen.png"},
-        {internalName: "jodium", displayName: "Jodium", spriteSrc: ".assets/images/items/jodium.png"},
-        {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: ".assets/images/items/keukenrol.png"},
-        {internalName: "water", displayName: "Water", spriteSrc: ".assets/images/items/water.png"}
+        {internalName: "citroen", displayName: "Citroen", spriteSrc: "./assets/images/items/citroen.png"},
+        {internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png"},
+        {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png"},
+        {internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png"}
     ]
 
     /**
      * @constructor
-     * @param {string} imageSource
      * @param {number} xPos
      * @param {number} yPos
      * @param {number} height
@@ -22,7 +21,6 @@ class Item extends Entity {
      * @param {number} acceleration
      */
     public constructor(
-        imageSource: string,
         location: Vector,
         rotation: Rotation,
         size: Vector,

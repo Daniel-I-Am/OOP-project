@@ -499,7 +499,7 @@ class GameView extends BaseView {
             this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, ((e.shouldDraw == null) ? true : e.shouldDraw)));
         });
         levelJSON.items.forEach(e => {
-            this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
+            this.entities.push(new Item(this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
         this.entities.push(this.player);
     }
@@ -707,7 +707,7 @@ class FallingTile extends Entity {
     }
 }
 class Item extends Entity {
-    constructor(imageSource, location, rotation, size, name, gravity = 0) {
+    constructor(location, rotation, size, name, gravity = 0) {
         let itemData = (Item.itemIDs.map((e) => {
             if (e.internalName == name)
                 return e;
@@ -751,7 +751,10 @@ class Item extends Entity {
 Item.itemIDs = [
     { internalName: "none", displayName: "None", spriteSrc: null },
     { internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png" },
-    { internalName: "", displayName: "", spriteSrc: "" },
+    { internalName: "citroen", displayName: "Citroen", spriteSrc: "./assets/images/items/citroen.png" },
+    { internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png" },
+    { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
+    { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" }
 ];
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
@@ -915,7 +918,7 @@ class Player extends Entity {
                 this.keyHelper.numberKeys[i] = false;
                 const droppedItem = this.inventory.splice(i - 1, 1)[0];
                 if (droppedItem) {
-                    Game.getCurrentView().entities.push(new Item(droppedItem.image.src, this.location.copy(), this.rotation.copy(), new Vector(64, 64), droppedItem.internalName, this.gravity));
+                    Game.getCurrentView().entities.push(new Item(this.location.copy(), this.rotation.copy(), new Vector(64, 64), droppedItem.internalName, this.gravity));
                 }
             }
         }

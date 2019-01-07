@@ -166,7 +166,6 @@
     ],
     "items": [
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -185,7 +184,6 @@
             "name": "bandage"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -201,10 +199,9 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "citroen"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -220,7 +217,43 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "jodium"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 400
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "keukenrol"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "water"
         }
     ],
     "Trampolines": [
