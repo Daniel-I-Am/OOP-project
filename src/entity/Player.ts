@@ -56,7 +56,7 @@ class Player extends Entity {
         this.jumpSpeed = jumpHeight;
         this.isAlive = true;
         this.fireCounter = 0;
-        
+
         this.collision = new CollisionObject(
             this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))),
             this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)),
@@ -142,14 +142,14 @@ class Player extends Entity {
                 this.velocity.y = Math.min(this.velocity.y, 0);
         }
         this.previousCollision = collision;
-        this.location.add(this.velocity)
+        this.location.add(this.velocity);
 
         // move the camera
         if (this.isAlive) {
-            var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x
-            var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
-            this.canvasHelper.offset.x -= 1*10**-17*dx**7
-            this.canvasHelper.offset.y -= 1*10**-17*dy**7
+            let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x;
+            let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y;
+            this.canvasHelper.offset.x -= 1*10**-17*dx**7;
+            this.canvasHelper.offset.y -= 1*10**-17*dy**7;
         }
 
         if (this.location.y > 5000) this.kill()
@@ -176,7 +176,7 @@ class Player extends Entity {
                     e.onPlayerCollision(this, null);
                 return;
             }
-            
+
             let thisEntityCollision = {left: false, right: false, top: false, bottom: false}
             thisEntityCollision.left = e.collide(this.leftCollision);
             thisEntityCollision.right = e.collide(this.rightCollision);
@@ -205,19 +205,19 @@ class Player extends Entity {
         return returnValue;
     }
 
-    public boost(booster: Accelerator) {
+    public boost(booster: Accelerator): void {
         this.velocity = new Vector(booster.getYeet(), 0).rotate(booster.getRot().getValue());
     }
 
-    public trampoline(entity: Trampoline) {
-        new SoundHelper("./assets/sounds/jump.wav")
+    public trampoline(entity: Trampoline): void {
+        new SoundHelper("./assets/sounds/jump.wav");
         this.velocity = new Vector(this.velocity.x,-this.velocity.y-5).rotate(entity.getRot().getValue());
     }
 
-    protected jump() {
-        new SoundHelper("./assets/sounds/jump.wav")
+    protected jump(): void {
+        new SoundHelper("./assets/sounds/jump.wav");
         this.velocity.y -= this.jumpSpeed;
-        this.keyHelper.resetSpaceBar()
+        this.keyHelper.resetSpaceBar();
         this.jumpCount++;
     }
 
@@ -233,7 +233,7 @@ class Player extends Entity {
     }
 
     protected newInventoryItem(id: number): void {
-        let img = new Image()
+        let img = new Image();
         img.src = Item.itemIDs[id].spriteSrc;
         this.inventory.push({
             id: id,
@@ -296,7 +296,7 @@ class Player extends Entity {
         this.velocity.y = 0;
         let oldGravity = this.gravity;
         this.gravity = 0;
-        setTimeout(() => { 
+        setTimeout(() => {
             this.setIsLanded(false);
             this.gravity = oldGravity;
             this.velocity.y = -20;
