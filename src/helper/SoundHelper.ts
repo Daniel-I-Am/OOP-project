@@ -43,4 +43,4 @@ class SoundHelper {
             this.audioElem.play();
         }
     }
-} 
+}
