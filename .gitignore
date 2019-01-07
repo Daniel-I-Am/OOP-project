@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=node,code,macos,linux,windows,intellij,phpstorm
 
 ### User Specified ###
-*.js
+*.js.map
 
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/
