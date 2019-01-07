@@ -824,8 +824,8 @@ class Player extends Entity {
         this.previousCollision = collision;
         this.location.add(this.velocity);
         if (this.isAlive) {
-            var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
-            var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+            let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
+            let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
             this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
         }
