@@ -3,23 +3,61 @@
 
 interface InventoryItem {
     id: number,
-    name: string,
+    internalName: string,
+    displayName: string,
+    image: HTMLImageElement,
+}
+
+interface NumberKeyPresses {
+    [key: number]: boolean
+}
+
+interface ItemDefinition {
+    internalName: string,
+    displayName: string,
+    spriteSrc: string,
+}
+
+interface CollisionDirections {
+    left: boolean,
+    right: boolean,
+    top: boolean,
+    bottom: boolean
 }
 
 interface Level {
+    background: string,
+    backgroundMusic: string,
     player: LevelPlayer,
+    berthas: Array<LevelBertha>,
+    Fires: Array<LevelFire>,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,
     items: Array<LevelItem>,
-    floors: Array<LevelFloor>
+    Collisions: Array<LevelCollision>
 }
 
 interface LevelPlayer {
     sprites: Array<string>,
     location: LevelLocations,
     size: LevelSize,
+    gravity: number,
+    maxJumps: number,
+    jumpHeight: number
+}
+
+interface LevelBertha {
+    sprites: Array<string>,
+    location: LevelLocations,
+    size: LevelSize,
     gravity: number
+}
+interface LevelFire {
+    sprites: Array<string>,
+    location: LevelLocations,
+    rotation: number,
+    size: LevelSize
 }
 
 interface LevelFallingTile {
@@ -52,11 +90,10 @@ interface LevelItem {
     name: string
 }
 
-interface LevelFloor {
-    sprite: string,
-    location: LevelLocations,
-    rotation: number,
-    size: LevelSize
+interface LevelCollision {
+    topLeft: LevelLocations,
+    bottomRight: LevelLocations,
+    rotation: number
 }
 
 interface LevelLocations {

@@ -2,14 +2,14 @@ class CanvasHelper {
     private static instance: CanvasHelper;
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    public offset: number;
+    public offset: Vector;
 
     private constructor(
         canvas: HTMLElement
     ) {
         this.canvas = <HTMLCanvasElement>canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.offset = 0;
+        this.offset = new Vector(0, 0);
 
         this.canvas.style.width = `${this.canvas.clientWidth}px`
         this.canvas.style.height = `${this.canvas.clientWidth*9/16}px`
@@ -38,7 +38,7 @@ class CanvasHelper {
      * @param align Text alignment to use, default: center
      * @param baseLine Baseline to use when printing, default: middle
      * @param color Color of the text, default: white
-     * @param fontFamily Fontface to use, default: Minecraft
+     * @param fontFamily Fontface to use, default: Arial
      */
     public writeText(
         text: string,
@@ -57,6 +57,52 @@ class CanvasHelper {
     }
 
     /**
+     * Draws a rectangle to the canvas
+     * @param topLeft Location of the top left point
+     * @param bottomRight Location of the bottom right point
+     * @param color Color to draw rect at
+     */
+    public fillRect(
+        topLeft: Vector,
+        bottomRight: Vector,
+        color: string
+    ): void {
+        this.ctx.save();
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y)
+        this.ctx.restore();
+    }
+
+    public addProgressBar(
+        location: Vector,
+        size: Vector,
+        filledColor: string,
+        emptyColor: string,
+        outlineColor: string,
+        filledPct: number
+    ): void {
+        filledPct = Math.min(Math.max(filledPct, 0), 1)
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)),
+            location.copy().add(size.copy().multiply(.5)),
+            outlineColor
+        );
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)),
+            location.copy().add(size.copy().multiply(.5)).sub(new Vector(1, 1)),
+            emptyColor
+        );
+        this.fillRect(
+            location.copy().sub(size.copy().multiply(.5)).add(new Vector(1, 1)),
+            new Vector(
+                location.x - size.x * .5 + 1 + filledPct * (size.x - 1),
+                location.y + size.y * .5 - 1
+            ),
+            filledColor
+        );
+    }
+
+    /**
      * Draws an image to the canvas
      * @param image Image to draw
      * @param location Location to draw the image at
@@ -68,14 +114,30 @@ class CanvasHelper {
         location: Vector,
         rotation: Rotation,
         size: Vector,
+        scale: Vector = new Vector(1, 1),
+        isCentered: boolean = true,
+        isGUI: boolean = false,
+        opacity: number = 1,
     ): void {
         this.ctx.save();
-        this.ctx.translate(location.x - this.offset, location.y);
-        this.ctx.rotate(rotation.getValue());
-        if (Math.min(...size.toArray()) < 0) {
-            this.ctx.drawImage(image, -image.width/2, -image.height/2);
+        this.ctx.globalAlpha = opacity
+        if (!isGUI) {
+        this.ctx.translate(location.x - this.offset.x, location.y - this.offset.y);
         } else {
-            this.ctx.drawImage(image, -size.x/2, -size.y/2, size.x, size.y);   
+            this.ctx.translate(location.x, location.y);
+        }
+        this.ctx.rotate(rotation.getValue());
+        this.ctx.scale(scale.x, scale.y);
+        if (Math.min(...size.toArray()) < 0) {
+            if (isCentered)
+                this.ctx.drawImage(image, -image.width/2, -image.height/2);
+            else
+                this.ctx.drawImage(image, 0, 0)
+        } else {
+            if (isCentered)
+                this.ctx.drawImage(image, -size.x/2, -size.y/2, size.x, size.y);   
+            else
+                this.ctx.drawImage(image, 0, 0, size.x, size.y)
         }
         this.ctx.restore();
     }

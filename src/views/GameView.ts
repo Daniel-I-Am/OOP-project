@@ -1,6 +1,5 @@
 class GameView extends BaseView {
-    private entities: Array<Entity>;
-    private player: Player;
+    private backgroundMusic: SoundHelper;
 
     public constructor(levelName: string) {
         super();
@@ -15,21 +14,40 @@ class GameView extends BaseView {
     }
 
     private makeLevel(levelJSON: Level) {
+        this.background.src = levelJSON.background;
+        this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
+        this.backgroundMusic.toggleLoop();
+        levelJSON.Collisions.forEach(e => {
+            this.entities.push(new CollisionObject(
+                this.parseLocation(e.topLeft),
+                this.parseLocation(e.bottomRight),
+                new Rotation(e.rotation)
+            ));
+        });
         this.player = new Player(
             levelJSON.player.sprites,
             this.parseLocation(levelJSON.player.location),
             new Vector(levelJSON.player.size.x, levelJSON.player.size.y),
             levelJSON.player.gravity,
-            5
+            2,
+            levelJSON.player.jumpHeight,
+            levelJSON.player.maxJumps
         );
-        levelJSON.floors.forEach(e => {
-            let sprite = ((e.sprite == null) ? undefined : e.sprite);
-            sprite = ((sprite == "null") ? null : sprite);
-            this.entities.push(new Floor(
-                sprite,
+        levelJSON.berthas.forEach(e => {
+            this.entities.push(new Enemy_Bertha(
+                ((e.sprites == null) ? undefined : e.sprites),
                 this.parseLocation(e.location),
-                new Rotation(e.rotation),
-                new Vector(e.size.x, e.size.y)
+                new Vector(e.size.x, e.size.y),
+                e.gravity,
+            ));
+        });
+        levelJSON.Fires.forEach(e => {
+            this.entities.push(new Fire(
+                ((e.sprites == null) ? undefined : e.sprites),
+                this.parseLocation(e.location),
+                new Rotation(0),
+                new Vector(e.size.x, e.size.y),
+                0
             ));
         });
         levelJSON.FallingTiles.forEach(e => {
@@ -79,47 +97,34 @@ class GameView extends BaseView {
         )
     }
 
-    public update(): void {
-        this.player.setIsLanded(false);
+    protected update(): void {
         this.entities.forEach(e => {
-            if (e === this.player) return;
-            if (this.player.footCollision(e)){
-                this.player.setIsLanded(true);
-                if(e instanceof FallingTile){
-                    e.activated = true;
-                }
-            }
-            if(e.collide(this.player) && e instanceof Accelerator){
-                this.player.boost(e);
-            }
-            if(e.collide(this.player) && e instanceof Trampoline){
-                this.player.trampoline();
-            }
-            if(e.collide(this.player))
-            this.player.interact(e);
-            if(e instanceof FallingTile){
-                if(e.getAlive()){
-                    let tile = e
-                    this.entities.forEach(e => {
-                        if(!(e instanceof Floor)) return;
-                        if(tile.collide(e)) tile.kill();
-                    });
-                }
-            }
+            e.update(this.entities);
         });
-        this.entities.forEach(e => {
-            e.update();
-        });
-        this.drawGUI();
     }
 
     protected drawGUI(): void {
-        this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black")
-        this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black")
-        this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black")
-        this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black")
+        if (Game.DEBUG_MODE) {
+            this.canvasHelper.writeText(`XPos: ${MathHelper.floor(this.player.getLoc().x, 2)}`, 20, new Vector(50, 20), "left", undefined, "black")
+            this.canvasHelper.writeText(`YPos: ${MathHelper.floor(this.player.getLoc().y, 2)}`, 20, new Vector(50, 40), "left", undefined, "black")
+            this.canvasHelper.writeText(`XVelo: ${MathHelper.floor(this.player.getVelocity().x, 2)}`, 20, new Vector(50, 60), "left", undefined, "black")
+            this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black")
+        }
+        this.canvasHelper.addProgressBar(
+            new Vector(this.canvasHelper.getWidth()-100, 20),
+            new Vector(180, 20),
+            "green",
+            "white",
+            "black",
+            Game.getReputation()
+        );
     }
 
-    public beforeExit(): void {}
+    public beforeExit(): void {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
 
+    public onPause(): void {
+        this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black")
+    }
 }

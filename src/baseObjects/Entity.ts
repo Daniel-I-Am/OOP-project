@@ -13,6 +13,10 @@ abstract class Entity {
     protected direction: Rotation;
     protected gravity: number;
     protected canvasHelper: CanvasHelper;
+    protected collision: CollisionObject;
+    public shouldCollide: boolean = true;
+    protected drawOnDeath: boolean = true;
+    protected isAlive: boolean = true;
 
     protected constructor(
         imageSources: Array<string> = ["./assets/images/default.png"],
@@ -50,36 +54,55 @@ abstract class Entity {
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
         this.direction = direction;
+        this.collision = null;
     }
 
     public collide(
         collideWith: Entity
     ): boolean {
-        if (
-            this.location.x - this.size.x/2 - collideWith.getSize().x/2 < collideWith.getLoc().x &&
-            this.location.x + this.size.x/2 + collideWith.getSize().x/2 > collideWith.getLoc().x &&
-            this.location.y - this.size.y/2 - collideWith.getSize().y/2 < collideWith.getLoc().y &&
-            this.location.y + this.size.y/2 + collideWith.getSize().y/2 > collideWith.getLoc().y
-        )
-            return true;
-        return false;
+        if (this.collision == null || collideWith.getCollision() == null) return false;
+        return this.collision.collide(collideWith.getCollision());
     }
 
-    public update(): void {
-        this.move();
+    public getCollision(): CollisionObject {
+        return this.collision;
+    }
+
+    public removeCollision() {
+        this.collision = null;
+    }
+
+    public abstract onPlayerCollision(player: Player, collisionSides: CollisionDirections): void;
+
+    public update(entities: Array<Entity> = null): void {
+        this.move(entities);
+        if (this.getCollision()) {
+            if (!(this instanceof CollisionObject)) {
+                this.getCollision().updateLocation(this.location);
+            }
+            this.getCollision().draw();
+        }
         this.animationCounter++;
         this.animationCounter %= this.animationCounterMax;
         if (this.animationCounter == 0)
             this.activeImage = (this.activeImage+1) % this.images.length;
-        this.draw();
+        if (this.drawOnDeath || this.isAlive) {
+            this.draw();
+            if (this instanceof Player)
+                this.drawOverlay();
+        }
     };
 
-    private draw() {
+    public draw(): void {
         if (this.images.length <= 0) return;
-        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size);
+        this.canvasHelper.drawImage(this.images[this.activeImage], this.location.copy().add(this.offset), this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined));
     }
 
-    protected abstract move(): void;
+    /**
+     * Called once per update, needs to handle movement and collision
+     * @param entites List of entities to collide with
+     */
+    protected abstract move(entites: Array<Entity>): void;
 
     // Getters & Setters
     public getSize(): Vector {
@@ -92,5 +115,21 @@ abstract class Entity {
 
     public getVelocity(): Vector {
         return this.velocity;
+    }
+
+    public getRot(): Rotation {
+        return this.rotation;
+    }
+
+    public getAlive(): boolean {
+        return this.isAlive;
+    }
+
+    public kill(): void {
+        this.isAlive = false;
+    }
+
+    public revive(): void {
+        this.isAlive = true;
     }
 }

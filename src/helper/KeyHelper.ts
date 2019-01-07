@@ -5,6 +5,7 @@ class KeyHelper {
     public downPressed: boolean;
     public spaceBarPressed: boolean;
     public interactPressed: boolean;
+    public numberKeys: NumberKeyPresses;
 
 
     /**
@@ -18,6 +19,10 @@ class KeyHelper {
         this.downPressed = false;
         this.spaceBarPressed = false;
         this.interactPressed = false;
+        this.numberKeys = {
+            1: false, 2: false, 3: false, 4: false, 5: false,
+            6: false, 7: false, 8: false, 9: false, 0: false,
+        }
         window.addEventListener("keydown", this.keyDownHandler);
         window.addEventListener("keyup", this.keyUpHandler);
     }
@@ -28,6 +33,12 @@ class KeyHelper {
     public destroy(): void {
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
+        this.leftPressed = false;
+        this.rightPressed = false;
+        this.upPressed = false;
+        this.downPressed = false;
+        this.spaceBarPressed = false;
+        this.interactPressed = false;
     }
 
     /**
@@ -60,6 +71,8 @@ class KeyHelper {
                 break;
 
         }
+        if (event.keyCode >= 48 && event.keyCode <= 57)
+            this.numberKeys[event.keyCode-48] = true;
     }
 
 
@@ -93,6 +106,8 @@ class KeyHelper {
                 break;
 
         }
+        if (event.keyCode >= 48 && event.keyCode <= 57)
+            this.numberKeys[event.keyCode-48] = false;
     }
 
 
@@ -136,5 +151,12 @@ class KeyHelper {
     */
     public getInteractPressed(): boolean {
         return this.interactPressed;
+    }
+    
+    /**
+     * Reset the jump state
+     */
+    public resetSpaceBar(): void {
+        this.spaceBarPressed = false;
     }
 }

@@ -1,50 +1,92 @@
+///<reference path="dataObjects/Enums.ts"/>
+///<reference path="dataObjects/Interfaces.ts"/>
+///<reference path="dataObjects/Rotation.ts"/>
+///<reference path="dataObjects/Vector.ts"/>
 ///<reference path="helper/CanvasHelper.ts"/>
 ///<reference path="helper/KeyHelper.ts"/>
 ///<reference path="helper/MathHelper.ts"/>
-///<reference path="dataObjects/Rotation.ts"/>
-///<reference path="dataObjects/Vector.ts"/>
+///<reference path="helper/SoundHelper.ts"/>
 ///<reference path="baseObjects/BaseView.ts"/>
 ///<reference path="baseObjects/Entity.ts"/>
-///<reference path="views/GameView.ts"/>
 ///<reference path="views/TitleView.ts"/>
+///<reference path="views/GameView.ts"/>
+///<reference path="views/GameOverView.ts"/>
+///<reference path="entity/Accelerator.ts"/>
+///<reference path="entity/CollisionObject.ts"/>
 ///<reference path="entity/Enemy.ts"/>
+///<reference path="entity/Enemy_Bertha.ts"/>
+///<reference path="entity/FallingTile.ts"/>
 ///<reference path="entity/Item.ts"/>
 ///<reference path="entity/Player.ts"/>
-///<reference path="entity/FallingTile.ts"/>
+///<reference path="entity/Trampoline.ts"/>
 
 class Game {
-    private canvasHelper: CanvasHelper;
-    private currentView: BaseView;
-    private currentInterval: number;
+    private static instance: Game;
 
-    public constructor(canvas: HTMLElement) {
+    private canvasHelper: CanvasHelper;
+    private static currentView: BaseView;
+    private currentInterval: number;
+    public static readonly DEBUG_MODE: boolean = true;
+    private static GAME_STATE: number = GameState.PAUSED;
+    private static reputation: number;
+
+    private constructor(canvas: HTMLElement) {
+        Game.setReputation(0);
         this.canvasHelper = CanvasHelper.Instance(canvas);
-        this.currentView = new TitleView(
-            () => {this.switchView(new GameView("debug_level"))}
+        Game.currentView = new TitleView(
+            () => {Game.pause(); Game.switchView(new LevelSelectView())}
         );
         this.currentInterval = setInterval(this.loop, 33);
     }
 
+    public static Instance(canvas: HTMLElement = null): Game {
+        if (!this.instance) this.instance = new Game(canvas)
+        return this.instance;
+    }
+
     private loop = (): void => {
-        if (this.currentView) {
-            if (this.currentView.getShouldClear())
-                this.canvasHelper.clear();
-            this.currentView.update();
+        if (Game.GAME_STATE == GameState.PAUSED) {
+            Game.currentView.onPause();
+            return;
+        }
+        if (Game.currentView) {
+            Game.currentView.tick();
         }
     }
 
-    private switchView = (
+    public static switchView = (
         newView: BaseView,
     ): void => {
-        if (this.currentView) {
-            this.currentView.beforeExit();
+        if (Game.currentView) {
+            Game.currentView.beforeExit();
         }
-        this.currentView = newView;
+        Game.currentView = newView;
+    }
+
+    public static getReputation(): number {
+        return this.reputation;
+    }
+
+    private static setReputation(amount: number): void {
+        this.reputation = amount;
+    }
+
+    public static pause() {
+        if      (Game.GAME_STATE == GameState.PLAYING) Game.GAME_STATE = GameState.PAUSED;
+        else if (Game.GAME_STATE == GameState.PAUSED) Game.GAME_STATE = GameState.PLAYING;
+    }
+
+    public static getBackground(): HTMLImageElement {
+        return this.currentView.getBackground();
+    }
+
+    public static getCurrentView(): BaseView {
+        return Game.currentView;
     }
 }
 
 function init() {
-    const game = new Game(document.getElementById("canvas"));
+    Game.Instance(document.getElementById("canvas"));
 }
 
 window.addEventListener('load', init);

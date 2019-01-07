@@ -1,4 +1,6 @@
 {
+    "background": "./assets/images/map/debug_level.png",
+    "backgroundMusic": "./assets/sounds/Spectacles.wav",
     "player": {
         "sprites": [
             "./assets/player/anim_walk/PlayerAnim1.png",
@@ -8,73 +10,102 @@
         ],
         "location": {
             "x": {
-                "center": true,
-                "offset": 0
+                "center": false,
+                "offset": 150
             },
             "y": {
-                "center": true,
-                "offset": 0
+                "center": false,
+                "offset": 1700
             }
         },
         "size": {
             "x": 58.5,
             "y": 150
         },
-        "gravity": 1
+        "gravity": 1,
+        "jumpHeight": 16,
+        "maxJumps": 2
     },
+    "berthas": [
+        {
+            "sprites": [
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/2.png",
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/3.png"
+            ],
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1200
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1500                
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1900
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1500                
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        }
+    ],
+    "Fires": [
+        {
+            "sprites": null,
+            "location": {
+                "x":{
+                    "center": false,
+                    "offset": 670
+                },
+                "y":{
+                    "center": false,
+                    "offset": 1700
+                }
+            },
+            "rotation": 0,
+            "size":{
+                "x": 340,
+                "y": 440
+            }
+        }
+    ],
     "FallingTiles": [
         {
             "sprites": null,
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 500
+                    "offset": 2145
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 1595
                 }
             },
             "rotation": 0,
             "size": {
-                "x": 175,
+                "x": 276,
                 "y": 50
-            }
-        },
-        {
-            "sprites": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 0
-                },
-                "y": {
-                    "center": true,
-                    "offset": 100
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 175,
-                "y": 50
-            }
-        },
-        {
-            "sprites": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 550
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
             }
         }
     ],
@@ -136,7 +167,45 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "Default"
+            "name": "bandage"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 600
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "bandage"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "bandage"
         }
     ],
     "Trampolines": [
@@ -157,710 +226,209 @@
                 "x": 259,
                 "y": 135
             }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": -50
+                },
+                "y": {
+                    "center": false,
+                    "offset": 590
+                }
+            },
+            "rotation": 45,
+            "size": {
+                "x": 259,
+                "y": 135
+            }
         }
     ],
-    "floors": [
+    "Collisions": [
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
-                    "offset": -650
+                    "center": false,
+                    "offset": 0
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": -10000
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
+            "bottomRight": {
                 "x": {
-                    "center": true,
-                    "offset": -400
+                    "center": false,
+                    "offset": 75
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 2000
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "rotation": 0
         },
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
-                    "offset": -150
+                    "center": false,
+                    "offset": 0
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 850
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
+            "bottomRight": {
                 "x": {
-                    "center": true,
-                    "offset": 100
+                    "center": false,
+                    "offset": 770
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1020
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "rotation": 0
+        },{
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 950
+                },
+                "y": {
+                    "center": false,
+                    "offset": 850
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 5889
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1020
+                }
+            },
+            "rotation": 0
         },
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1800
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 5889
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1920
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
                     "offset": 1100
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1570
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
+            "bottomRight": {
                 "x": {
-                    "center": true,
+                    "center": false,
                     "offset": 1350
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1620
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "rotation": 0
         },
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
-                    "offset": 1600
+                    "center": false,
+                    "offset": 1730
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1570
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2006
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1620
+                }
+            },
+            "rotation": 0
         },
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
-                    "offset": 1850
+                    "center": false,
+                    "offset": 2284
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1570
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2560
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1620
+                }
+            },
+            "rotation": 0
         },
         {
-            "sprite": null,
-            "location": {
+            "topLeft": {
                 "x": {
-                    "center": true,
-                    "offset": 2100
+                    "center": false,
+                    "offset": 680
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1250
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
+            "bottomRight": {
                 "x": {
-                    "center": true,
-                    "offset": 2350
+                    "center": false,
+                    "offset": 950
                 },
                 "y": {
-                    "center": true,
-                    "offset": 200
+                    "center": false,
+                    "offset": 1300
                 }
             },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 2600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 2850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 3100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 3350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 3600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 3850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 4100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 4350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 4600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 4850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 5100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 5350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 5600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 5850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 6100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 6350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 6600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 6850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 7100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 7350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 7600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 7850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 8100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 8350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 8600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 8850
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 9100
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 9350
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": true,
-                    "offset": 9600
-                },
-                "y": {
-                    "center": true,
-                    "offset": 200
-                }
-            },
-            "rotation": 0,
-            "size": {
-                "x": 382,
-                "y": 100
-            }
+            "rotation": 0
         }
     ]
 }

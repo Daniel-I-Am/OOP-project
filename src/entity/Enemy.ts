@@ -32,26 +32,15 @@ class Enemy extends Entity {
             acceleration
         );
     }
-
-
-    /**
-     * Function to move the enemy right
-     */
-    public moveRight() {
-        this.velocity = new Vector(this.acceleration, 0)
-    }
-
-    /**
-     * Function to move the enemy left
-     */
-    public moveLeft() {
-        this.velocity = new Vector(this.acceleration, 0)
-    }
-
     /**
      *
      */
     protected move(): void {
         this.location.add(this.velocity)
+    }
+
+    public onPlayerCollision(player: Player, _: CollisionDirections): void {
+        if (this.collide(player))
+            player.kill();
     }
 }
