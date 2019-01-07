@@ -75,7 +75,7 @@ class GameView extends BaseView {
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),
                 2,
-                e.shouldDraw || true
+                ((e.shouldDraw == null) ? true : e.shouldDraw)
             ));
         });
         levelJSON.items.forEach(e => {
