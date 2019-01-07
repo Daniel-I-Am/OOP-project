@@ -496,7 +496,7 @@ class GameView extends BaseView {
             this.entities.push(new Accelerator(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.yeet));
         });
         levelJSON.Trampolines.forEach(e => {
-            this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2));
+            this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, ((e.shouldDraw == null) ? true : e.shouldDraw)));
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
@@ -824,8 +824,8 @@ class Player extends Entity {
         this.previousCollision = collision;
         this.location.add(this.velocity);
         if (this.isAlive) {
-            var dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
-            var dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+            let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
+            let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
             this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
         }
@@ -960,7 +960,9 @@ class Player extends Entity {
     }
 }
 class Trampoline extends Entity {
-    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
+    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
+        if (!shouldDraw)
+            imageSource = [];
         super(imageSource, location, rotation, size, gravity, undefined, undefined);
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
@@ -1102,6 +1104,7 @@ class DialogueView extends BaseView {
             this.makeLevel(myJson);
         });
         this.currentLine = 0;
+        DialogueView.fontSize = 30;
         this._listener = (event) => { this.onKey(event); };
         window.addEventListener('keydown', this._listener);
     }
@@ -1118,7 +1121,7 @@ class DialogueView extends BaseView {
         this.canvasHelper.offset = new Vector(0, 0);
     }
     displayLine() {
-        this.canvasHelper.writeText(this.dialogue[this.currentLine].what, 96, ((who) => {
+        this.canvasHelper.writeText(this.dialogue[this.currentLine].what, DialogueView.fontSize, ((who) => {
             switch (who) {
                 case "player":
                     return new Vector(this.canvasHelper.getCenter().x - 300, 300);
@@ -1172,7 +1175,9 @@ class LevelSelectView extends BaseView {
             let y = 0.56666666666666667 * (x + 1) + 289;
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x + 1, y), new Rotation(0)));
         }
-        this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
+        if (Game.DEBUG_MODE)
+            this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
+        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", new Rotation(0)));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
                 let target = e.target;

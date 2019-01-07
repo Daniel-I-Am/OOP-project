@@ -74,7 +74,8 @@ class GameView extends BaseView {
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),
-                2
+                2,
+                ((e.shouldDraw == null) ? true : e.shouldDraw)
             ));
         });
         levelJSON.items.forEach(e => {

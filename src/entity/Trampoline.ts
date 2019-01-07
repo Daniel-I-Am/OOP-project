@@ -6,7 +6,9 @@ class Trampoline extends Entity{
         rotation: Rotation,
         size: Vector,
         gravity: number,
+        shouldDraw: boolean = true,
     ) {
+        if (!shouldDraw) imageSource = [];
         super(imageSource, location, rotation, size, gravity, undefined, undefined);
         //this.animationCounterMax = 10;
         this.collision = new CollisionObject(

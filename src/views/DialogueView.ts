@@ -3,6 +3,7 @@ class DialogueView extends BaseView {
     private currentLine: number;
     private levelName: string;
     private _listener: (event: KeyboardEvent) => void;
+    private static fontSize: number;
 
     public constructor(levelName: string) {
         super();
@@ -16,6 +17,7 @@ class DialogueView extends BaseView {
                 this.makeLevel(myJson);
             })
         this.currentLine = 0;
+        DialogueView.fontSize = 30;
 
         this._listener = (event: KeyboardEvent) => {this.onKey(event)};
 
@@ -55,7 +57,7 @@ class DialogueView extends BaseView {
     public displayLine() {
         this.canvasHelper.writeText(
             this.dialogue[this.currentLine].what,
-            96,
+            DialogueView.fontSize,
             ((who: "player" | "patient") => {
                 switch(who) {
                     case "player":
