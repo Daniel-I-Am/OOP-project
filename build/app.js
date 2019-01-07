@@ -496,7 +496,7 @@ class GameView extends BaseView {
             this.entities.push(new Accelerator(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.yeet));
         });
         levelJSON.Trampolines.forEach(e => {
-            this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2));
+            this.entities.push(new Trampoline(((e.sprites == null) ? undefined : e.sprites), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), 2, e.shouldDraw || true));
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(((e.sprite == null) ? undefined : e.sprite), this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
@@ -960,7 +960,9 @@ class Player extends Entity {
     }
 }
 class Trampoline extends Entity {
-    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity) {
+    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
+        if (!shouldDraw)
+            imageSource = [];
         super(imageSource, location, rotation, size, gravity, undefined, undefined);
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
     }
