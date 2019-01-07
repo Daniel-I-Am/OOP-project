@@ -26,6 +26,21 @@
         "jumpHeight": 16,
         "maxJumps": 2
     },
+    "patient": {
+        "sprites": [
+            "./assets/player/anim_walk/PlayerAnim1.png"
+        ],
+        "size": {
+            "x": 58.5,
+            "y": 150
+        }
+    },
+    "dialogue": [
+        {"who": "patient", "what": "Dokter, help! Ik heb me in mijn vinger gesneden!"},
+        {"who": "player", "what": "Waar kan ik de spullen vinden om je te helpen?"},
+        {"who": "patient", "what": "In het volgende level kun je alle spullen vinden voor snijwonden."},
+        {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
+    ],
     "berthas": [
         {
             "sprites": [

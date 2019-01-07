@@ -29,6 +29,8 @@ interface Level {
     background: string,
     backgroundMusic: string,
     player: LevelPlayer,
+    patient: LevelPatient,
+    dialogue: Array<DialogueLine>,
     berthas: Array<LevelBertha>,
     Fires: Array<LevelFire>,
     FallingTiles: Array<LevelFallingTile>,
@@ -45,6 +47,16 @@ interface LevelPlayer {
     gravity: number,
     maxJumps: number,
     jumpHeight: number
+}
+
+interface LevelPatient {
+    sprites: Array<string>,
+    size: LevelSize
+}
+
+interface DialogueLine {
+    who: "player" | "patient",
+    what: string
 }
 
 interface LevelBertha {
