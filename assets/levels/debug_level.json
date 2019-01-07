@@ -166,7 +166,6 @@
     ],
     "items": [
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -185,7 +184,6 @@
             "name": "bandage"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -204,7 +202,6 @@
             "name": "bandage"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,

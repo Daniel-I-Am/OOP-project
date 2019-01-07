@@ -250,7 +250,6 @@ class Player extends Entity {
                 const droppedItem = this.inventory.splice(i-1, 1)[0];
                 if (droppedItem) {
                     Game.getCurrentView().entities.push(new Item(
-                        droppedItem.image.src,
                         this.location.copy(),
                         this.rotation.copy(),
                         new Vector(64, 64),

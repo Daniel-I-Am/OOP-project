@@ -13,7 +13,6 @@ class Item extends Entity {
 
     /**
      * @constructor
-     * @param {string} imageSource
      * @param {number} xPos
      * @param {number} yPos
      * @param {number} height
@@ -22,7 +21,6 @@ class Item extends Entity {
      * @param {number} acceleration
      */
     public constructor(
-        imageSource: string,
         location: Vector,
         rotation: Rotation,
         size: Vector,
