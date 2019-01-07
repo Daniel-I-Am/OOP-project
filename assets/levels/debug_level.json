@@ -26,6 +26,28 @@
         "jumpHeight": 16,
         "maxJumps": 2
     },
+    "patient": {
+        "sprites": [
+            "./assets/player/anim_walk/PlayerAnim1.png"
+        ],
+        "size": {
+            "x": 58.5,
+            "y": 150
+        }
+    },
+    "dialogue": [
+        {"who": "player", "what": "asdf asdf"},
+        {"who": "patient", "what": "asdf asdf"},
+        {"who": "player", "what": "asdf asdf"},
+        {"who": "patient", "what": "asdf asdf"},
+        {"who": "player", "what": "asdf asdf"},
+        {"who": "patient", "what": "asdf asdf"},
+        {"who": "player", "what": "asdf asdf"},
+        {"who": "patient", "what": "asdf asdf"},
+        {"who": "player", "what": "asdf asdf"},
+        {"who": "patient", "what": "asdf asdf"},
+        {"who": "player", "what": "asdf asdf"}
+    ],
     "berthas": [
         {
             "sprites": [
