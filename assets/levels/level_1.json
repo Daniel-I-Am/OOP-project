@@ -1,0 +1,29 @@
+{
+    "background": "./assets/images/map/level_1.png",
+    "backgroundMusic": "./assets/sounds/Spectacles.wav",
+    "player": {
+        "sprites": [
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim2.png",
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim3.png"
+        ],
+        "location": {
+            "x": {
+                "center": false,
+                "offset": 150
+            },
+            "y": {
+                "center": false,
+                "offset": 1700
+            }
+        },
+        "size": {
+            "x": 58.5,
+            "y": 150
+        },
+        "gravity": 1,
+        "jumpHeight": 16,
+        "maxJumps": 2
+    }
+}
