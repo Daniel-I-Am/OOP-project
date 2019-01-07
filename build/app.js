@@ -1102,6 +1102,7 @@ class DialogueView extends BaseView {
             this.makeLevel(myJson);
         });
         this.currentLine = 0;
+        DialogueView.fontSize = 30;
         this._listener = (event) => { this.onKey(event); };
         window.addEventListener('keydown', this._listener);
     }
@@ -1118,7 +1119,7 @@ class DialogueView extends BaseView {
         this.canvasHelper.offset = new Vector(0, 0);
     }
     displayLine() {
-        this.canvasHelper.writeText(this.dialogue[this.currentLine].what, 96, ((who) => {
+        this.canvasHelper.writeText(this.dialogue[this.currentLine].what, DialogueView.fontSize, ((who) => {
             switch (who) {
                 case "player":
                     return new Vector(this.canvasHelper.getCenter().x - 300, 300);
@@ -1173,7 +1174,7 @@ class LevelSelectView extends BaseView {
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x + 1, y), new Rotation(0)));
         }
         if (Game.DEBUG_MODE)
-        this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
+            this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
                 let target = e.target;
