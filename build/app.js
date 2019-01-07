@@ -1047,7 +1047,7 @@ class MapDoor extends Entity {
     }
     move() { }
     onPlayerCollision() {
-        Game.switchView(new GameView(this.levelName));
+        Game.switchView(new DialogueView(this.levelName));
     }
     drawName() {
         this.canvasHelper.writeText(this.levelName, 24, this.location.copy().sub(new Vector(0, 50)), undefined, undefined, "green");

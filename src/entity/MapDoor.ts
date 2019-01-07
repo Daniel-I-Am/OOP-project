@@ -13,7 +13,7 @@ class MapDoor extends Entity {
     public move() {}
     
     public onPlayerCollision() {
-        Game.switchView(new GameView(this.levelName));
+        Game.switchView(new DialogueView(this.levelName));
     }
 
     public drawName(): void {
