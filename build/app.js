@@ -1172,6 +1172,7 @@ class LevelSelectView extends BaseView {
             let y = 0.56666666666666667 * (x + 1) + 289;
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x + 1, y), new Rotation(0)));
         }
+        if (Game.DEBUG_MODE)
         this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
