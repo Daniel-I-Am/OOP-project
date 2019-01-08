@@ -27,7 +27,7 @@ class Game {
     private canvasHelper: CanvasHelper;
     private static currentView: BaseView;
     private currentInterval: number;
-    public static readonly DEBUG_MODE: boolean = true;
+    public static readonly DEBUG_MODE: boolean = (document.location.hostname != 'daniel-i-am.github.io');
     private static GAME_STATE: number = GameState.PAUSED;
     private static reputation: number;
 

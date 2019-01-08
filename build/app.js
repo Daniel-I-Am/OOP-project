@@ -1030,7 +1030,7 @@ class Game {
         return this.inventory;
     }
 }
-Game.DEBUG_MODE = true;
+Game.DEBUG_MODE = (document.location.hostname != 'daniel-i-am.github.io');
 Game.GAME_STATE = GameState.PAUSED;
 Game.switchView = (newView) => {
     if (Game.currentView) {
