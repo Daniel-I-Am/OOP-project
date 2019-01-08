@@ -467,6 +467,7 @@ class GameView extends BaseView {
     constructor(levelName) {
         super();
         this.entities = new Array();
+        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -501,6 +502,7 @@ class GameView extends BaseView {
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
+        this.entities.push(new Door(this.parseLocation(levelJSON.door.bottomRight), this.parseLocation(levelJSON.door.topLeft)));
         this.entities.push(this.player);
     }
     parseLocation(location) {
@@ -519,6 +521,10 @@ class GameView extends BaseView {
             this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
         }
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
+    }
+    reachedDoor() {
+        Game.setInventory(this.player.getInventory());
+        Game.switchView(new InteractionScreen(this.levelName));
     }
     beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
@@ -961,6 +967,9 @@ class Player extends Entity {
     getFireCounter() {
         return this.fireCounter;
     }
+    getInventory() {
+        return this.inventory;
+    }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
@@ -1014,8 +1023,14 @@ class Game {
     static getCurrentView() {
         return Game.currentView;
     }
+    static setInventory(newInventory) {
+        this.inventory = newInventory;
+    }
+    static getInventory() {
+        return this.inventory;
+    }
 }
-Game.DEBUG_MODE = true;
+Game.DEBUG_MODE = (document.location.hostname != 'daniel-i-am.github.io');
 Game.GAME_STATE = GameState.PAUSED;
 Game.switchView = (newView) => {
     if (Game.currentView) {
@@ -1027,6 +1042,27 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
+class Door extends Entity {
+    constructor(bottomRight, topLeft) {
+        console.log(bottomRight.toString());
+        console.log(topLeft.toString());
+        let size = bottomRight.copy().sub(topLeft.copy());
+        size.x = Math.abs(size.x);
+        size.y = Math.abs(size.y);
+        console.log(size.toString());
+        super([], bottomRight.copy().add(topLeft.copy()).multiply(.5), new Rotation(0), size);
+        console.log(this.location.toString());
+        console.log(this.size.toString());
+        console.log(bottomRight.toString());
+        console.log(topLeft.toString());
+        console.log(this);
+    }
+    move() { }
+    onPlayerCollision(_, collisionSides) {
+        if (collisionSides.left || collisionSides.right || collisionSides.top || collisionSides.bottom)
+            this.canvasHelper.writeText("Press e to interact", 44, this.canvasHelper.getCenter(), undefined, undefined, "black");
+    }
+}
 class Fire extends Entity {
     constructor(imageSources = ["./assets/images/fire.png"], location, rotation, size, gravity) {
         super(imageSources, location, rotation, size, gravity, undefined, undefined);
@@ -1045,14 +1081,15 @@ class Fire extends Entity {
     }
 }
 class MapDoor extends Entity {
-    constructor(location, levelName, rotation) {
-        super(["./assets/images/mapDoor.png"], location, rotation, new Vector(64, 64));
+    constructor(location, levelName, internalName, imageSrc = 'Door.png') {
+        super([`./assets/images/${imageSrc}`], location, new Rotation(0), new Vector(28, 56));
         this.levelName = levelName;
+        this.internalName = internalName;
         this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
     onPlayerCollision() {
-        Game.switchView(new DialogueView(this.levelName));
+        Game.switchView(new DialogueView(this.internalName));
     }
     drawName() {
         this.canvasHelper.writeText(this.levelName, 24, this.location.copy().sub(new Vector(0, 50)), undefined, undefined, "green");
@@ -1060,8 +1097,8 @@ class MapDoor extends Entity {
 }
 class MapPlayer extends Player {
     constructor(location) {
-        super(["./assets/player/mapPlayer.png"], location, new Vector(64, 64), 0, 0, 0, 0);
-        this.maxSpeed = 3;
+        super(["./assets/player/mapPlayer.png"], location, new Vector(48, 48), 0, 0, 0, 0);
+        this.maxSpeed = 5;
         this.canvasHelper.offset = new Vector(0, 0);
     }
     move() {
@@ -1143,6 +1180,15 @@ class DialogueView extends BaseView {
         window.removeEventListener('keydown', this._listener);
     }
 }
+class InteractionScreen extends DialogueView {
+    constructor(levelName) {
+        super(levelName);
+        this.onKey = (event) => { };
+    }
+    drawGUI() {
+        this.canvasHelper.writeText("asdf", 144, this.canvasHelper.getCenter(), undefined, undefined, "black");
+    }
+}
 class LevelSelectView extends BaseView {
     constructor() {
         super();
@@ -1179,8 +1225,8 @@ class LevelSelectView extends BaseView {
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x + 1, y), new Rotation(0)));
         }
         if (Game.DEBUG_MODE)
-            this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
-        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", new Rotation(0)));
+            this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
+        this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
                 let target = e.target;
