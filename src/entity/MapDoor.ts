@@ -1,9 +1,11 @@
 class MapDoor extends Entity {
     private levelName: string;
+    private internalName: string;
 
-    public constructor(location: Vector, levelName: string, rotation: Rotation) {
+    public constructor(location: Vector, levelName: string, internalName: string, rotation: Rotation) {
         super(["./assets/images/mapDoor.png"], location, rotation, new Vector(64, 64));
         this.levelName = levelName;
+        this.internalName = internalName;
         this.collision = new CollisionObject(
             this.location.copy().add(this.size.copy().multiply(.5)),
             this.location.copy().sub(this.size.copy().multiply(.5)),
@@ -13,7 +15,7 @@ class MapDoor extends Entity {
     public move() {}
     
     public onPlayerCollision() {
-        Game.switchView(new DialogueView(this.levelName));
+        Game.switchView(new DialogueView(this.internalName));
     }
 
     public drawName(): void {
