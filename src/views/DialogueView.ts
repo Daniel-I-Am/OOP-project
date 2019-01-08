@@ -1,14 +1,12 @@
 class DialogueView extends BaseView {
     protected dialogue: Array<DialogueLine>;
     protected currentLine: number;
-    protected levelName: string;
     private _listener: (event: KeyboardEvent) => void;
     private static fontSize: number;
 
     public constructor(levelName: string) {
-        super();
+        super(levelName);
         this.entities = new Array<Entity>();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();

@@ -329,10 +329,11 @@ class SoundHelper {
     }
 }
 class BaseView {
-    constructor() {
+    constructor(levelName = null) {
         this.canvasHelper = CanvasHelper.Instance();
         this.shouldClear = true;
         this.background = new Image();
+        this.levelName = levelName;
     }
     tick() {
         if (this.shouldClear)
@@ -437,7 +438,7 @@ class Entity {
 }
 class DialogueView extends BaseView {
     constructor(levelName) {
-        super();
+        super(levelName);
         this.onKey = (event) => {
             if (event.keyCode == 13) {
                 this.currentLine++;
@@ -446,7 +447,6 @@ class DialogueView extends BaseView {
             }
         };
         this.entities = new Array();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -492,8 +492,8 @@ class DialogueView extends BaseView {
     }
 }
 class GameOverView extends BaseView {
-    constructor(player, entities, background) {
-        super();
+    constructor(player, entities, background, levelName) {
+        super(levelName);
         this.player = player;
         this.background = background;
         this.entities = entities.filter(e => !(e instanceof CollisionObject));
@@ -508,7 +508,7 @@ class GameOverView extends BaseView {
         this.player.update();
         console.log(this.player['isLanded']);
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
-            Game.switchView(new GameView('debug_level'));
+            Game.switchView(new GameView(this.levelName));
         }
     }
     drawGUI() {
@@ -524,9 +524,8 @@ class GameOverView extends BaseView {
 }
 class GameView extends BaseView {
     constructor(levelName) {
-        super();
+        super(levelName);
         this.entities = new Array();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -1132,7 +1131,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()));
+        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName));
     }
     onPlayerCollision(player, collisionSides) {
         return;

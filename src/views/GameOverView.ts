@@ -1,9 +1,9 @@
 class GameOverView extends BaseView {
 
     public constructor(
-        player: Player, entities: Array<Entity>, background: HTMLImageElement
+        player: Player, entities: Array<Entity>, background: HTMLImageElement, levelName: string
     ) {
-        super();
+        super(levelName);
         this.player = player;
         this.background = background
         this.entities = entities.filter(e => !(e instanceof CollisionObject));
@@ -19,7 +19,7 @@ class GameOverView extends BaseView {
         this.player.update();
         console.log(this.player['isLanded'])
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
-            Game.switchView(new GameView('debug_level'));
+            Game.switchView(new GameView(this.levelName));
         }
     }
     

@@ -304,7 +304,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()))
+        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName))
     }
 
     public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {

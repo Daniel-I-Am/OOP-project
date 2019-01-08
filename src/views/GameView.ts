@@ -1,11 +1,9 @@
 class GameView extends BaseView {
     private backgroundMusic: SoundHelper;
-    private levelName: string;
 
     public constructor(levelName: string) {
-        super();
+        super(levelName);
         this.entities = new Array<Entity>();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();
