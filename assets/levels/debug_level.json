@@ -298,7 +298,7 @@
         "topLeft": {
             "x": {
                 "center": false,
-                "offset": 85
+                "offset": 75
             },
             "y": {
                 "center": false,
@@ -308,7 +308,7 @@
         "bottomRight": {
             "x": {
                 "center": false,
-                "offset": 100
+                "offset": 120
             },
             "y": {
                 "center": false,
