@@ -38,7 +38,8 @@ interface Level {
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,
     items: Array<LevelItem>,
-    Collisions: Array<LevelCollision>
+    Collisions: Array<LevelCollision>,
+    door: LevelDoor
 }
 
 interface LevelPlayer {
@@ -107,6 +108,11 @@ interface LevelCollision {
     topLeft: LevelLocations,
     bottomRight: LevelLocations,
     rotation: number
+}
+
+interface LevelDoor {
+    topLeft: LevelLocations,
+    bottomRight: LevelLocations
 }
 
 interface LevelLocations {

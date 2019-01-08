@@ -302,6 +302,28 @@
             }
         }
     ],
+    "door": {
+        "topLeft": {
+            "x": {
+                "center": false,
+                "offset": 75
+            },
+            "y": {
+                "center": false,
+                "offset": 1600
+            }
+        },
+        "bottomRight": {
+            "x": {
+                "center": false,
+                "offset": 120
+            },
+            "y": {
+                "center": false,
+                "offset": 1800
+            }
+        }
+    },
     "Collisions": [
         {
             "topLeft": {

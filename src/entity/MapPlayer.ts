@@ -1,7 +1,7 @@
 class MapPlayer extends Player {
     public constructor(location: Vector) {
-        super(["./assets/player/mapPlayer.png"], location, new Vector(64, 64), 0, 0, 0, 0);
-        this.maxSpeed = 3;
+        super(["./assets/player/mapPlayer.png"], location, new Vector(48, 48), 0, 0, 0, 0);
+        this.maxSpeed = 5;
         this.canvasHelper.offset = new Vector(0, 0)
     }
 

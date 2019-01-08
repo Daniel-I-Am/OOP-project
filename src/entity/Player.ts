@@ -229,6 +229,10 @@ class Player extends Entity {
             entity.kill();
             entity.removeHitBox();
             this.newInventoryItem(entity.getItemID());
+        } else if (this.keyHelper.getInteractPressed() && this.collide(entity) && entity instanceof Door) {
+            let currentView = Game.getCurrentView();
+            if (currentView instanceof GameView)
+                currentView.reachedDoor();
         }
     }
 
