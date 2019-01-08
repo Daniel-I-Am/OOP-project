@@ -75,8 +75,13 @@ class Game {
         return this.reputation;
     }
 
-    private static setReputation(amount: number): void {
+    public static setReputation(amount: number): void {
         this.reputation = amount;
+    }
+
+    public static adjustReputation(amount: number): void {
+        let n = setInterval(() => {this.reputation += amount/100}, 10)
+        setTimeout(() => {clearInterval(n)}, 1001);
     }
 
     public static pause() {
