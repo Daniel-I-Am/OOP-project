@@ -40,8 +40,8 @@ class LevelSelectView extends BaseView {
         
         // level doors
         if (Game.DEBUG_MODE)
-            this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', new Rotation(45)));
-        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", 'level_1', new Rotation(0), "DoorCorner.png"));
+            this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
+        this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
         
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
