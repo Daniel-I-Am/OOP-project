@@ -1132,8 +1132,7 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        let n = setInterval(() => { Game.adjustReputation(-.002); }, 10);
-        setTimeout(() => { clearInterval(n); }, 1000);
+        Game.adjustReputation(-.2);
         Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName));
     }
     onPlayerCollision(player, collisionSides) {
