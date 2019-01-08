@@ -30,6 +30,14 @@ class GameOverView extends BaseView {
         }
         this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y-50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y+50), `rgba(0, 0, 0, ${85/100})`);
         this.canvasHelper.writeText("Game over!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
+        this.canvasHelper.addProgressBar(
+            new Vector(this.canvasHelper.getWidth()-100, 20),
+            new Vector(180, 20),
+            "green",
+            "white",
+            "black",
+            Game.getReputation()
+        );
     }
 
     public beforeExit() {}
