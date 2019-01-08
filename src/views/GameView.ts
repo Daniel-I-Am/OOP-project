@@ -120,6 +120,11 @@ class GameView extends BaseView {
         );
     }
 
+    public reachedDoor(): void {
+        Game.setInventory(this.player.getInventory());
+        Game.switchView(new InteractionScreen(this.levelName));
+    }
+
     public beforeExit(): void {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
     }
