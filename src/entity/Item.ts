@@ -4,7 +4,7 @@ class Item extends Entity {
 
     public static readonly itemIDs: Array<ItemDefinition> = [
         {internalName: "none", displayName: "None", spriteSrc: null},
-        {internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png"},
+        {internalName: "bandage", displayName: "Pleister", spriteSrc: "./assets/images/items/bandage.png"},
         {internalName: "citroen", displayName: "Citroen", spriteSrc: "./assets/images/items/citroen.png"},
         {internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png"},
         {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png"},
