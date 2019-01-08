@@ -1218,8 +1218,8 @@ class Game {
         this.reputation = amount;
     }
     static adjustReputation(amount) {
-        this.reputation += amount;
-        this.reputation = Math.min(1, Math.max(0, this.reputation));
+        let n = setInterval(() => { this.reputation += amount / 100; }, 10);
+        setTimeout(() => { clearInterval(n); }, 1001);
     }
     static pause() {
         if (Game.GAME_STATE == GameState.PLAYING)
