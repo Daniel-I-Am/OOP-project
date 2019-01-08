@@ -738,12 +738,13 @@ class Door extends Entity {
         let size = bottomRight.copy().sub(topLeft.copy());
         size.x = Math.abs(size.x);
         size.y = Math.abs(size.y);
-        super(["./assets/images/default.png"], bottomRight.copy().add(topLeft.copy()).multiply(.5), new Rotation(0), size);
+        super([], bottomRight.copy().add(topLeft.copy()).multiply(.5), new Rotation(0), size);
+        this.shouldCollide = false;
+        this.collision = new CollisionObject(topLeft.copy(), bottomRight.copy(), new Rotation(0));
     }
     move() { }
     onPlayerCollision(player, collisionSides) {
-        if (collisionSides.left || collisionSides.right || collisionSides.top || collisionSides.bottom)
-            console.log(collisionSides);
+        this.canvasHelper.writeText("Druk op e om het level te verlaten", 48, this.location.copy().add(new Vector(0, -200)).sub(this.canvasHelper.offset.copy()), undefined, undefined, "black");
     }
 }
 class Enemy_Bertha extends Entity {
