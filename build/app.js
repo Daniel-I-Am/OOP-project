@@ -1081,8 +1081,8 @@ class Fire extends Entity {
     }
 }
 class MapDoor extends Entity {
-    constructor(location, levelName, internalName, rotation) {
-        super(["./assets/images/mapDoor.png"], location, rotation, new Vector(64, 64));
+    constructor(location, levelName, internalName, rotation, imageSrc = 'Door.png') {
+        super([`./assets/images/${imageSrc}`], location, rotation, new Vector(64, 64));
         this.levelName = levelName;
         this.internalName = internalName;
         this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
@@ -1226,7 +1226,7 @@ class LevelSelectView extends BaseView {
         }
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', new Rotation(45)));
-        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", 'level_1', new Rotation(0)));
+        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", 'level_1', new Rotation(0), "DoorCorner.png"));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
                 let target = e.target;
