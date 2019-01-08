@@ -23,8 +23,8 @@
 ///<reference path="entity/Fire.ts"/>
 ///<reference path="entity/Item.ts"/>
 ///<reference path="entity/MapDoor.ts"/>
-///<reference path="entity/MapPlayer.ts"/>
 ///<reference path="entity/Player.ts"/>
+///<reference path="entity/MapPlayer.ts"/>
 ///<reference path="entity/Trampoline.ts"/>
 
 class Game {

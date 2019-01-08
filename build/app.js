@@ -925,6 +925,21 @@ Item.itemIDs = [
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
     { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" }
 ];
+class MapDoor extends Entity {
+    constructor(location, levelName, internalName, imageSrc = 'Door.png') {
+        super([`./assets/images/${imageSrc}`], location, new Rotation(0), new Vector(28, 56));
+        this.levelName = levelName;
+        this.internalName = internalName;
+        this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
+    }
+    move() { }
+    onPlayerCollision() {
+        Game.switchView(new DialogueView(this.internalName));
+    }
+    drawName() {
+        this.canvasHelper.writeText(this.levelName, 24, this.location.copy().sub(new Vector(0, 50)), undefined, undefined, "green");
+    }
+}
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
@@ -1134,34 +1149,6 @@ class Player extends Entity {
         return this.inventory;
     }
 }
-class Trampoline extends Entity {
-    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
-        if (!shouldDraw)
-            imageSource = [];
-        super(imageSource, location, rotation, size, gravity, undefined, undefined);
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
-    }
-    move() { }
-    onPlayerCollision(player, collisionSides) {
-        if (collisionSides.bottom)
-            player.trampoline(this);
-    }
-}
-class MapDoor extends Entity {
-    constructor(location, levelName, internalName, imageSrc = 'Door.png') {
-        super([`./assets/images/${imageSrc}`], location, new Rotation(0), new Vector(28, 56));
-        this.levelName = levelName;
-        this.internalName = internalName;
-        this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
-    }
-    move() { }
-    onPlayerCollision() {
-        Game.switchView(new DialogueView(this.internalName));
-    }
-    drawName() {
-        this.canvasHelper.writeText(this.levelName, 24, this.location.copy().sub(new Vector(0, 50)), undefined, undefined, "green");
-    }
-}
 class MapPlayer extends Player {
     constructor(location) {
         super(["./assets/player/mapPlayer.png"], location, new Vector(48, 48), 0, 0, 0, 0);
@@ -1189,6 +1176,19 @@ class MapPlayer extends Player {
                 this.velocity = new Vector(0, 0);
             }
         });
+    }
+}
+class Trampoline extends Entity {
+    constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
+        if (!shouldDraw)
+            imageSource = [];
+        super(imageSource, location, rotation, size, gravity, undefined, undefined);
+        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+    }
+    move() { }
+    onPlayerCollision(player, collisionSides) {
+        if (collisionSides.bottom)
+            player.trampoline(this);
     }
 }
 class Game {
