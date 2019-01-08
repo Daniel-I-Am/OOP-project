@@ -735,23 +735,15 @@ class CollisionObject extends Entity {
 }
 class Door extends Entity {
     constructor(bottomRight, topLeft) {
-        console.log(bottomRight.toString());
-        console.log(topLeft.toString());
         let size = bottomRight.copy().sub(topLeft.copy());
         size.x = Math.abs(size.x);
         size.y = Math.abs(size.y);
-        console.log(size.toString());
-        super([], bottomRight.copy().add(topLeft.copy()).multiply(.5), new Rotation(0), size);
-        console.log(this.location.toString());
-        console.log(this.size.toString());
-        console.log(bottomRight.toString());
-        console.log(topLeft.toString());
-        console.log(this);
+        super(["./assets/images/default.png"], bottomRight.copy().add(topLeft.copy()).multiply(.5), new Rotation(0), size);
     }
     move() { }
-    onPlayerCollision(_, collisionSides) {
+    onPlayerCollision(player, collisionSides) {
         if (collisionSides.left || collisionSides.right || collisionSides.top || collisionSides.bottom)
-            this.canvasHelper.writeText("Press e to interact", 44, this.canvasHelper.getCenter(), undefined, undefined, "black");
+            console.log(collisionSides);
     }
 }
 class Enemy_Bertha extends Entity {
