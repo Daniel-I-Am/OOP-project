@@ -41,6 +41,13 @@
         {"who": "patient", "what": "In level 1 kun je alle spullen vinden voor een bloedneus."},
         {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
     ],
+    "endDialogue": [
+        {"who":"patient", "what": "Dokter, u bent terug!"},
+        {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
+        {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
+
+    ],
     "berthas": [
         {
             "sprites": [

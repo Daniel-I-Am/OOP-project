@@ -41,6 +41,14 @@
         {"who": "patient", "what": "In het volgende level kun je alle spullen vinden voor snijwonden."},
         {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
     ],
+
+    "endDialogue": [
+        {"who":"patient", "what": "Dokter, u bent terug!"},
+        {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
+        {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
+    ],
+
     "berthas": [
         {
             "sprites": [
@@ -298,7 +306,7 @@
         "topLeft": {
             "x": {
                 "center": false,
-                "offset": 85
+                "offset": 75
             },
             "y": {
                 "center": false,
@@ -308,7 +316,7 @@
         "bottomRight": {
             "x": {
                 "center": false,
-                "offset": 100
+                "offset": 120
             },
             "y": {
                 "center": false,

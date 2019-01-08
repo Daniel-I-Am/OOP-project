@@ -1,5 +1,6 @@
 class DialogueView extends BaseView {
     protected dialogue: Array<DialogueLine>;
+    protected endDialogue: Array<DialogueLine>;
     protected currentLine: number;
     protected levelName: string;
     private _listener: (event: KeyboardEvent) => void;
@@ -44,6 +45,9 @@ class DialogueView extends BaseView {
         );
         this.dialogue = levelJSON.dialogue;
 
+        this.endDialogue = levelJSON.endDialogue;
+        console.log(this.endDialogue);
+
         this.entities.push(this.player);
     }
 
@@ -76,19 +80,20 @@ class DialogueView extends BaseView {
         this.displayLine();
     }
 
-    protected onKey = (event: KeyboardEvent): void => {
-        if (event.keyCode == 13) {
-            this.currentLine++;
-            if (this.currentLine >= this.dialogue.length)
-                Game.switchView(new GameView(this.levelName));
-        }
-    }
-
     public onPause() {
         Game.pause();
     }
 
     public beforeExit() {
         window.removeEventListener('keydown', this._listener);
+    }
+
+    protected onKey = (event: KeyboardEvent): void => {
+        if (event.keyCode == 13) {
+            this.currentLine ++;
+            if (this.currentLine >=
+                this.dialogue.length)
+                Game.switchView(new GameView(this.levelName));
+        }
     }
 }

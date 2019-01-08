@@ -31,6 +31,7 @@ interface Level {
     player: LevelPlayer,
     patient: LevelPatient,
     dialogue: Array<DialogueLine>,
+    endDialogue: Array<DialogueLine>,
     berthas: Array<LevelBertha>,
     Fires: Array<LevelFire>,
     FallingTiles: Array<LevelFallingTile>,
