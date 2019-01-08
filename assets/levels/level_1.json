@@ -82,6 +82,24 @@
                 "y": 150
             },
             "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 5550
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1500
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
         }
     ],
     "Fires": [
@@ -142,26 +160,26 @@
                 "x": 175,
                 "y": 50
             },
-            "yeet": 60
+            "yeet": 50
         },
         {
             "sprites": null,
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 10500
+                    "offset": 5640
                 },
                 "y": {
                     "center": false,
-                    "offset": 550
+                    "offset": 1200
                 }
             },
-            "rotation": -160,
+            "rotation": 192,
             "size": {
                 "x": 175,
                 "y": 50
             },
-            "yeet": 130
+            "yeet": 65
         }
     ],
     "items": [
@@ -170,11 +188,11 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 700
+                    "offset": 5675
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 1725
                 }
             },
             "rotation": 0,
@@ -189,11 +207,11 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 600
+                    "offset": 5750
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 775
                 }
             },
             "rotation": 0,
@@ -201,18 +219,18 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "water"
         },
         {
             "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 500
+                    "offset": 250
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 450
                 }
             },
             "rotation": 0,
@@ -220,7 +238,26 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "keukenrol"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 3900
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1250
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "citroen"
         }
     ],
     "Trampolines": [
@@ -241,27 +278,64 @@
                 "x": 259,
                 "y": 135
             }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1850
+                },
+                "y": {
+                    "center": false,
+                    "offset": 810
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 259,
+                "y": 135
+            }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 3500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1800
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 259,
+                "y": 135
+            },
+            "shouldDraw": false
         }
     ],
     "door": {
         "topLeft": {
             "x": {
                 "center": false,
-                "offset": 0
+                "offset": 75
             },
             "y": {
                 "center": false,
-                "offset": -10000
+                "offset": 1600
             }
         },
         "bottomRight": {
             "x": {
                 "center": false,
-                "offset": 75
+                "offset": 125
             },
             "y": {
                 "center": false,
-                "offset": 2000
+                "offset": 1800
             }
         },
         "rotation": 0
@@ -355,29 +429,6 @@
                 "y": {
                     "center": false,
                     "offset": 1020
-                }
-            },
-            "rotation": 0
-        },
-        {
-            "topLeft": {
-                "x": {
-                    "center": false,
-                    "offset": 3300
-                },
-                "y": {
-                    "center": false,
-                    "offset": 1770
-                }
-            },
-            "bottomRight": {
-                "x": {
-                    "center": false,
-                    "offset": 3715
-                },
-                "y": {
-                    "center": false,
-                    "offset": 1820
                 }
             },
             "rotation": 0
@@ -616,7 +667,7 @@
             "topLeft": {
                 "x": {
                     "center": false,
-                    "offset": 5525
+                    "offset": 5550
                 },
                 "y": {
                     "center": false,
@@ -626,7 +677,7 @@
             "bottomRight": {
                 "x": {
                     "center": false,
-                    "offset": 5815
+                    "offset": 5780
                 },
                 "y": {
                     "center": false,
