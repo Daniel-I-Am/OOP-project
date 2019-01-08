@@ -142,7 +142,7 @@
                 "x": 175,
                 "y": 50
             },
-            "yeet": 70
+            "yeet": 60
         },
         {
             "sprites": null,
@@ -243,6 +243,29 @@
             }
         }
     ],
+    "door": {
+        "topLeft": {
+            "x": {
+                "center": false,
+                "offset": 0
+            },
+            "y": {
+                "center": false,
+                "offset": -10000
+            }
+        },
+        "bottomRight": {
+            "x": {
+                "center": false,
+                "offset": 75
+            },
+            "y": {
+                "center": false,
+                "offset": 2000
+            }
+        },
+        "rotation": 0
+    },
     "Collisions": [
         {
             "topLeft": {
@@ -271,7 +294,7 @@
             "topLeft": {
                 "x": {
                     "center": false,
-                    "offset": 5889
+                    "offset": 5888
                 },
                 "y": {
                     "center": false,
