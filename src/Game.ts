@@ -11,7 +11,7 @@
 ///<reference path="views/DialogueView.ts"/>
 ///<reference path="views/GameOverView.ts"/>
 ///<reference path="views/GameView.ts"/>
-///<reference path="views/InteractionScreen.ts"/>
+///<reference path="views/LevelEndView.ts"/>
 ///<reference path="views/LevelSelectView.ts"/>
 ///<reference path="views/TitleView.ts"/>
 ///<reference path="entity/Accelerator.ts"/>
@@ -75,8 +75,13 @@ class Game {
         return this.reputation;
     }
 
-    private static setReputation(amount: number): void {
+    public static setReputation(amount: number): void {
         this.reputation = amount;
+    }
+
+    public static adjustReputation(amount: number): void {
+        let n = setInterval(() => {this.reputation += amount/100}, 10)
+        setTimeout(() => {clearInterval(n)}, 1001);
     }
 
     public static pause() {
