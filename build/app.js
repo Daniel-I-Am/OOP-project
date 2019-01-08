@@ -1002,6 +1002,14 @@ class Player extends Entity {
             let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
             this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+            if (isNaN(this.canvasHelper.offset.x)) {
+                this.canvasHelper.offset.x = -this.canvasHelper.getWidth() / 2 + this.location.x;
+                console.log("Reset x", this.canvasHelper.offset.x);
+            }
+            if (isNaN(this.canvasHelper.offset.y)) {
+                this.canvasHelper.offset.y = -this.canvasHelper.getHeight() / 2 + this.location.y;
+                console.log("Reset y", this.canvasHelper.offset.y);
+            }
         }
         if (this.location.y > 5000)
             this.kill();
