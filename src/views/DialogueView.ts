@@ -1,7 +1,7 @@
 class DialogueView extends BaseView {
-    private dialogue: Array<DialogueLine>;
-    private currentLine: number;
-    private levelName: string;
+    protected dialogue: Array<DialogueLine>;
+    protected currentLine: number;
+    protected levelName: string;
     private _listener: (event: KeyboardEvent) => void;
     private static fontSize: number;
 
@@ -76,7 +76,7 @@ class DialogueView extends BaseView {
         this.displayLine();
     }
 
-    private onKey = (event: KeyboardEvent): void => {
+    protected onKey = (event: KeyboardEvent): void => {
         if (event.keyCode == 13) {
             this.currentLine++;
             if (this.currentLine >= this.dialogue.length)

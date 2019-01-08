@@ -294,6 +294,28 @@
             }
         }
     ],
+    "door": {
+        "topLeft": {
+            "x": {
+                "center": false,
+                "offset": 85
+            },
+            "y": {
+                "center": false,
+                "offset": 1600
+            }
+        },
+        "bottomRight": {
+            "x": {
+                "center": false,
+                "offset": 100
+            },
+            "y": {
+                "center": false,
+                "offset": 1800
+            }
+        }
+    },
     "Collisions": [
         {
             "topLeft": {

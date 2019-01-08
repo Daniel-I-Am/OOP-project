@@ -22,6 +22,7 @@
 
 class Game {
     private static instance: Game;
+    private static inventory: Array<InventoryItem>;
 
     private canvasHelper: CanvasHelper;
     private static currentView: BaseView;
@@ -82,6 +83,14 @@ class Game {
 
     public static getCurrentView(): BaseView {
         return Game.currentView;
+    }
+
+    public static setInventory(newInventory: Array<InventoryItem>): void {
+        this.inventory = newInventory;
+    }
+
+    public static getInventory(): Array<InventoryItem> {
+        return this.inventory;
     }
 }
 
