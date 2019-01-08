@@ -5,6 +5,7 @@ class DialogueView extends BaseView {
     protected levelName: string;
     private _listener: (event: KeyboardEvent) => void;
     private static fontSize: number;
+    protected usedItems: Array<string>;
 
     public constructor(levelName: string) {
         super();
@@ -46,7 +47,8 @@ class DialogueView extends BaseView {
         this.dialogue = levelJSON.dialogue;
 
         this.endDialogue = levelJSON.endDialogue;
-        console.log(this.endDialogue);
+
+        this.usedItems = levelJSON.usedItems;
 
         this.entities.push(this.player);
     }

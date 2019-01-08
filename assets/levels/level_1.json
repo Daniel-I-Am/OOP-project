@@ -44,9 +44,14 @@
     "endDialogue": [
         {"who":"patient", "what": "Dokter, u bent terug!"},
         {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
-        {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
-        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
-
+        {"who":"patient", "what": "Ja! [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"},
+        {"who": "patient", "what": "Bedankt, dokter Tattenschnatzer, u heeft me genezen!"}
+    ],
+    "usedItems": [
+        "water",
+        "keukenrol",
+        "bandage"
     ],
     "berthas": [
         {

@@ -11,7 +11,7 @@
 ///<reference path="views/DialogueView.ts"/>
 ///<reference path="views/GameOverView.ts"/>
 ///<reference path="views/GameView.ts"/>
-///<reference path="views/InteractionScreen.ts"/>
+///<reference path="views/LevelEndView.ts"/>
 ///<reference path="views/LevelSelectView.ts"/>
 ///<reference path="views/TitleView.ts"/>
 ///<reference path="entity/Accelerator.ts"/>
