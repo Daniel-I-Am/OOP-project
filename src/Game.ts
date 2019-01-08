@@ -8,15 +8,22 @@
 ///<reference path="helper/SoundHelper.ts"/>
 ///<reference path="baseObjects/BaseView.ts"/>
 ///<reference path="baseObjects/Entity.ts"/>
-///<reference path="views/TitleView.ts"/>
-///<reference path="views/GameView.ts"/>
+///<reference path="views/DialogueView.ts"/>
 ///<reference path="views/GameOverView.ts"/>
+///<reference path="views/GameView.ts"/>
+///<reference path="views/InteractionScreen.ts"/>
+///<reference path="views/LevelSelectView.ts"/>
+///<reference path="views/TitleView.ts"/>
 ///<reference path="entity/Accelerator.ts"/>
 ///<reference path="entity/CollisionObject.ts"/>
-///<reference path="entity/Enemy.ts"/>
+///<reference path="entity/Door.ts"/>
 ///<reference path="entity/Enemy_Bertha.ts"/>
+///<reference path="entity/Enemy.ts"/>
 ///<reference path="entity/FallingTile.ts"/>
+///<reference path="entity/Fire.ts"/>
 ///<reference path="entity/Item.ts"/>
+///<reference path="entity/MapDoor.ts"/>
+///<reference path="entity/MapPlayer.ts"/>
 ///<reference path="entity/Player.ts"/>
 ///<reference path="entity/Trampoline.ts"/>
 
