@@ -24,7 +24,7 @@
         },
         "gravity": 1,
         "jumpHeight": 16,
-        "maxJumps": 2
+        "maxJumps": 4
     },
     "patient": {
         "sprites": [
@@ -40,6 +40,13 @@
         {"who": "player", "what": "Waar kan ik de spullen vinden om je te helpen?"},
         {"who": "patient", "what": "In level 1 kun je alle spullen vinden voor een bloedneus."},
         {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
+    ],
+    "endDialogue": [
+        {"who":"patient", "what": "Dokter, u bent terug!"},
+        {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
+        {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
+
     ],
     "berthas": [
         {
@@ -93,6 +100,42 @@
                 "y": {
                     "center": false,
                     "offset": 1500
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 2650
+                },
+                "y": {
+                    "center": false,
+                    "offset": 750
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 3300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 750
                 }
             },
             "size": {
@@ -306,7 +349,7 @@
                 },
                 "y": {
                     "center": false,
-                    "offset": 1800
+                    "offset": 1875
                 }
             },
             "rotation": 0,
@@ -415,6 +458,52 @@
                 "x": {
                     "center": false,
                     "offset": 950
+                },
+                "y": {
+                    "center": false,
+                    "offset": 850
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2153
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1020
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 2381
+                },
+                "y": {
+                    "center": false,
+                    "offset": 855
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2497
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1020
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 2500
                 },
                 "y": {
                     "center": false,

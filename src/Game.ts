@@ -104,6 +104,14 @@ class Game {
     public static getInventory(): Array<InventoryItem> {
         return this.inventory;
     }
+
+    public static clearInventory(): void {
+        this.inventory = [];
+    }
+
+    public static useItem(n: number): InventoryItem {
+        return this.inventory.splice(n, 1)[0];
+    }
 }
 
 function init() {
