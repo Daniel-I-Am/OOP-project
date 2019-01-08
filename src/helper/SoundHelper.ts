@@ -1,5 +1,5 @@
 class SoundHelper {
-    private audioElem: HTMLAudioElement;
+    public audioElem: HTMLAudioElement;
     private state: number;
     private static audioDiv: HTMLDivElement;
     

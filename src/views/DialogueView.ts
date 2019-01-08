@@ -1,12 +1,16 @@
 class DialogueView extends BaseView {
+    public backgroundMusic: SoundHelper;
     protected dialogue: Array<DialogueLine>;
     protected endDialogue: Array<DialogueLine>;
     protected currentLine: number;
     private _listener: (event: KeyboardEvent) => void;
     private static fontSize: number;
+    protected usedItems: Array<string>;
 
     public constructor(levelName: string) {
         super(levelName);
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.entities = new Array<Entity>();
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
@@ -44,7 +48,8 @@ class DialogueView extends BaseView {
         this.dialogue = levelJSON.dialogue;
 
         this.endDialogue = levelJSON.endDialogue;
-        console.log(this.endDialogue);
+
+        this.usedItems = levelJSON.usedItems;
 
         this.entities.push(this.player);
     }
@@ -83,6 +88,7 @@ class DialogueView extends BaseView {
     }
 
     public beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         window.removeEventListener('keydown', this._listener);
     }
 

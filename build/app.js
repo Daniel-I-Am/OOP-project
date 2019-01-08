@@ -447,6 +447,8 @@ class DialogueView extends BaseView {
                     Game.switchView(new GameView(this.levelName));
             }
         };
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.entities = new Array();
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
@@ -465,7 +467,7 @@ class DialogueView extends BaseView {
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 0)), new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y), 0, 2, 0, 0));
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
-        console.log(this.endDialogue);
+        this.usedItems = levelJSON.usedItems;
         this.entities.push(this.player);
     }
     update() {
@@ -491,6 +493,7 @@ class DialogueView extends BaseView {
         Game.pause();
     }
     beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         window.removeEventListener('keydown', this._listener);
     }
 }
@@ -541,7 +544,11 @@ class GameView extends BaseView {
     makeLevel(levelJSON) {
         this.background.src = levelJSON.background;
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
-        this.backgroundMusic.toggleLoop();
+        this.backgroundMusic.audioElem.addEventListener("ended", () => {
+            console.log("Ended");
+            this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles_loop.wav", .3);
+            this.backgroundMusic.toggleLoop();
+        });
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
@@ -595,9 +602,85 @@ class GameView extends BaseView {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }
 }
+class LevelEndView extends DialogueView {
+    constructor(levelName) {
+        super(levelName);
+        this.onKey = (event) => {
+            if (event.keyCode == 13) {
+                if (this.currentLine != 1)
+                    this.currentLine++;
+                if (this.healed)
+                    Game.switchView(new LevelSelectView());
+            }
+            else if (event.keyCode == 69) {
+                if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
+                    this.currentItem++;
+                    this.currentLine = 2;
+                    this.lastUsedItem = this.inventory[this.selected];
+                    this.inventory.splice(this.selected, 1);
+                    this.selected = 0;
+                    Game.adjustReputation(-1.0);
+                    if (this.currentItem >= this.usedItems.length) {
+                        this.currentLine = 4;
+                        this.healed = true;
+                        this.backgroundMusic.pause(PlayingStat.PAUSED);
+                        this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
+                    }
+                }
+                else {
+                    this.currentLine = 3;
+                    Game.adjustReputation(-0.1);
+                }
+            }
+            else if (event.keyCode == 37) {
+                if (this.selected > 0)
+                    this.selected--;
+            }
+            else if (event.keyCode == 39) {
+                if (this.selected < this.maxIndex - 1)
+                    this.selected++;
+            }
+        };
+        this.inventory = Game.getInventory();
+        this.dialogue = this.endDialogue;
+        LevelEndView.FontSize = 30;
+        this.maxIndex = this.inventory.length;
+        this.selected = 0;
+        this.currentItem = 0;
+        this.lastUsedItem = { id: 0, internalName: "none", displayName: "None", image: null };
+        this.healed = false;
+    }
+    drawGUI() {
+        this.inventory.forEach((e, i) => {
+            if (i == this.selected) {
+                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 225), new Rotation(0), new Vector(64, 64));
+            }
+            else {
+                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 200), new Rotation(0), new Vector(64, 64));
+            }
+        });
+        this.displayLine();
+        this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
+    }
+    beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+        Game.clearInventory();
+    }
+    displayLine() {
+        this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
+            switch (who) {
+                case "player":
+                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                case "patient":
+                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+            }
+        })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
+    }
+}
 class LevelSelectView extends BaseView {
     constructor() {
         super();
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Pulsewave.wav", .3);
         this.background = new Image();
         this.background.src = "./assets/images/level_select.png";
         this.entities = [];
@@ -647,7 +730,9 @@ class LevelSelectView extends BaseView {
             }
         });
     }
-    beforeExit() { }
+    beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
     drawGUI() {
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }
@@ -906,8 +991,8 @@ class Item extends Entity {
 }
 Item.itemIDs = [
     { internalName: "none", displayName: "None", spriteSrc: null },
-    { internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png" },
-    { internalName: "citroen", displayName: "Citroen", spriteSrc: "./assets/images/items/citroen.png" },
+    { internalName: "bandage", displayName: "Een pleister", spriteSrc: "./assets/images/items/bandage.png" },
+    { internalName: "citroen", displayName: "Een citroen", spriteSrc: "./assets/images/items/citroen.png" },
     { internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png" },
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
     { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" }
@@ -1260,37 +1345,4 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
-class LevelEndView extends DialogueView {
-    constructor(levelName) {
-        super(levelName);
-        this.onKey = (event) => {
-            if (event.keyCode == 13) {
-                if (this.currentLine != 1)
-                    this.currentLine++;
-            }
-        };
-        this.inventory = Game.getInventory();
-        this.dialogue = this.endDialogue;
-        LevelEndView.FontSize = 30;
-    }
-    drawGUI() {
-        this.inventory.forEach((e, i) => {
-            this.canvasHelper.drawImage(e.image, new Vector(200, 200), new Rotation(0), new Vector(64, 64));
-        });
-        this.displayLine();
-    }
-    beforeExit() {
-        Game.clearInventory();
-    }
-    displayLine() {
-        this.canvasHelper.writeText(this.endDialogue[this.currentLine].what, LevelEndView.FontSize, ((who) => {
-            switch (who) {
-                case "player":
-                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
-                case "patient":
-                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
-            }
-        })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
-    }
-}
 //# sourceMappingURL=app.js.map

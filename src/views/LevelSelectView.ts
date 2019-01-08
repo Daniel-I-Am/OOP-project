@@ -1,6 +1,8 @@
 class LevelSelectView extends BaseView {
+    private backgroundMusic: SoundHelper;
     public constructor() {
         super();
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Pulsewave.wav", .3);
         this.background = new Image();
         this.background.src = "./assets/images/level_select.png";
         this.entities = [];
@@ -59,7 +61,9 @@ class LevelSelectView extends BaseView {
         });
     }
 
-    public beforeExit() {}
+    public beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
 
     public drawGUI() {
         this.canvasHelper.addProgressBar(
