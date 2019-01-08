@@ -1,4 +1,5 @@
 class DialogueView extends BaseView {
+    public backgroundMusic: SoundHelper;
     protected dialogue: Array<DialogueLine>;
     protected endDialogue: Array<DialogueLine>;
     protected currentLine: number;
@@ -8,6 +9,8 @@ class DialogueView extends BaseView {
 
     public constructor(levelName: string) {
         super(levelName);
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.entities = new Array<Entity>();
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
@@ -85,6 +88,7 @@ class DialogueView extends BaseView {
     }
 
     public beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         window.removeEventListener('keydown', this._listener);
     }
 
