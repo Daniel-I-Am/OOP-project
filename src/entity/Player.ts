@@ -314,4 +314,8 @@ class Player extends Entity {
     public getFireCounter(): number {
         return this.fireCounter;
     }
+
+    public getInventory(): Array<InventoryItem> {
+        return this.inventory;
+    }
 }
