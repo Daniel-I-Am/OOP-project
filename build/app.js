@@ -467,6 +467,7 @@ class GameView extends BaseView {
     constructor(levelName) {
         super();
         this.entities = new Array();
+        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -519,6 +520,10 @@ class GameView extends BaseView {
             this.canvasHelper.writeText(`YVelo: ${MathHelper.floor(this.player.getVelocity().y, 2)}`, 20, new Vector(50, 80), "left", undefined, "black");
         }
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
+    }
+    reachedDoor() {
+        Game.setInventory(this.player.getInventory());
+        Game.switchView(new LevelEndView(this.levelName));
     }
     beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
@@ -961,6 +966,9 @@ class Player extends Entity {
     getFireCounter() {
         return this.fireCounter;
     }
+    getInventory() {
+        return this.inventory;
+    }
 }
 class Trampoline extends Entity {
     constructor(imageSource = ["./assets/images/trampoline.png"], location, rotation, size, gravity, shouldDraw = true) {
@@ -1014,6 +1022,18 @@ class Game {
     static getCurrentView() {
         return Game.currentView;
     }
+    static setInventory(newInventory) {
+        this.inventory = newInventory;
+    }
+    static getInventory() {
+        return this.inventory;
+    }
+    static clearInventory() {
+        this.inventory = [];
+    }
+    static useItem(n) {
+        return this.inventory.splice(n, 1)[0];
+    }
 }
 Game.DEBUG_MODE = true;
 Game.GAME_STATE = GameState.PAUSED;
@@ -1045,14 +1065,15 @@ class Fire extends Entity {
     }
 }
 class MapDoor extends Entity {
-    constructor(location, levelName, rotation) {
+    constructor(location, levelName, internalName, rotation) {
         super(["./assets/images/mapDoor.png"], location, rotation, new Vector(64, 64));
         this.levelName = levelName;
+        this.internalName = internalName;
         this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
     }
     move() { }
     onPlayerCollision() {
-        Game.switchView(new DialogueView(this.levelName));
+        Game.switchView(new DialogueView(this.internalName));
     }
     drawName() {
         this.canvasHelper.writeText(this.levelName, 24, this.location.copy().sub(new Vector(0, 50)), undefined, undefined, "green");
@@ -1093,7 +1114,8 @@ class DialogueView extends BaseView {
         this.onKey = (event) => {
             if (event.keyCode == 13) {
                 this.currentLine++;
-                if (this.currentLine >= this.dialogue.length)
+                if (this.currentLine >=
+                    this.dialogue.length)
                     Game.switchView(new GameView(this.levelName));
             }
         };
@@ -1115,6 +1137,8 @@ class DialogueView extends BaseView {
         this.player = new Player(levelJSON.player.sprites, this.canvasHelper.getCenter().sub(new Vector(300, 0)), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 0)), new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y), 0, 2, 0, 0));
         this.dialogue = levelJSON.dialogue;
+        this.endDialogue = levelJSON.endDialogue;
+        console.log(this.endDialogue);
         this.entities.push(this.player);
     }
     update() {
@@ -1141,6 +1165,39 @@ class DialogueView extends BaseView {
     }
     beforeExit() {
         window.removeEventListener('keydown', this._listener);
+    }
+}
+class LevelEndView extends DialogueView {
+    constructor(levelName) {
+        super(levelName);
+        this.onKey = (event) => {
+            if (event.keyCode == 13) {
+                if (this.currentLine != 1)
+                    this.currentLine++;
+            }
+        };
+        this.inventory = Game.getInventory();
+        this.dialogue = this.endDialogue;
+        LevelEndView.FontSize = 30;
+    }
+    drawGUI() {
+        this.inventory.forEach((e, i) => {
+            this.canvasHelper.drawImage(e.image, new Vector(200, 200), new Rotation(0), new Vector(64, 64));
+        });
+        this.displayLine();
+    }
+    beforeExit() {
+        Game.clearInventory();
+    }
+    displayLine() {
+        this.canvasHelper.writeText(this.endDialogue[this.currentLine].what, LevelEndView.FontSize, ((who) => {
+            switch (who) {
+                case "player":
+                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                case "patient":
+                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+            }
+        })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
     }
 }
 class LevelSelectView extends BaseView {
@@ -1179,8 +1236,8 @@ class LevelSelectView extends BaseView {
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x + 1, y), new Rotation(0)));
         }
         if (Game.DEBUG_MODE)
-            this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
-        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", new Rotation(0)));
+            this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', new Rotation(45)));
+        this.entities.push(new MapDoor(new Vector(300, 350), "Level 1", 'level_1', new Rotation(0)));
         if (Game.DEBUG_MODE)
             document.getElementById("canvas").addEventListener('click', (e) => {
                 let target = e.target;

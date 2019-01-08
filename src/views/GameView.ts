@@ -124,7 +124,7 @@ class GameView extends BaseView {
 
     public reachedDoor(): void {
         Game.setInventory(this.player.getInventory());
-        Game.switchView(new InteractionScreen(this.levelName));
+        Game.switchView(new LevelEndView(this.levelName));
     }
 
     public beforeExit(): void {
