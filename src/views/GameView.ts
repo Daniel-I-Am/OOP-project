@@ -88,6 +88,12 @@ class GameView extends BaseView {
                 e.name
             ));
         });
+        this.entities.push(
+            new Door(
+                this.parseLocation(levelJSON.door.bottomRight),
+                this.parseLocation(levelJSON.door.topLeft)
+            )
+        );
 
         this.entities.push(this.player);
     }
