@@ -2,8 +2,8 @@ class MapDoor extends Entity {
     private levelName: string;
     private internalName: string;
 
-    public constructor(location: Vector, levelName: string, internalName: string, rotation: Rotation, imageSrc: string = 'Door.png') {
-        super([`./assets/images/${imageSrc}`], location, rotation, new Vector(64, 64));
+    public constructor(location: Vector, levelName: string, internalName: string, imageSrc: string = 'Door.png') {
+        super([`./assets/images/${imageSrc}`], location, new Rotation(0), new Vector(28, 56));
         this.levelName = levelName;
         this.internalName = internalName;
         this.collision = new CollisionObject(

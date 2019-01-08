@@ -1081,8 +1081,8 @@ class Fire extends Entity {
     }
 }
 class MapDoor extends Entity {
-    constructor(location, levelName, internalName, rotation, imageSrc = 'Door.png') {
-        super([`./assets/images/${imageSrc}`], location, rotation, new Vector(64, 64));
+    constructor(location, levelName, internalName, imageSrc = 'Door.png') {
+        super([`./assets/images/${imageSrc}`], location, new Rotation(0), new Vector(28, 56));
         this.levelName = levelName;
         this.internalName = internalName;
         this.collision = new CollisionObject(this.location.copy().add(this.size.copy().multiply(.5)), this.location.copy().sub(this.size.copy().multiply(.5)), this.rotation);
