@@ -150,6 +150,14 @@ class Player extends Entity {
             let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y;
             this.canvasHelper.offset.x -= 1*10**-17*dx**7;
             this.canvasHelper.offset.y -= 1*10**-17*dy**7;
+            if (isNaN(this.canvasHelper.offset.x)) {
+                this.canvasHelper.offset.x = -this.canvasHelper.getWidth()/2 + this.location.x;
+                console.log("Reset x", this.canvasHelper.offset.x)
+            }
+            if (isNaN(this.canvasHelper.offset.y)) {
+                this.canvasHelper.offset.y = -this.canvasHelper.getHeight()/2 + this.location.y;
+                console.log("Reset y", this.canvasHelper.offset.y)
+            }
         }
 
         if (this.location.y > 5000) this.kill()
@@ -266,7 +274,7 @@ class Player extends Entity {
     }
 
     protected drawInventory(): void {
-        this.inventory.forEach((e, i) => {
+        this.inventory.slice().reverse().forEach((e, i) => {
             this.canvasHelper.drawImage(
                 e.image,
                 new Vector(this.canvasHelper.getWidth() - 50*(i+1), 70),
@@ -304,7 +312,8 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750)
-        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()))
+        Game.adjustReputation(-.2);
+        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName))
     }
 
     public onPlayerCollision(player: Player, collisionSides: CollisionDirections): void {

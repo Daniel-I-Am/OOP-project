@@ -4,11 +4,13 @@ abstract class BaseView {
     protected canvasHelper: CanvasHelper;
     protected shouldClear: boolean;
     protected background: HTMLImageElement;
+    public readonly levelName: string;
 
-    protected constructor() {
+    protected constructor(levelName: string = null) {
         this.canvasHelper = CanvasHelper.Instance();
         this.shouldClear = true;
         this.background = new Image();
+        this.levelName = levelName;
     }
 
     /**

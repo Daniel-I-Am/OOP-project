@@ -329,10 +329,11 @@ class SoundHelper {
     }
 }
 class BaseView {
-    constructor() {
+    constructor(levelName = null) {
         this.canvasHelper = CanvasHelper.Instance();
         this.shouldClear = true;
         this.background = new Image();
+        this.levelName = levelName;
     }
     tick() {
         if (this.shouldClear)
@@ -437,7 +438,7 @@ class Entity {
 }
 class DialogueView extends BaseView {
     constructor(levelName) {
-        super();
+        super(levelName);
         this.onKey = (event) => {
             if (event.keyCode == 13) {
                 this.currentLine++;
@@ -447,7 +448,6 @@ class DialogueView extends BaseView {
             }
         };
         this.entities = new Array();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -465,7 +465,11 @@ class DialogueView extends BaseView {
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 0)), new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y), 0, 2, 0, 0));
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
+<<<<<<< HEAD
         this.usedItems = levelJSON.usedItems;
+=======
+        console.log(this.endDialogue);
+>>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
         this.entities.push(this.player);
     }
     update() {
@@ -495,8 +499,8 @@ class DialogueView extends BaseView {
     }
 }
 class GameOverView extends BaseView {
-    constructor(player, entities, background) {
-        super();
+    constructor(player, entities, background, levelName) {
+        super(levelName);
         this.player = player;
         this.background = background;
         this.entities = entities.filter(e => !(e instanceof CollisionObject));
@@ -511,7 +515,7 @@ class GameOverView extends BaseView {
         this.player.update();
         console.log(this.player['isLanded']);
         if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
-            Game.switchView(new GameView('debug_level'));
+            Game.switchView(new GameView(this.levelName));
         }
     }
     drawGUI() {
@@ -521,15 +525,15 @@ class GameOverView extends BaseView {
         }
         this.canvasHelper.fillRect(new Vector(0, this.canvasHelper.getCenter().y - 50), new Vector(this.canvasHelper.getWidth(), this.canvasHelper.getCenter().y + 50), `rgba(0, 0, 0, ${85 / 100})`);
         this.canvasHelper.writeText("Game over!", 96, this.canvasHelper.getCenter(), undefined, undefined, "red");
+        this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }
     beforeExit() { }
     onPause() { }
 }
 class GameView extends BaseView {
     constructor(levelName) {
-        super();
+        super(levelName);
         this.entities = new Array();
-        this.levelName = levelName;
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -595,6 +599,7 @@ class GameView extends BaseView {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }
 }
+<<<<<<< HEAD
 class LevelEndView extends DialogueView {
     constructor(levelName) {
         super(levelName);
@@ -664,6 +669,8 @@ class LevelEndView extends DialogueView {
         })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
     }
 }
+=======
+>>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
 class LevelSelectView extends BaseView {
     constructor() {
         super();
@@ -1071,6 +1078,14 @@ class Player extends Entity {
             let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
             this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
             this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+            if (isNaN(this.canvasHelper.offset.x)) {
+                this.canvasHelper.offset.x = -this.canvasHelper.getWidth() / 2 + this.location.x;
+                console.log("Reset x", this.canvasHelper.offset.x);
+            }
+            if (isNaN(this.canvasHelper.offset.y)) {
+                this.canvasHelper.offset.y = -this.canvasHelper.getHeight() / 2 + this.location.y;
+                console.log("Reset y", this.canvasHelper.offset.y);
+            }
         }
         if (this.location.y > 5000)
             this.kill();
@@ -1169,7 +1184,7 @@ class Player extends Entity {
         }
     }
     drawInventory() {
-        this.inventory.forEach((e, i) => {
+        this.inventory.slice().reverse().forEach((e, i) => {
             this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), undefined, true, true);
         });
     }
@@ -1195,7 +1210,8 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
-        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground()));
+        Game.adjustReputation(-.2);
+        Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName));
     }
     onPlayerCollision(player, collisionSides) {
         return;
@@ -1279,6 +1295,10 @@ class Game {
     static setReputation(amount) {
         this.reputation = amount;
     }
+    static adjustReputation(amount) {
+        let n = setInterval(() => { this.reputation += amount / 100; }, 10);
+        setTimeout(() => { clearInterval(n); }, 1001);
+    }
     static pause() {
         if (Game.GAME_STATE == GameState.PLAYING)
             Game.GAME_STATE = GameState.PAUSED;
@@ -1316,4 +1336,40 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
+<<<<<<< HEAD
+=======
+class LevelEndView extends DialogueView {
+    constructor(levelName) {
+        super(levelName);
+        this.onKey = (event) => {
+            if (event.keyCode == 13) {
+                if (this.currentLine != 1)
+                    this.currentLine++;
+            }
+        };
+        this.inventory = Game.getInventory();
+        this.dialogue = this.endDialogue;
+        LevelEndView.FontSize = 30;
+    }
+    drawGUI() {
+        this.inventory.forEach((e, i) => {
+            this.canvasHelper.drawImage(e.image, new Vector(200, 200), new Rotation(0), new Vector(64, 64));
+        });
+        this.displayLine();
+    }
+    beforeExit() {
+        Game.clearInventory();
+    }
+    displayLine() {
+        this.canvasHelper.writeText(this.endDialogue[this.currentLine].what, LevelEndView.FontSize, ((who) => {
+            switch (who) {
+                case "player":
+                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                case "patient":
+                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+            }
+        })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
+    }
+}
+>>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
 //# sourceMappingURL=app.js.map
