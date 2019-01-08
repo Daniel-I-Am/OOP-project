@@ -1108,7 +1108,7 @@ class Player extends Entity {
         }
     }
     drawInventory() {
-        this.inventory.forEach((e, i) => {
+        this.inventory.slice().reverse().forEach((e, i) => {
             this.canvasHelper.drawImage(e.image, new Vector(this.canvasHelper.getWidth() - 50 * (i + 1), 70), new Rotation(0), new Vector(50, 50), undefined, true, true);
         });
     }

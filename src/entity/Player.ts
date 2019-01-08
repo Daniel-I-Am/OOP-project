@@ -262,7 +262,7 @@ class Player extends Entity {
     }
 
     protected drawInventory(): void {
-        this.inventory.forEach((e, i) => {
+        this.inventory.slice().reverse().forEach((e, i) => {
             this.canvasHelper.drawImage(
                 e.image,
                 new Vector(this.canvasHelper.getWidth() - 50*(i+1), 70),
