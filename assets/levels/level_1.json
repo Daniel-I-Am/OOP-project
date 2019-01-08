@@ -1,5 +1,5 @@
 {
-    "background": "./assets/images/map/level_1.png",
+    "background": "./assets/images/map/Level_1.png",
     "backgroundMusic": "./assets/sounds/Spectacles.wav",
     "player": {
         "sprites": [
@@ -130,19 +130,19 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 900
+                    "offset": 3900
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 200
                 }
             },
-            "rotation": -30,
+            "rotation": 0,
             "size": {
                 "x": 175,
                 "y": 50
             },
-            "yeet": 115
+            "yeet": 70
         },
         {
             "sprites": null,
@@ -229,32 +229,14 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 200
+                    "offset": 3875
                 },
                 "y": {
                     "center": false,
-                    "offset": 590
+                    "offset": 810
                 }
             },
             "rotation": 0,
-            "size": {
-                "x": 259,
-                "y": 135
-            }
-        },
-        {
-            "sprite": null,
-            "location": {
-                "x": {
-                    "center": false,
-                    "offset": -50
-                },
-                "y": {
-                    "center": false,
-                    "offset": 590
-                }
-            },
-            "rotation": 45,
             "size": {
                 "x": 259,
                 "y": 135
@@ -289,6 +271,29 @@
             "topLeft": {
                 "x": {
                     "center": false,
+                    "offset": 5889
+                },
+                "y": {
+                    "center": false,
+                    "offset": -10000
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 6000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2000
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
                     "offset": 0
                 },
                 "y": {
@@ -307,11 +312,58 @@
                 }
             },
             "rotation": 0
-        },{
+        },
+        {
             "topLeft": {
                 "x": {
                     "center": false,
                     "offset": 950
+                },
+                "y": {
+                    "center": false,
+                    "offset": 850
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 4275
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1020
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 3300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1770
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 3715
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1820
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 5300
                 },
                 "y": {
                     "center": false,
@@ -335,6 +387,29 @@
                 "x": {
                     "center": false,
                     "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1800
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 4010
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1920
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 5175
                 },
                 "y": {
                     "center": false,
@@ -441,6 +516,98 @@
                 "y": {
                     "center": false,
                     "offset": 1300
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 2150
+                },
+                "y": {
+                    "center": false,
+                    "offset": 850
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2385
+                },
+                "y": {
+                    "center": false,
+                    "offset": 400
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 2615
+                },
+                "y": {
+                    "center": false,
+                    "offset": 615
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2880
+                },
+                "y": {
+                    "center": false,
+                    "offset": 665
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 3775
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1310
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 4025
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1360
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 5525
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1575
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 5815
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1625
                 }
             },
             "rotation": 0
