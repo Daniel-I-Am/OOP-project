@@ -1132,6 +1132,8 @@ class Player extends Entity {
             this.gravity = oldGravity;
             this.velocity.y = -20;
         }, 1750);
+        let n = setInterval(() => { Game.adjustReputation(-.002); }, 10);
+        setTimeout(() => { clearInterval(n); }, 1000);
         Game.switchView(new GameOverView(this, Game.getCurrentView().entities, Game.getBackground(), Game.getCurrentView().levelName));
     }
     onPlayerCollision(player, collisionSides) {
@@ -1215,6 +1217,10 @@ class Game {
     }
     static setReputation(amount) {
         this.reputation = amount;
+    }
+    static adjustReputation(amount) {
+        this.reputation += amount;
+        this.reputation = Math.min(1, Math.max(0, this.reputation));
     }
     static pause() {
         if (Game.GAME_STATE == GameState.PLAYING)
