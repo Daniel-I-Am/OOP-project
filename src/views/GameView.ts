@@ -98,8 +98,8 @@ class GameView extends BaseView {
                 this.parseLocation(levelJSON.door.topLeft)
             )
         );
-
-        this.player.inventory = inventory;
+        if (inventory)
+            this.player.inventory = inventory;
 
         this.entities.push(this.player);
     }

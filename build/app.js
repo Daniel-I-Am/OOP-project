@@ -572,7 +572,8 @@ class GameView extends BaseView {
             this.entities.push(new Item(this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
         this.entities.push(new Door(this.parseLocation(levelJSON.door.bottomRight), this.parseLocation(levelJSON.door.topLeft)));
-        this.player.inventory = inventory;
+        if (inventory)
+            this.player.inventory = inventory;
         this.entities.push(this.player);
     }
     parseLocation(location) {
