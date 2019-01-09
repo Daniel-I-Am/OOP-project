@@ -465,11 +465,7 @@ class DialogueView extends BaseView {
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 0)), new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y), 0, 2, 0, 0));
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
-<<<<<<< HEAD
         this.usedItems = levelJSON.usedItems;
-=======
-        console.log(this.endDialogue);
->>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
         this.entities.push(this.player);
     }
     update() {
@@ -599,7 +595,6 @@ class GameView extends BaseView {
         this.canvasHelper.writeText("PAUSED", 96, this.canvasHelper.getCenter(), "center", "middle", "black");
     }
 }
-<<<<<<< HEAD
 class LevelEndView extends DialogueView {
     constructor(levelName) {
         super(levelName);
@@ -657,6 +652,7 @@ class LevelEndView extends DialogueView {
     }
     beforeExit() {
         Game.clearInventory();
+        window.removeEventListener('onkey', this.onKey);
     }
     displayLine() {
         this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
@@ -669,8 +665,6 @@ class LevelEndView extends DialogueView {
         })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
     }
 }
-=======
->>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
 class LevelSelectView extends BaseView {
     constructor() {
         super();
@@ -1336,40 +1330,4 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
-<<<<<<< HEAD
-=======
-class LevelEndView extends DialogueView {
-    constructor(levelName) {
-        super(levelName);
-        this.onKey = (event) => {
-            if (event.keyCode == 13) {
-                if (this.currentLine != 1)
-                    this.currentLine++;
-            }
-        };
-        this.inventory = Game.getInventory();
-        this.dialogue = this.endDialogue;
-        LevelEndView.FontSize = 30;
-    }
-    drawGUI() {
-        this.inventory.forEach((e, i) => {
-            this.canvasHelper.drawImage(e.image, new Vector(200, 200), new Rotation(0), new Vector(64, 64));
-        });
-        this.displayLine();
-    }
-    beforeExit() {
-        Game.clearInventory();
-    }
-    displayLine() {
-        this.canvasHelper.writeText(this.endDialogue[this.currentLine].what, LevelEndView.FontSize, ((who) => {
-            switch (who) {
-                case "player":
-                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
-                case "patient":
-                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
-            }
-        })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
-    }
-}
->>>>>>> e7090a84ad41bc8246e08c85a84604a05bacb6f0
 //# sourceMappingURL=app.js.map

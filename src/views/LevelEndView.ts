@@ -60,6 +60,7 @@ class LevelEndView extends DialogueView {
 
     public beforeExit() {
         Game.clearInventory();
+        window.removeEventListener('onkey', this.onKey)
     }
 
     public displayLine() {
