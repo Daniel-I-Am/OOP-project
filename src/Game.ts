@@ -45,6 +45,14 @@ class Game {
             () => {Game.pause(); Game.switchView(new LevelSelectView())}
         );
         this.currentInterval = setInterval(this.loop, 33);
+        if (Game.DEBUG_MODE)
+            window.addEventListener('click', (e: MouseEvent) => {
+                let target = (<HTMLCanvasElement><HTMLElement>e.target);
+                console.log(new Vector(
+                    (e.x - canvas.offsetLeft) / (target.clientWidth/1600) + this.canvasHelper.offset.x,
+                    (e.y - canvas.offsetTop) / (target.clientHeight/900) + this.canvasHelper.offset.y
+                ).toString());
+            });
     }
 
     public static Instance(canvas: HTMLElement = null): Game {

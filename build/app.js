@@ -748,11 +748,6 @@ class LevelSelectView extends BaseView {
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
-        if (Game.DEBUG_MODE)
-            document.getElementById("canvas").addEventListener('click', (e) => {
-                let target = e.target;
-                console.log((e.x - target.offsetLeft) / (target.clientWidth / 1600), (e.y - target.offsetTop) / (target.clientHeight / 900));
-            });
     }
     update() {
         this.entities.forEach(e => {
@@ -1342,6 +1337,11 @@ class Game {
         this.canvasHelper = CanvasHelper.Instance(canvas);
         Game.currentView = new TitleView(() => { Game.pause(); Game.switchView(new LevelSelectView()); });
         this.currentInterval = setInterval(this.loop, 33);
+        if (Game.DEBUG_MODE)
+            window.addEventListener('click', (e) => {
+                let target = e.target;
+                console.log(new Vector((e.x - canvas.offsetLeft) / (target.clientWidth / 1600) + this.canvasHelper.offset.x, (e.y - canvas.offsetTop) / (target.clientHeight / 900) + this.canvasHelper.offset.y).toString());
+            });
     }
     static Instance(canvas = null) {
         if (!this.instance)
