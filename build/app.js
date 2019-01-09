@@ -761,7 +761,7 @@ class TitleView extends BaseView {
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
         });
-        buttonImage.src = "./assets/images/buttonGreen.png";
+        buttonImage.src = "./assets/images/Buttonss/Button_large.png";
         let _listener = () => {
             window.removeEventListener('mousemove', _listener);
             if (!this.active)

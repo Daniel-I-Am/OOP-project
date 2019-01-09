@@ -17,7 +17,7 @@ class TitleView extends BaseView {
                 buttonCallback
             )
         });
-        buttonImage.src = "./assets/images/buttonGreen.png";
+        buttonImage.src = "./assets/images/Buttonss/Button_large.png";
         let _listener = () => {
             window.removeEventListener('mousemove', _listener);
             if (!this.active) return;
