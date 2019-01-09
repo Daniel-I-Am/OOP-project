@@ -1406,7 +1406,6 @@ class ControlView extends BaseView {
         window.addEventListener('keydown', this.onKey);
     }
     onKey(event) {
-        console.log("asdasdasd");
         Game.switchView(new TitleView(() => { Game.pause(); Game.switchView(new LevelSelectView()); }));
     }
     drawGUI() { }

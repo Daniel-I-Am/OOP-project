@@ -13,7 +13,6 @@ class ControlView extends BaseView {
 
 
     public onKey(event: KeyboardEvent) {
-        console.log("asdasdasd")
         Game.switchView(new TitleView(() => {Game.pause(); Game.switchView(new LevelSelectView())}));
     }
 
