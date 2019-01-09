@@ -440,7 +440,7 @@ class DialogueView extends BaseView {
     constructor(levelName) {
         super(levelName);
         this.onKey = (event) => {
-            if (event.keyCode == 13) {
+            if (event.keyCode == 13 || event.keyCode == 32) {
                 this.currentLine++;
                 if (this.currentLine >=
                     this.dialogue.length)
@@ -614,6 +614,7 @@ class LevelEndView extends DialogueView {
             console.log("onKey in LevelEndView", event.keyCode);
             switch (event.keyCode) {
                 case 13:
+                case 32:
                     if (this.currentLine != 1)
                         this.currentLine++;
                     if (this.healed) {

@@ -46,6 +46,7 @@ class LevelEndView extends DialogueView {
         console.log("onKey in LevelEndView", event.keyCode)
         switch(event.keyCode) {
             case 13:
+            case 32:
                 if (this.currentLine != 1) this.currentLine++;
                 if (this.healed) {
                     Game.switchView(new LevelSelectView());

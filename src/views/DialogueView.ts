@@ -96,7 +96,7 @@ class DialogueView extends BaseView {
     }
 
     protected onKey = (event: KeyboardEvent): void => {
-        if (event.keyCode == 13) {
+        if (event.keyCode == 13 || event.keyCode == 32) {
             this.currentLine ++;
             if (this.currentLine >=
                 this.dialogue.length)
