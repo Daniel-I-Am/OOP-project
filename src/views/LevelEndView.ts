@@ -46,7 +46,9 @@ class LevelEndView extends DialogueView {
         console.log("onKey in LevelEndView", event.keyCode)
         if (event.keyCode == 13) {
             if (this.currentLine != 1) this.currentLine++;
-            if (this.healed) Game.switchView(new LevelSelectView());
+            if (this.healed) {
+                Game.switchView(new LevelSelectView());
+            }
         } else if (event.keyCode == 69) {
             if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
                 this.currentItem++;
@@ -54,12 +56,13 @@ class LevelEndView extends DialogueView {
                 this.lastUsedItem = this.inventory[this.selected];
                 this.inventory.splice(this.selected, 1);
                 this.selected = 0;
-                Game.adjustReputation(-1.0);
+                Game.adjustReputation(-0.1);
                 if (this.currentItem >= this.usedItems.length) {
                     this.currentLine = 4;
                     this.healed = true; 
                     this.backgroundMusic.pause(PlayingStat.PAUSED);
                     this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
+                    Game.adjustReputation(.5);
                 }
 
             } else {
