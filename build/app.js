@@ -802,6 +802,7 @@ class Accelerator extends Entity {
     onPlayerCollision(player, collisionSides) {
         if (this.collide(player))
             player.boost(this);
+        let boostsound = new SoundHelper("./assets/sounds/accelerator.wav", .9);
     }
 }
 class CollisionObject extends Entity {
