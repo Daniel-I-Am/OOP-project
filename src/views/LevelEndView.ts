@@ -75,6 +75,7 @@ class LevelEndView extends DialogueView {
     public beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
         Game.clearInventory();
+        window.removeEventListener('onkey', this.onKey)
     }
 
     public displayLine() {

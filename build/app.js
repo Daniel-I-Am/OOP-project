@@ -665,6 +665,7 @@ class LevelEndView extends DialogueView {
     beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
         Game.clearInventory();
+        window.removeEventListener('onkey', this.onKey);
     }
     displayLine() {
         this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
