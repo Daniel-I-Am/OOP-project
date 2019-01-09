@@ -44,39 +44,48 @@ class LevelEndView extends DialogueView {
 
     protected onKey = (event: KeyboardEvent): void => {
         console.log("onKey in LevelEndView", event.keyCode)
-        if (event.keyCode == 13) {
-            if (this.currentLine != 1) this.currentLine++;
-            if (this.healed) {
-                Game.switchView(new LevelSelectView());
-            }
-        } else if (event.keyCode == 69) {
-            if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
-                this.currentItem++;
-                this.currentLine = 2;
-                this.lastUsedItem = this.inventory[this.selected];
-                this.inventory.splice(this.selected, 1);
-                this.selected = 0;
-                Game.adjustReputation(-0.1);
-                if (this.currentItem >= this.usedItems.length) {
-                    this.currentLine = 4;
-                    this.healed = true; 
-                    this.backgroundMusic.pause(PlayingStat.PAUSED);
-                    this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
-                    Game.adjustReputation(.5);
+        switch(event.keyCode) {
+            case 13:
+                if (this.currentLine != 1) this.currentLine++;
+                if (this.healed) {
+                    Game.switchView(new LevelSelectView());
                 }
+                break;
+            case 27:
+                if (this.healed) break;
+                this.shouldClearInventory = false;
+                Game.switchView(new GameView(this.levelName, Game.getInventory()));
+                break;
+            case 37:
+                if (this.healed) break;
+                if (this.selected > 0) this.selected--;
+                break;
+            case 39:
+                if (this.healed) break;
+                if (this.selected < this.maxIndex - 1) this.selected++;
+                break;
+            case 69:
+                if (this.healed) break;
+                if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
+                    this.currentItem++;
+                    this.currentLine = 2;
+                    this.lastUsedItem = this.inventory[this.selected];
+                    this.inventory.splice(this.selected, 1);
+                    this.selected = 0;
+                    Game.adjustReputation(-0.1);
+                    if (this.currentItem >= this.usedItems.length) {
+                        this.currentLine = 4;
+                        this.healed = true; 
+                        this.backgroundMusic.pause(PlayingStat.PAUSED);
+                        this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
+                        Game.adjustReputation(.5);
+                    }
 
-            } else {
-                this.currentLine = 3;
-                Game.adjustReputation(-0.1);
-            }
-        } else if (event.keyCode == 37) {
-            if (this.selected > 0) this.selected--;
-
-        } else if (event.keyCode == 39) {
-            if (this.selected < this.maxIndex - 1) this.selected++;
-        } else if (event.keyCode == 27) {
-            this.shouldClearInventory = false;
-            Game.switchView(new GameView(this.levelName, Game.getInventory()));
+                } else {
+                    this.currentLine = 3;
+                    Game.adjustReputation(-0.1);
+                }
+                break;
         }
     }
 

@@ -612,45 +612,55 @@ class LevelEndView extends DialogueView {
         this.shouldClearInventory = true;
         this.onKey = (event) => {
             console.log("onKey in LevelEndView", event.keyCode);
-            if (event.keyCode == 13) {
-                if (this.currentLine != 1)
-                    this.currentLine++;
-                if (this.healed) {
-                    Game.switchView(new LevelSelectView());
-                }
-            }
-            else if (event.keyCode == 69) {
-                if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
-                    this.currentItem++;
-                    this.currentLine = 2;
-                    this.lastUsedItem = this.inventory[this.selected];
-                    this.inventory.splice(this.selected, 1);
-                    this.selected = 0;
-                    Game.adjustReputation(-0.1);
-                    if (this.currentItem >= this.usedItems.length) {
-                        this.currentLine = 4;
-                        this.healed = true;
-                        this.backgroundMusic.pause(PlayingStat.PAUSED);
-                        this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
-                        Game.adjustReputation(.5);
+            switch (event.keyCode) {
+                case 13:
+                    if (this.currentLine != 1)
+                        this.currentLine++;
+                    if (this.healed) {
+                        Game.switchView(new LevelSelectView());
                     }
-                }
-                else {
-                    this.currentLine = 3;
-                    Game.adjustReputation(-0.1);
-                }
-            }
-            else if (event.keyCode == 37) {
-                if (this.selected > 0)
-                    this.selected--;
-            }
-            else if (event.keyCode == 39) {
-                if (this.selected < this.maxIndex - 1)
-                    this.selected++;
-            }
-            else if (event.keyCode == 27) {
-                this.shouldClearInventory = false;
-                Game.switchView(new GameView(this.levelName, Game.getInventory()));
+                    break;
+                case 27:
+                    if (this.healed)
+                        break;
+                    this.shouldClearInventory = false;
+                    Game.switchView(new GameView(this.levelName, Game.getInventory()));
+                    break;
+                case 37:
+                    if (this.healed)
+                        break;
+                    if (this.selected > 0)
+                        this.selected--;
+                    break;
+                case 39:
+                    if (this.healed)
+                        break;
+                    if (this.selected < this.maxIndex - 1)
+                        this.selected++;
+                    break;
+                case 69:
+                    if (this.healed)
+                        break;
+                    if (this.inventory[this.selected].internalName == this.usedItems[this.currentItem]) {
+                        this.currentItem++;
+                        this.currentLine = 2;
+                        this.lastUsedItem = this.inventory[this.selected];
+                        this.inventory.splice(this.selected, 1);
+                        this.selected = 0;
+                        Game.adjustReputation(-0.1);
+                        if (this.currentItem >= this.usedItems.length) {
+                            this.currentLine = 4;
+                            this.healed = true;
+                            this.backgroundMusic.pause(PlayingStat.PAUSED);
+                            this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
+                            Game.adjustReputation(.5);
+                        }
+                    }
+                    else {
+                        this.currentLine = 3;
+                        Game.adjustReputation(-0.1);
+                    }
+                    break;
             }
         };
         this.inventory = Game.getInventory();
@@ -761,7 +771,9 @@ class TitleView extends BaseView {
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
+            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => { if (this.active) {
+                buttonCallback(event);
+            } });
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
@@ -775,7 +787,8 @@ class TitleView extends BaseView {
         let controlButtonImage = new Image();
         controlButtonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(buttonImage, "Controls", 44, this.canvasHelper.getCenter().add(new Vector(0, 200)), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => {
-                Game.switchView(new ControlView());
+                if (this.active)
+                    Game.switchView(new ControlView());
             });
         });
         controlButtonImage.src = "./assets/images/buttonGreen.png";
@@ -1372,7 +1385,7 @@ class ControlView extends BaseView {
         super();
         this.shouldClear = false;
         this.canvasHelper.clear();
-        "e - items oppakken\nesc - terug gaan\na/d/spatie/pijltje recht en link - beweging".split("\n").forEach((e, i) => {
+        "e - items oppakken\nesc - terug gaan\na/d/spatie/pijltje rechts en links - beweging\nenter - volgende dialoog regel".split("\n").forEach((e, i) => {
             this.canvasHelper.writeText(e, 44, this.canvasHelper.getCenter().add(new Vector(0, -100 * i)), undefined, undefined, "black");
         });
         window.addEventListener('keydown', this.onKey);
@@ -1385,6 +1398,7 @@ class ControlView extends BaseView {
     onPause() { }
     beforeExit() {
         this.canvasHelper.clear();
+        console.log("asdasdasdasdasdwdasdasdasdf");
         window.removeEventListener('keydown', this.onKey);
     }
 }

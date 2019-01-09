@@ -14,7 +14,7 @@ class TitleView extends BaseView {
                 buttonImage, "Play!", 96,
                 this.canvasHelper.getCenter(),
                 new Vector(buttonImage.width*5, buttonImage.height*5),
-                buttonCallback
+                (event: MouseEvent) => {if (this.active) {buttonCallback(event)}}
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
@@ -33,7 +33,8 @@ class TitleView extends BaseView {
                 this.canvasHelper.getCenter().add(new Vector(0, 200)),
                 new Vector(buttonImage.width*5, buttonImage.height*5),
                 (event: MouseEvent) => {
-                    Game.switchView(new ControlView());
+                    if (this.active)
+                        Game.switchView(new ControlView());
                 }
             )
         });
