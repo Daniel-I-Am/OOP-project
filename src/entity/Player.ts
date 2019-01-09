@@ -1,6 +1,6 @@
 class Player extends Entity {
     protected keyHelper: KeyHelper;
-    protected inventory: Array<InventoryItem>;
+    public inventory: Array<InventoryItem>;
     protected isJumping: boolean;
     protected isLanded: boolean;
     protected jumpSpeed: number;

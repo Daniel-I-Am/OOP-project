@@ -9,6 +9,7 @@ class LevelEndView extends DialogueView {
     private currentItem: number;
     private lastUsedItem: InventoryItem;
     private healed: boolean;
+    private shouldClearInventory: boolean = true;
 
     public constructor(levelName: string) {
         super(levelName);
@@ -42,6 +43,7 @@ class LevelEndView extends DialogueView {
     }
 
     protected onKey = (event: KeyboardEvent): void => {
+        console.log("onKey in LevelEndView", event.keyCode)
         if (event.keyCode == 13) {
             if (this.currentLine != 1) this.currentLine++;
             if (this.healed) Game.switchView(new LevelSelectView());
@@ -69,13 +71,16 @@ class LevelEndView extends DialogueView {
 
         } else if (event.keyCode == 39) {
             if (this.selected < this.maxIndex - 1) this.selected++;
+        } else if (event.keyCode == 27) {
+            this.shouldClearInventory = false;
+            Game.switchView(new GameView(this.levelName, Game.getInventory()));
         }
     }
 
     public beforeExit() {
-        this.backgroundMusic.pause(PlayingStat.PAUSED);
-        Game.clearInventory();
-        window.removeEventListener('onkey', this.onKey)
+        super.beforeExit();
+        if (this.shouldClearInventory)
+            Game.clearInventory();
     }
 
     public displayLine() {
