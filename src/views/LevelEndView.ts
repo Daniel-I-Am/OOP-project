@@ -42,6 +42,7 @@ class LevelEndView extends DialogueView {
     }
 
     protected onKey = (event: KeyboardEvent): void => {
+        console.log("onKey in LevelEndView", event.keyCode)
         if (event.keyCode == 13) {
             if (this.currentLine != 1) this.currentLine++;
             if (this.healed) Game.switchView(new LevelSelectView());
@@ -73,9 +74,8 @@ class LevelEndView extends DialogueView {
     }
 
     public beforeExit() {
-        this.backgroundMusic.pause(PlayingStat.PAUSED);
+        super.beforeExit();
         Game.clearInventory();
-        window.removeEventListener('onkey', this.onKey)
     }
 
     public displayLine() {

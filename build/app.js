@@ -606,6 +606,7 @@ class LevelEndView extends DialogueView {
     constructor(levelName) {
         super(levelName);
         this.onKey = (event) => {
+            console.log("onKey in LevelEndView", event.keyCode);
             if (event.keyCode == 13) {
                 if (this.currentLine != 1)
                     this.currentLine++;
@@ -663,9 +664,8 @@ class LevelEndView extends DialogueView {
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }
     beforeExit() {
-        this.backgroundMusic.pause(PlayingStat.PAUSED);
+        super.beforeExit();
         Game.clearInventory();
-        window.removeEventListener('onkey', this.onKey);
     }
     displayLine() {
         this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
