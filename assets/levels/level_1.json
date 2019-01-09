@@ -24,7 +24,7 @@
         },
         "gravity": 1,
         "jumpHeight": 16,
-        "maxJumps": 4
+        "maxJumps": 2
     },
     "patient": {
         "sprites": [
@@ -36,9 +36,9 @@
         }
     },
     "dialogue": [
-        {"who": "patient", "what": "Dokter, help! Ik kreeg een bal in mijn gezicht en nu heb ik een bloedneus!"},
+        {"who": "patient", "what": "Dokter, help! Ik heb me in mijn vinger gesneden!"},
         {"who": "player", "what": "Waar kan ik de spullen vinden om je te helpen?"},
-        {"who": "patient", "what": "In level 1 kun je alle spullen vinden voor een bloedneus."},
+        {"who": "patient", "what": "In kamer 9 kun je al1le spullen vinden voor snijwonden."},
         {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
     ],
     "endDialogue": [

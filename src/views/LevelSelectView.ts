@@ -3,6 +3,7 @@ class LevelSelectView extends BaseView {
     public constructor() {
         super();
         this.backgroundMusic = new SoundHelper("./assets/sounds/Pulsewave.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.background = new Image();
         this.background.src = "./assets/images/level_select.png";
         this.entities = [];
