@@ -1,7 +1,7 @@
 class GameView extends BaseView {
     private backgroundMusic: SoundHelper;
 
-    public constructor(levelName: string) {
+    public constructor(levelName: string, inventory?: Array<InventoryItem>) {
         super(levelName);
         this.entities = new Array<Entity>();
         fetch(`./assets/levels/${levelName}.json`)
@@ -9,11 +9,11 @@ class GameView extends BaseView {
                 return response.json();
             })
             .then(myJson => {
-                this.makeLevel(myJson);
+                this.makeLevel(myJson, inventory);
             })
     }
 
-    private makeLevel(levelJSON: Level) {
+    private makeLevel(levelJSON: Level, inventory?: Array<InventoryItem>) {
         this.background.src = levelJSON.background;
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
         this.backgroundMusic.audioElem.addEventListener("ended", () =>{
@@ -98,6 +98,8 @@ class GameView extends BaseView {
                 this.parseLocation(levelJSON.door.topLeft)
             )
         );
+
+        this.player.inventory = inventory;
 
         this.entities.push(this.player);
     }

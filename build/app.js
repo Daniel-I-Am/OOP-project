@@ -530,7 +530,7 @@ class GameOverView extends BaseView {
     onPause() { }
 }
 class GameView extends BaseView {
-    constructor(levelName) {
+    constructor(levelName, inventory) {
         super(levelName);
         this.entities = new Array();
         fetch(`./assets/levels/${levelName}.json`)
@@ -538,10 +538,10 @@ class GameView extends BaseView {
             return response.json();
         })
             .then(myJson => {
-            this.makeLevel(myJson);
+            this.makeLevel(myJson, inventory);
         });
     }
-    makeLevel(levelJSON) {
+    makeLevel(levelJSON, inventory) {
         this.background.src = levelJSON.background;
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
         this.backgroundMusic.audioElem.addEventListener("ended", () => {
@@ -572,6 +572,7 @@ class GameView extends BaseView {
             this.entities.push(new Item(this.parseLocation(e.location), new Rotation(e.rotation), new Vector(e.size.x, e.size.y), e.name));
         });
         this.entities.push(new Door(this.parseLocation(levelJSON.door.bottomRight), this.parseLocation(levelJSON.door.topLeft)));
+        this.player.inventory = inventory;
         this.entities.push(this.player);
     }
     parseLocation(location) {
@@ -605,6 +606,7 @@ class GameView extends BaseView {
 class LevelEndView extends DialogueView {
     constructor(levelName) {
         super(levelName);
+        this.shouldClearInventory = true;
         this.onKey = (event) => {
             console.log("onKey in LevelEndView", event.keyCode);
             if (event.keyCode == 13) {
@@ -641,6 +643,10 @@ class LevelEndView extends DialogueView {
                 if (this.selected < this.maxIndex - 1)
                     this.selected++;
             }
+            else if (event.keyCode == 27) {
+                this.shouldClearInventory = false;
+                Game.switchView(new GameView(this.levelName, Game.getInventory()));
+            }
         };
         this.inventory = Game.getInventory();
         this.dialogue = this.endDialogue;
@@ -665,7 +671,8 @@ class LevelEndView extends DialogueView {
     }
     beforeExit() {
         super.beforeExit();
-        Game.clearInventory();
+        if (this.shouldClearInventory)
+            Game.clearInventory();
     }
     displayLine() {
         this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
