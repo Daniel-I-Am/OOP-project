@@ -12,6 +12,9 @@ class DialogueView extends BaseView {
         this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
         this.backgroundMusic.toggleLoop();
         this.entities = new Array<Entity>();
+        
+        this.background = new Image();
+        this.background.src = "./assets/images/map/room.png";
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();
@@ -30,8 +33,8 @@ class DialogueView extends BaseView {
     private makeLevel(levelJSON: Level) {
         this.player = new Player(
             levelJSON.player.sprites,
-            this.canvasHelper.getCenter().sub(new Vector(300, 0)),
-            new Vector(levelJSON.player.size.x, levelJSON.player.size.y),
+            this.canvasHelper.getCenter().sub(new Vector(300, -50)),
+            new Vector(levelJSON.player.size.x*3, levelJSON.player.size.y*3),
             levelJSON.player.gravity,
             2,
             levelJSON.player.jumpHeight,
@@ -40,8 +43,8 @@ class DialogueView extends BaseView {
         this.entities.push(
             new Player(
                 levelJSON.patient.sprites,
-                this.canvasHelper.getCenter().add(new Vector(300, 0)),
-                new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y),
+                this.canvasHelper.getCenter().add(new Vector(300, 50)),
+                new Vector(levelJSON.patient.size.x*3, levelJSON.patient.size.y*3),
                 0, 2, 0, 0
             )
         );
@@ -68,9 +71,9 @@ class DialogueView extends BaseView {
             ((who: "player" | "patient") => {
                 switch(who) {
                     case "player":
-                        return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                        return new Vector(this.canvasHelper.getCenter().x - 300, 250);
                     case "patient":
-                        return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+                        return new Vector(this.canvasHelper.getCenter().x + 300, 250);
                 }
             })(this.dialogue[this.currentLine].who),
             undefined,

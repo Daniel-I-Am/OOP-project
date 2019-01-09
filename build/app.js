@@ -450,6 +450,8 @@ class DialogueView extends BaseView {
         this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
         this.backgroundMusic.toggleLoop();
         this.entities = new Array();
+        this.background = new Image();
+        this.background.src = "./assets/images/map/room.png";
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
             return response.json();
@@ -463,8 +465,8 @@ class DialogueView extends BaseView {
         window.addEventListener('keydown', this._listener);
     }
     makeLevel(levelJSON) {
-        this.player = new Player(levelJSON.player.sprites, this.canvasHelper.getCenter().sub(new Vector(300, 0)), new Vector(levelJSON.player.size.x, levelJSON.player.size.y), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
-        this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 0)), new Vector(levelJSON.patient.size.x, levelJSON.patient.size.y), 0, 2, 0, 0));
+        this.player = new Player(levelJSON.player.sprites, this.canvasHelper.getCenter().sub(new Vector(300, -50)), new Vector(levelJSON.player.size.x * 3, levelJSON.player.size.y * 3), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
+        this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 50)), new Vector(levelJSON.patient.size.x * 3, levelJSON.patient.size.y * 3), 0, 2, 0, 0));
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
         this.usedItems = levelJSON.usedItems;
@@ -480,9 +482,9 @@ class DialogueView extends BaseView {
         this.canvasHelper.writeText(this.dialogue[this.currentLine].what, DialogueView.fontSize, ((who) => {
             switch (who) {
                 case "player":
-                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                    return new Vector(this.canvasHelper.getCenter().x - 300, 250);
                 case "patient":
-                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+                    return new Vector(this.canvasHelper.getCenter().x + 300, 250);
             }
         })(this.dialogue[this.currentLine].who), undefined, undefined, "black");
     }
@@ -653,10 +655,10 @@ class LevelEndView extends DialogueView {
     drawGUI() {
         this.inventory.forEach((e, i) => {
             if (i == this.selected) {
-                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 225), new Rotation(0), new Vector(64, 64));
+                this.canvasHelper.drawImage(e.image, new Vector(210 + 70 * i, 200), new Rotation(0), new Vector(64, 64));
             }
             else {
-                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 200), new Rotation(0), new Vector(64, 64));
+                this.canvasHelper.drawImage(e.image, new Vector(210 + 70 * i, 175), new Rotation(0), new Vector(64, 64));
             }
         });
         this.displayLine();
@@ -671,9 +673,9 @@ class LevelEndView extends DialogueView {
         this.canvasHelper.writeText(this.endDialogue[this.currentLine].what.replace("[ITEM]", this.lastUsedItem.displayName), LevelEndView.FontSize, ((who) => {
             switch (who) {
                 case "player":
-                    return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                    return new Vector(this.canvasHelper.getCenter().x - 300, 250);
                 case "patient":
-                    return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+                    return new Vector(this.canvasHelper.getCenter().x + 300, 250);
             }
         })(this.endDialogue[this.currentLine].who), undefined, undefined, "black");
     }

@@ -25,9 +25,9 @@ class LevelEndView extends DialogueView {
     public drawGUI() {
         this.inventory.forEach((e, i) => {
             if (i == this.selected) {
-                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 225), new Rotation(0), new Vector(64, 64))
+                this.canvasHelper.drawImage(e.image, new Vector(210 + 70 * i, 200), new Rotation(0), new Vector(64, 64))
             } else {
-                this.canvasHelper.drawImage(e.image, new Vector(200 + 100 * i, 200), new Rotation(0), new Vector(64, 64))
+                this.canvasHelper.drawImage(e.image, new Vector(210 + 70 * i, 175), new Rotation(0), new Vector(64, 64))
             }
         })
         this.displayLine();
@@ -85,9 +85,9 @@ class LevelEndView extends DialogueView {
             ((who: "player" | "patient") => {
                 switch (who) {
                     case "player":
-                        return new Vector(this.canvasHelper.getCenter().x - 300, 300);
+                        return new Vector(this.canvasHelper.getCenter().x - 300, 250);
                     case "patient":
-                        return new Vector(this.canvasHelper.getCenter().x + 300, 300);
+                        return new Vector(this.canvasHelper.getCenter().x + 300, 250);
                 }
             })(this.endDialogue[this.currentLine].who),
             undefined,
