@@ -64,6 +64,7 @@ class LevelSelectView extends BaseView {
 
     public beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
+        this.player.removeKeyHelper();
     }
 
     public drawGUI() {

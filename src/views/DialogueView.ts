@@ -48,6 +48,9 @@ class DialogueView extends BaseView {
                 0, 2, 0, 0
             )
         );
+        (<Player>this.entities[0]).removeKeyHelper();
+        this.player.removeKeyHelper();
+        
         this.dialogue = levelJSON.dialogue;
 
         this.endDialogue = levelJSON.endDialogue;

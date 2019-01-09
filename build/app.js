@@ -199,6 +199,9 @@ class KeyHelper {
                 case 69:
                     this.interactPressed = true;
                     break;
+                case 27:
+                    Game.pause();
+                    break;
             }
             if (event.keyCode >= 48 && event.keyCode <= 57)
                 this.numberKeys[event.keyCode - 48] = true;
@@ -231,6 +234,7 @@ class KeyHelper {
             if (event.keyCode >= 48 && event.keyCode <= 57)
                 this.numberKeys[event.keyCode - 48] = false;
         };
+        console.trace("Create");
         this.leftPressed = false;
         this.upPressed = false;
         this.rightPressed = false;
@@ -245,6 +249,7 @@ class KeyHelper {
         window.addEventListener("keyup", this.keyUpHandler);
     }
     destroy() {
+        console.trace("Remove");
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
         this.leftPressed = false;
@@ -467,6 +472,8 @@ class DialogueView extends BaseView {
     makeLevel(levelJSON) {
         this.player = new Player(levelJSON.player.sprites, this.canvasHelper.getCenter().sub(new Vector(300, -50)), new Vector(levelJSON.player.size.x * 3, levelJSON.player.size.y * 3), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 50)), new Vector(levelJSON.patient.size.x * 3, levelJSON.patient.size.y * 3), 0, 2, 0, 0));
+        this.entities[0].removeKeyHelper();
+        this.player.removeKeyHelper();
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
         this.usedItems = levelJSON.usedItems;
@@ -757,6 +764,7 @@ class LevelSelectView extends BaseView {
     }
     beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
+        this.player.removeKeyHelper();
     }
     drawGUI() {
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
@@ -1260,6 +1268,12 @@ class Player extends Entity {
     }
     onPlayerCollision(player, collisionSides) {
         return;
+    }
+    removeKeyHelper() {
+        if (this.keyHelper) {
+            this.keyHelper.destroy();
+            this.keyHelper = null;
+        }
     }
     incFireCounter() {
         this.fireCounter++;
