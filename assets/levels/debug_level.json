@@ -1,6 +1,6 @@
 {
     "background": "./assets/images/map/debug_level.png",
-    "backgroundMusic": "./assets/sounds/Spectacles.wav",
+    "backgroundMusic": "./assets/sounds/Spectacles_intro2.wav",
     "player": {
         "sprites": [
             "./assets/player/anim_walk/PlayerAnim1.png",

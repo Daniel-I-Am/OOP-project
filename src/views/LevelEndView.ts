@@ -1,5 +1,6 @@
 class LevelEndView extends DialogueView {
 
+
     private inventory: Array<InventoryItem>;
     private static FontSize: number;
     private maxIndex: number;
@@ -11,7 +12,7 @@ class LevelEndView extends DialogueView {
 
     public constructor(levelName: string) {
         super(levelName);
-        this.inventory = Game.getInventory()
+        this.inventory = Game.getInventory();
         this.dialogue = this.endDialogue;
         LevelEndView.FontSize = 30;
         this.maxIndex = this.inventory.length;
@@ -30,6 +31,14 @@ class LevelEndView extends DialogueView {
             }
         })
         this.displayLine();
+        this.canvasHelper.addProgressBar(
+            new Vector(this.canvasHelper.getWidth()-100, 20),
+            new Vector(180, 20),
+            "green",
+            "white",
+            "black",
+            Game.getReputation()
+        );
     }
 
     protected onKey = (event: KeyboardEvent): void => {
@@ -43,12 +52,17 @@ class LevelEndView extends DialogueView {
                 this.lastUsedItem = this.inventory[this.selected];
                 this.inventory.splice(this.selected, 1);
                 this.selected = 0;
+                Game.adjustReputation(-1.0);
                 if (this.currentItem >= this.usedItems.length) {
                     this.currentLine = 4;
                     this.healed = true; 
+                    this.backgroundMusic.pause(PlayingStat.PAUSED);
+                    this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
                 }
+
             } else {
                 this.currentLine = 3;
+                Game.adjustReputation(-0.1);
             }
         } else if (event.keyCode == 37) {
             if (this.selected > 0) this.selected--;
@@ -59,6 +73,7 @@ class LevelEndView extends DialogueView {
     }
 
     public beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         Game.clearInventory();
         window.removeEventListener('onkey', this.onKey)
     }

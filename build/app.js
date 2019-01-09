@@ -447,6 +447,8 @@ class DialogueView extends BaseView {
                     Game.switchView(new GameView(this.levelName));
             }
         };
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.entities = new Array();
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
@@ -491,6 +493,7 @@ class DialogueView extends BaseView {
         Game.pause();
     }
     beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         window.removeEventListener('keydown', this._listener);
     }
 }
@@ -541,7 +544,11 @@ class GameView extends BaseView {
     makeLevel(levelJSON) {
         this.background.src = levelJSON.background;
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
-        this.backgroundMusic.toggleLoop();
+        this.backgroundMusic.audioElem.addEventListener("ended", () => {
+            console.log("Ended");
+            this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles_loop.wav", .3);
+            this.backgroundMusic.toggleLoop();
+        });
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(this.parseLocation(e.topLeft), this.parseLocation(e.bottomRight), new Rotation(e.rotation)));
         });
@@ -612,13 +619,17 @@ class LevelEndView extends DialogueView {
                     this.lastUsedItem = this.inventory[this.selected];
                     this.inventory.splice(this.selected, 1);
                     this.selected = 0;
+                    Game.adjustReputation(-1.0);
                     if (this.currentItem >= this.usedItems.length) {
                         this.currentLine = 4;
                         this.healed = true;
+                        this.backgroundMusic.pause(PlayingStat.PAUSED);
+                        this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
                     }
                 }
                 else {
                     this.currentLine = 3;
+                    Game.adjustReputation(-0.1);
                 }
             }
             else if (event.keyCode == 37) {
@@ -649,8 +660,10 @@ class LevelEndView extends DialogueView {
             }
         });
         this.displayLine();
+        this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }
     beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
         Game.clearInventory();
         window.removeEventListener('onkey', this.onKey);
     }
@@ -668,6 +681,7 @@ class LevelEndView extends DialogueView {
 class LevelSelectView extends BaseView {
     constructor() {
         super();
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Pulsewave.wav", .3);
         this.background = new Image();
         this.background.src = "./assets/images/level_select.png";
         this.entities = [];
@@ -717,7 +731,9 @@ class LevelSelectView extends BaseView {
             }
         });
     }
-    beforeExit() { }
+    beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+    }
     drawGUI() {
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
     }

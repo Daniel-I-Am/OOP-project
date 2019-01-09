@@ -1,6 +1,6 @@
 {
     "background": "./assets/images/map/Level_1.png",
-    "backgroundMusic": "./assets/sounds/Spectacles.wav",
+    "backgroundMusic": "./assets/sounds/Spectacles_intro2.wav",
     "player": {
         "sprites": [
             "./assets/player/anim_walk/PlayerAnim1.png",
@@ -354,7 +354,7 @@
                 },
                 "y": {
                     "center": false,
-                    "offset": 1875
+                    "offset": 1860
                 }
             },
             "rotation": 0,

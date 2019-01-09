@@ -16,7 +16,13 @@ class GameView extends BaseView {
     private makeLevel(levelJSON: Level) {
         this.background.src = levelJSON.background;
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
-        this.backgroundMusic.toggleLoop();
+        this.backgroundMusic.audioElem.addEventListener("ended", () =>{
+            console.log("Ended");
+            this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles_loop.wav", .3);
+            this.backgroundMusic.toggleLoop();
+        })
+        
+        //this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(
                 this.parseLocation(e.topLeft),
