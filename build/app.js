@@ -761,7 +761,7 @@ class TitleView extends BaseView {
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
         });
-        buttonImage.src = "./assets/images/Buttonss/Button_large.png";
+        buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
             window.removeEventListener('mousemove', _listener);
             if (!this.active)
@@ -770,6 +770,13 @@ class TitleView extends BaseView {
             this.menuMusic.toggleLoop();
         };
         window.addEventListener('mousemove', _listener);
+        let controlButtonImage = new Image();
+        controlButtonImage.addEventListener('load', () => {
+            this.canvasHelper.drawButton(buttonImage, "Controls", 44, this.canvasHelper.getCenter().add(new Vector(0, 200)), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => {
+                Game.switchView(new ControlView());
+            });
+        });
+        controlButtonImage.src = "./assets/images/buttonGreen.png";
     }
     update() { }
     drawGUI() { }
@@ -1357,4 +1364,26 @@ function init() {
     Game.Instance(document.getElementById("canvas"));
 }
 window.addEventListener('load', init);
+class ControlView extends BaseView {
+    constructor() {
+        super();
+        this.shouldClear = false;
+        this.canvasHelper.clear();
+        "e - items oppakken\nesc - terug gaan\na/d/spatie/pijltje recht en link - beweging".split("\n").forEach((e, i) => {
+            this.canvasHelper.writeText(e, 44, this.canvasHelper.getCenter().add(new Vector(0, -100 * i)), undefined, undefined, "black");
+        });
+        window.addEventListener('keydown', this.onKey);
+    }
+    onKey(event) {
+        console.log("asdasdasd");
+        Game.switchView(new TitleView(() => { Game.pause(); Game.switchView(new LevelSelectView()); }));
+    }
+    drawGUI() { }
+    update() { }
+    onPause() { }
+    beforeExit() {
+        this.canvasHelper.clear();
+        window.removeEventListener('keydown', this.onKey);
+    }
+}
 //# sourceMappingURL=app.js.map
