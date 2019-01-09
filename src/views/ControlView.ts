@@ -23,6 +23,7 @@ class ControlView extends BaseView {
     
     public beforeExit() {
         this.canvasHelper.clear();
+        console.log("asdasdasdasdasdwdasdasdasdf")
         window.removeEventListener('keydown', this.onKey);
     }
 }

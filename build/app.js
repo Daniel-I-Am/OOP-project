@@ -761,7 +761,9 @@ class TitleView extends BaseView {
         this.shouldClear = false;
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
-            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), buttonCallback);
+            this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => { if (this.active) {
+                buttonCallback(event);
+            } });
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
         let _listener = () => {
@@ -775,7 +777,8 @@ class TitleView extends BaseView {
         let controlButtonImage = new Image();
         controlButtonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(buttonImage, "Controls", 44, this.canvasHelper.getCenter().add(new Vector(0, 200)), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => {
-                Game.switchView(new ControlView());
+                if (this.active)
+                    Game.switchView(new ControlView());
             });
         });
         controlButtonImage.src = "./assets/images/buttonGreen.png";
@@ -1386,6 +1389,7 @@ class ControlView extends BaseView {
     onPause() { }
     beforeExit() {
         this.canvasHelper.clear();
+        console.log("asdasdasdasdasdwdasdasdasdf");
         window.removeEventListener('keydown', this.onKey);
     }
 }
