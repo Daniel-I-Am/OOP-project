@@ -345,10 +345,15 @@ class BaseView {
             this.canvasHelper.clear();
         this.drawBackground();
         this.update();
+        if (this.foreground)
+            this.drawForeground();
         this.drawGUI();
     }
     drawBackground() {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
+    }
+    drawForeground() {
+        this.canvasHelper.drawImage(this.foreground, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
     }
     getBackground() {
         return this.background;
@@ -552,6 +557,10 @@ class GameView extends BaseView {
     }
     makeLevel(levelJSON, inventory) {
         this.background.src = levelJSON.background;
+        if (levelJSON.foreground) {
+            this.foreground = new Image();
+            this.foreground.src = levelJSON.foreground;
+        }
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
         this.backgroundMusic.audioElem.addEventListener("ended", () => {
             console.log("Ended");
