@@ -255,6 +255,25 @@
             "location": {
                 "x": {
                     "center": false,
+                    "offset": 810
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1180
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 128,
+                "y": 128
+            },
+            "name": "arrow"
+        },
+        {
+            "sprite": "./assets/images/default.png",
+            "location": {
+                "x": {
+                    "center": false,
                     "offset": 5750
                 },
                 "y": {

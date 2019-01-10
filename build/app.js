@@ -1001,6 +1001,8 @@ class Item extends Entity {
             return 0;
         }).reduce((s, e) => { return s + e; });
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        if (name == "arrow")
+            this.collision = null;
     }
     move() {
         const d = new Date();
@@ -1030,7 +1032,8 @@ Item.itemIDs = [
     { internalName: "citroen", displayName: "Een citroen", spriteSrc: "./assets/images/items/citroen.png" },
     { internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png" },
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
-    { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" }
+    { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" },
+    { internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png" }
 ];
 class MapDoor extends Entity {
     constructor(location, levelName, internalName, imageSrc = 'Door.png') {
@@ -1398,7 +1401,6 @@ class ControlView extends BaseView {
     onPause() { }
     beforeExit() {
         this.canvasHelper.clear();
-        console.log("asdasdasdasdasdwdasdasdasdf");
         window.removeEventListener('keydown', this.onKey);
     }
 }
