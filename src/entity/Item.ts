@@ -8,7 +8,8 @@ class Item extends Entity {
         {internalName: "citroen", displayName: "Een citroen", spriteSrc: "./assets/images/items/citroen.png"},
         {internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png"},
         {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png"},
-        {internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png"}
+        {internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png"},
+        {internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png"}
     ]
 
     /**
@@ -54,6 +55,7 @@ class Item extends Entity {
             this.location.copy().add(this.size.copy().multiply(.5)),
             this.rotation
         )
+        if(name == "arrow") this.collision = null;
     }
 
     public move(): void {
