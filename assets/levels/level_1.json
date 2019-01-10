@@ -492,52 +492,6 @@
             "bottomRight": {
                 "x": {
                     "center": false,
-                    "offset": 2153
-                },
-                "y": {
-                    "center": false,
-                    "offset": 1020
-                }
-            },
-            "rotation": 0
-        },
-        {
-            "topLeft": {
-                "x": {
-                    "center": false,
-                    "offset": 2381
-                },
-                "y": {
-                    "center": false,
-                    "offset": 855
-                }
-            },
-            "bottomRight": {
-                "x": {
-                    "center": false,
-                    "offset": 2497
-                },
-                "y": {
-                    "center": false,
-                    "offset": 1020
-                }
-            },
-            "rotation": 0
-        },
-        {
-            "topLeft": {
-                "x": {
-                    "center": false,
-                    "offset": 2500
-                },
-                "y": {
-                    "center": false,
-                    "offset": 850
-                }
-            },
-            "bottomRight": {
-                "x": {
-                    "center": false,
                     "offset": 4275
                 },
                 "y": {
