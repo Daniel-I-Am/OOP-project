@@ -199,6 +199,9 @@ class KeyHelper {
                 case 69:
                     this.interactPressed = true;
                     break;
+                case 27:
+                    Game.pause();
+                    break;
             }
             if (event.keyCode >= 48 && event.keyCode <= 57)
                 this.numberKeys[event.keyCode - 48] = true;
@@ -231,6 +234,7 @@ class KeyHelper {
             if (event.keyCode >= 48 && event.keyCode <= 57)
                 this.numberKeys[event.keyCode - 48] = false;
         };
+        console.trace("Create");
         this.leftPressed = false;
         this.upPressed = false;
         this.rightPressed = false;
@@ -245,6 +249,7 @@ class KeyHelper {
         window.addEventListener("keyup", this.keyUpHandler);
     }
     destroy() {
+        console.trace("Remove");
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
         this.leftPressed = false;
@@ -440,7 +445,7 @@ class DialogueView extends BaseView {
     constructor(levelName) {
         super(levelName);
         this.onKey = (event) => {
-            if (event.keyCode == 13) {
+            if (event.keyCode == 13 || event.keyCode == 32) {
                 this.currentLine++;
                 if (this.currentLine >=
                     this.dialogue.length)
@@ -467,6 +472,8 @@ class DialogueView extends BaseView {
     makeLevel(levelJSON) {
         this.player = new Player(levelJSON.player.sprites, this.canvasHelper.getCenter().sub(new Vector(300, -50)), new Vector(levelJSON.player.size.x * 3, levelJSON.player.size.y * 3), levelJSON.player.gravity, 2, levelJSON.player.jumpHeight, levelJSON.player.maxJumps);
         this.entities.push(new Player(levelJSON.patient.sprites, this.canvasHelper.getCenter().add(new Vector(300, 50)), new Vector(levelJSON.patient.size.x * 3, levelJSON.patient.size.y * 3), 0, 2, 0, 0));
+        this.entities[0].removeKeyHelper();
+        this.player.removeKeyHelper();
         this.dialogue = levelJSON.dialogue;
         this.endDialogue = levelJSON.endDialogue;
         this.usedItems = levelJSON.usedItems;
@@ -614,6 +621,7 @@ class LevelEndView extends DialogueView {
             console.log("onKey in LevelEndView", event.keyCode);
             switch (event.keyCode) {
                 case 13:
+                case 32:
                     if (this.currentLine != 1)
                         this.currentLine++;
                     if (this.healed) {
@@ -740,11 +748,6 @@ class LevelSelectView extends BaseView {
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
-        if (Game.DEBUG_MODE)
-            document.getElementById("canvas").addEventListener('click', (e) => {
-                let target = e.target;
-                console.log((e.x - target.offsetLeft) / (target.clientWidth / 1600), (e.y - target.offsetTop) / (target.clientHeight / 900));
-            });
     }
     update() {
         this.entities.forEach(e => {
@@ -756,6 +759,7 @@ class LevelSelectView extends BaseView {
     }
     beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
+        this.player.removeKeyHelper();
     }
     drawGUI() {
         this.canvasHelper.addProgressBar(new Vector(this.canvasHelper.getWidth() - 100, 20), new Vector(180, 20), "green", "white", "black", Game.getReputation());
@@ -1263,6 +1267,12 @@ class Player extends Entity {
     onPlayerCollision(player, collisionSides) {
         return;
     }
+    removeKeyHelper() {
+        if (this.keyHelper) {
+            this.keyHelper.destroy();
+            this.keyHelper = null;
+        }
+    }
     incFireCounter() {
         this.fireCounter++;
     }
@@ -1330,6 +1340,11 @@ class Game {
         this.canvasHelper = CanvasHelper.Instance(canvas);
         Game.currentView = new TitleView(() => { Game.pause(); Game.switchView(new LevelSelectView()); });
         this.currentInterval = setInterval(this.loop, 33);
+        if (Game.DEBUG_MODE)
+            window.addEventListener('click', (e) => {
+                let target = e.target;
+                console.log(new Vector((e.x - canvas.offsetLeft) / (target.clientWidth / 1600) + this.canvasHelper.offset.x, (e.y - canvas.offsetTop) / (target.clientHeight / 900) + this.canvasHelper.offset.y).toString());
+            });
     }
     static Instance(canvas = null) {
         if (!this.instance)

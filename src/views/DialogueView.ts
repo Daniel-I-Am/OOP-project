@@ -48,6 +48,9 @@ class DialogueView extends BaseView {
                 0, 2, 0, 0
             )
         );
+        (<Player>this.entities[0]).removeKeyHelper();
+        this.player.removeKeyHelper();
+        
         this.dialogue = levelJSON.dialogue;
 
         this.endDialogue = levelJSON.endDialogue;
@@ -96,7 +99,7 @@ class DialogueView extends BaseView {
     }
 
     protected onKey = (event: KeyboardEvent): void => {
-        if (event.keyCode == 13) {
+        if (event.keyCode == 13 || event.keyCode == 32) {
             this.currentLine ++;
             if (this.currentLine >=
                 this.dialogue.length)

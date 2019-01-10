@@ -45,12 +45,6 @@ class LevelSelectView extends BaseView {
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
-        
-        if (Game.DEBUG_MODE)
-            document.getElementById("canvas").addEventListener('click', (e) => {
-                let target = (<HTMLCanvasElement><HTMLElement>e.target);
-                console.log((e.x - target.offsetLeft) / (target.clientWidth/1600), (e.y - target.offsetTop) / (target.clientHeight/900))
-            });
     }
 
     public update() {
@@ -64,6 +58,7 @@ class LevelSelectView extends BaseView {
 
     public beforeExit() {
         this.backgroundMusic.pause(PlayingStat.PAUSED);
+        this.player.removeKeyHelper();
     }
 
     public drawGUI() {

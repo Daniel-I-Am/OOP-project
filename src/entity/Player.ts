@@ -320,6 +320,13 @@ class Player extends Entity {
         return; // duh :)
     }
 
+    public removeKeyHelper(): void {
+        if (this.keyHelper) {
+            this.keyHelper.destroy();
+            this.keyHelper = null;
+        }
+    }
+
     public incFireCounter(): void {
         this.fireCounter++;
     }
