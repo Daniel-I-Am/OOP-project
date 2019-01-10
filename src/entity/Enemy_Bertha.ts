@@ -1,4 +1,7 @@
 class Enemy_Bertha extends Entity {
+    private walkSpeed: number = 3;
+    private landed: boolean = false;
+    
     /**
      * @constructor
      * @param {HTMLCanvasElement} canvas
@@ -10,10 +13,6 @@ class Enemy_Bertha extends Entity {
      * @param {number} gravity
      * @param {number} acceleration
      */
-
-    private walkSpeed: number = 3;
-    private landed: boolean = false;
-    
     public constructor(
         imageSources: Array<string> = [
             "./assets/bertha/anim_walk/1.png",
