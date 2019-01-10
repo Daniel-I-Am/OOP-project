@@ -15,6 +15,10 @@ class GameView extends BaseView {
 
     private makeLevel(levelJSON: Level, inventory?: Array<InventoryItem>) {
         this.background.src = levelJSON.background;
+        if (levelJSON.foreground) {
+            this.foreground = new Image();
+            this.foreground.src = levelJSON.foreground;
+        }
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
         this.backgroundMusic.audioElem.addEventListener("ended", () =>{
             console.log("Ended");

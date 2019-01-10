@@ -27,6 +27,7 @@ interface CollisionDirections {
 
 interface Level {
     background: string,
+    foreground: string,
     backgroundMusic: string,
     player: LevelPlayer,
     patient: LevelPatient,

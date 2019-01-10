@@ -4,6 +4,7 @@ abstract class BaseView {
     protected canvasHelper: CanvasHelper;
     protected shouldClear: boolean;
     protected background: HTMLImageElement;
+    protected foreground: HTMLImageElement;
     public readonly levelName: string;
 
     protected constructor(levelName: string = null) {
@@ -21,6 +22,8 @@ abstract class BaseView {
             this.canvasHelper.clear();
         this.drawBackground();
         this.update();
+        if (this.foreground)
+            this.drawForeground()
         this.drawGUI();
     }
 
@@ -29,6 +32,13 @@ abstract class BaseView {
      */
     protected drawBackground(): void {
         this.canvasHelper.drawImage(this.background, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
+    }
+
+    /**
+     * Draws foreground
+     */
+    protected drawForeground(): void {
+        this.canvasHelper.drawImage(this.foreground, new Vector(0, 0), new Rotation(0), new Vector(-1, -1), undefined, false);
     }
 
     /**

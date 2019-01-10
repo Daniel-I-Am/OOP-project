@@ -32,7 +32,6 @@ class KeyHelper {
      * Removes the event listeners
      */
     public destroy(): void {
-        console.trace("Remove")
         window.removeEventListener("keydown", this.keyDownHandler);
         window.removeEventListener("keyup", this.keyUpHandler);
         this.leftPressed = false;
@@ -71,7 +70,7 @@ class KeyHelper {
             case 69:
                 this.interactPressed = true;
                 break;
-            case 27:
+            case 80:
                 Game.pause();
                 break;
 
