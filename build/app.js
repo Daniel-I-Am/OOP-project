@@ -756,6 +756,7 @@ class LevelSelectView extends BaseView {
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
+        this.entities.push(new MapDoor(new Vector(600, 560), "Level 2", 'level_2'));
     }
     update() {
         this.entities.forEach(e => {
@@ -1045,7 +1046,9 @@ Item.itemIDs = [
     { internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png" },
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
     { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" },
-    { internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png" }
+    { internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png" },
+    { internalName: "doek", displayName: "een droge doek", spriteSrc: "" },
+    { internalName: "icepack", displayName: "een icepack", spriteSrc: "" }
 ];
 class MapDoor extends Entity {
     constructor(location, levelName, internalName, imageSrc = 'Door.png') {

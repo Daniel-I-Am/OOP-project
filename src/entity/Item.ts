@@ -9,7 +9,9 @@ class Item extends Entity {
         {internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png"},
         {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png"},
         {internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png"},
-        {internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png"}
+        {internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png"},
+        {internalName: "doek", displayName: "een droge doek", spriteSrc: ""},
+        {internalName: "icepack", displayName: "een icepack", spriteSrc: ""}
     ]
 
     /**
