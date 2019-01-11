@@ -771,7 +771,7 @@ class LevelSelectView extends BaseView {
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
         this.entities.push(new MapDoor(new Vector(600, 560), "Level 2", 'level_2'));
-        this.entities.push(new MapDoor(new Vector(750, 650), "Level 2", 'level_2'));
+        this.entities.push(new MapDoor(new Vector(750, 650), "Level 3", 'level_3'));
     }
     update() {
         this.entities.forEach(e => {
