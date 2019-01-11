@@ -49,8 +49,8 @@ class Game {
             window.addEventListener('click', (e: MouseEvent) => {
                 let target = (<HTMLCanvasElement><HTMLElement>e.target);
                 console.log(new Vector(
-                    (e.x - canvas.offsetLeft) / (target.clientWidth/1600) + this.canvasHelper.offset.x,
-                    (e.y - canvas.offsetTop) / (target.clientHeight/900) + this.canvasHelper.offset.y
+                    (e.x - canvas.offsetLeft) / (target.clientWidth/1600) + this.canvasHelper.getOffset().x,
+                    (e.y - canvas.offsetTop) / (target.clientHeight/900) + this.canvasHelper.getOffset().y
                 ).toString());
             });
     }

@@ -64,8 +64,8 @@ class Player extends Entity {
             this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)),
             this.rotation
         )
-        this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x;
-        this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y
+        this.canvasHelper.getOffset().x -= this.canvasHelper.getOffset().x + this.canvasHelper.getWidth()/2 - this.location.x;
+        this.canvasHelper.getOffset().y -= this.canvasHelper.getOffset().y + this.canvasHelper.getHeight()/2 - this.location.y
 
         this.leftCollision = new CollisionObject(
             this.location.copy().add(new Vector(-this.size.x/2, -this.size.y/2+1)),
@@ -148,15 +148,15 @@ class Player extends Entity {
 
         // move the camera
         if (this.isAlive) {
-            let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth()/2 - this.location.x;
-            let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight()/2 - this.location.y;
+            let dx = this.canvasHelper.getOffset().x + this.canvasHelper.getWidth()/2 - this.location.x;
+            let dy = this.canvasHelper.getOffset().y + this.canvasHelper.getHeight()/2 - this.location.y;
             this.canvasHelper.newOffset.x -= 1*10**-17*dx**7;
             this.canvasHelper.newOffset.y -= 1*10**-17*dy**7;
-            if (isNaN(this.canvasHelper.offset.x)) {
+            if (isNaN(this.canvasHelper.getOffset().x)) {
                 this.canvasHelper.newOffset.x = -this.canvasHelper.getWidth()/2 + this.location.x;
                 console.log("Reset x", this.canvasHelper.newOffset.x)
             }
-            if (isNaN(this.canvasHelper.offset.y)) {
+            if (isNaN(this.canvasHelper.getOffset().y)) {
                 this.canvasHelper.newOffset.y = -this.canvasHelper.getHeight()/2 + this.location.y;
                 console.log("Reset y", this.canvasHelper.newOffset.y)
             }

@@ -12,8 +12,8 @@ abstract class BaseView {
         this.shouldClear = true;
         this.background = new Image();
         this.levelName = levelName;
-        this.canvasHelper.offset = new Vector(0, 0)
-        this.canvasHelper.newOffset = new Vector(0, 0)
+        this.canvasHelper.resetOffset();
+        this.canvasHelper.newOffset = new Vector(0, 0);
     }
 
     /**

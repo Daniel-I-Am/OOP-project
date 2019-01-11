@@ -173,8 +173,14 @@ class CanvasHelper {
     getCroppingFactor() {
         return new Vector(this.canvas.clientWidth / this.canvas.width, this.canvas.clientHeight / this.canvas.height);
     }
+    getOffset() {
+        return this.offset.copy();
+    }
+    resetOffset() {
+        this.offset = new Vector(0, 0);
+    }
     updateOffset() {
-        this.offset = this.newOffset;
+        this.offset = this.newOffset.copy();
     }
 }
 class KeyHelper {
@@ -342,7 +348,7 @@ class BaseView {
         this.shouldClear = true;
         this.background = new Image();
         this.levelName = levelName;
-        this.canvasHelper.offset = new Vector(0, 0);
+        this.canvasHelper.resetOffset();
         this.canvasHelper.newOffset = new Vector(0, 0);
     }
     tick() {
@@ -533,7 +539,7 @@ class GameOverView extends BaseView {
         });
         this.player.update();
         console.log(this.player['isLanded']);
-        if (this.player.getLoc().y > this.canvasHelper.offset.y + 3000) {
+        if (this.player.getLoc().y > this.canvasHelper.getOffset().y + 3000) {
             Game.switchView(new GameView(this.levelName));
         }
     }
@@ -878,7 +884,7 @@ class Door extends Entity {
     }
     move() { }
     onPlayerCollision(player, collisionSides) {
-        this.canvasHelper.writeText("Druk op e om het level te verlaten", 48, this.location.copy().add(new Vector(0, -200)).sub(this.canvasHelper.offset.copy()), undefined, undefined, "black");
+        this.canvasHelper.writeText("Druk op e om het level te verlaten", 48, this.location.copy().add(new Vector(0, -200)).sub(this.canvasHelper.getOffset().copy()), undefined, undefined, "black");
     }
 }
 class Enemy_Bertha extends Entity {
@@ -1110,8 +1116,8 @@ class Player extends Entity {
         this.isAlive = true;
         this.fireCounter = 0;
         this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5).add(new Vector(5, 5))), this.location.copy().add(this.size.copy().multiply(.5)).sub(new Vector(5, 5)), this.rotation);
-        this.canvasHelper.offset.x -= this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
-        this.canvasHelper.offset.y -= this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+        this.canvasHelper.getOffset().x -= this.canvasHelper.getOffset().x + this.canvasHelper.getWidth() / 2 - this.location.x;
+        this.canvasHelper.getOffset().y -= this.canvasHelper.getOffset().y + this.canvasHelper.getHeight() / 2 - this.location.y;
         this.leftCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(-this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
         this.rightCollision = new CollisionObject(this.location.copy().add(new Vector(this.size.x / 2, -this.size.y / 2 + 1)), this.location.copy().add(new Vector(this.size.x / 2, this.size.y / 2 - 40)), this.rotation);
         this.bottomCollision = new CollisionObject(this.location.copy().add(new Vector(-this.size.x / 8, this.size.y / 2)), this.location.copy().add(new Vector(this.size.x / 8, this.size.y / 2)), this.rotation);
@@ -1165,15 +1171,15 @@ class Player extends Entity {
         this.previousCollision = collision;
         this.location.add(this.velocity);
         if (this.isAlive) {
-            let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
-            let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
+            let dx = this.canvasHelper.getOffset().x + this.canvasHelper.getWidth() / 2 - this.location.x;
+            let dy = this.canvasHelper.getOffset().y + this.canvasHelper.getHeight() / 2 - this.location.y;
             this.canvasHelper.newOffset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
             this.canvasHelper.newOffset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
-            if (isNaN(this.canvasHelper.offset.x)) {
+            if (isNaN(this.canvasHelper.getOffset().x)) {
                 this.canvasHelper.newOffset.x = -this.canvasHelper.getWidth() / 2 + this.location.x;
                 console.log("Reset x", this.canvasHelper.newOffset.x);
             }
-            if (isNaN(this.canvasHelper.offset.y)) {
+            if (isNaN(this.canvasHelper.getOffset().y)) {
                 this.canvasHelper.newOffset.y = -this.canvasHelper.getHeight() / 2 + this.location.y;
                 console.log("Reset y", this.canvasHelper.newOffset.y);
             }
@@ -1328,7 +1334,6 @@ class MapPlayer extends Player {
     constructor(location) {
         super(["./assets/player/mapPlayer.png"], location, new Vector(48, 48), 0, 0, 0, 0);
         this.maxSpeed = 5;
-        this.canvasHelper.offset = new Vector(0, 0);
     }
     move() {
         this.velocity = new Vector(0, 0);
@@ -1391,7 +1396,7 @@ class Game {
         if (Game.DEBUG_MODE)
             window.addEventListener('click', (e) => {
                 let target = e.target;
-                console.log(new Vector((e.x - canvas.offsetLeft) / (target.clientWidth / 1600) + this.canvasHelper.offset.x, (e.y - canvas.offsetTop) / (target.clientHeight / 900) + this.canvasHelper.offset.y).toString());
+                console.log(new Vector((e.x - canvas.offsetLeft) / (target.clientWidth / 1600) + this.canvasHelper.getOffset().x, (e.y - canvas.offsetTop) / (target.clientHeight / 900) + this.canvasHelper.getOffset().y).toString());
             });
     }
     static Instance(canvas = null) {
