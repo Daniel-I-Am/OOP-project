@@ -10,6 +10,7 @@ class Player extends Entity {
     protected darkOverlay: HTMLImageElement;
     private readonly fireDecayRate: number = 0.083333333333;
     public readonly maxFire: number = 150;
+    private readonly deathBarrier = 10000;
 
     protected leftCollision: CollisionObject;
     protected rightCollision: CollisionObject;
@@ -162,7 +163,7 @@ class Player extends Entity {
             }
         }
 
-        if (this.location.y > 5000) this.kill()
+        if (this.location.y > this.deathBarrier) this.kill()
         this.checkInventory();
         this.drawInventory();
         this.fireCounter = Math.max(0, this.fireCounter - this.fireDecayRate);
@@ -307,8 +308,8 @@ class Player extends Entity {
     }
 
     public kill() {
-        console.trace();
         if (!this.isAlive) return
+        console.trace();
         this.keyHelper.destroy();
         this.setIsLanded(true);
         this.isAlive = false;

@@ -1105,6 +1105,7 @@ class Player extends Entity {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
         this.fireDecayRate = 0.083333333333;
         this.maxFire = 150;
+        this.deathBarrier = 10000;
         this.darkOverlay = new Image();
         this.darkOverlay.src = "./assets/player/darkOverlay.png";
         this.keyHelper = new KeyHelper();
@@ -1186,7 +1187,7 @@ class Player extends Entity {
                 console.log("Reset y", this.canvasHelper.newOffset.y);
             }
         }
-        if (this.location.y > 5000)
+        if (this.location.y > this.deathBarrier)
             this.kill();
         this.checkInventory();
         this.drawInventory();
@@ -1294,9 +1295,9 @@ class Player extends Entity {
         this.isLanded = state;
     }
     kill() {
-        console.trace();
         if (!this.isAlive)
             return;
+        console.trace();
         this.keyHelper.destroy();
         this.setIsLanded(true);
         this.isAlive = false;
