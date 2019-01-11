@@ -663,13 +663,13 @@ class LevelEndView extends DialogueView {
                         this.lastUsedItem = this.inventory[this.selected];
                         this.inventory.splice(this.selected, 1);
                         this.selected = 0;
-                        Game.adjustReputation(-0.1);
+                        Game.adjustReputation(0.05);
                         if (this.currentItem >= this.usedItems.length) {
                             this.currentLine = 4;
                             this.healed = true;
                             this.backgroundMusic.pause(PlayingStat.PAUSED);
                             this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
-                            Game.adjustReputation(.5);
+                            Game.adjustReputation(.2);
                         }
                     }
                     else {
@@ -1006,7 +1006,7 @@ class Fire extends Entity {
     onPlayerCollision(player, collisionSides) {
         if (this.collide(player)) {
             player.incFireCounter();
-            if (player.getFireCounter() >= 150) {
+            if (player.getFireCounter() >= player.maxFire) {
                 player.kill();
             }
             console.log("FAYAA");
@@ -1065,8 +1065,8 @@ Item.itemIDs = [
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
     { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" },
     { internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png" },
-    { internalName: "doek", displayName: "een droge doek", spriteSrc: "" },
-    { internalName: "icepack", displayName: "een icepack", spriteSrc: "" }
+    { internalName: "doek", displayName: "een droge doek", spriteSrc: "./assets/images/items/handdoek.png" },
+    { internalName: "icepack", displayName: "een icepack", spriteSrc: "./assets/images/items/icepack.png" }
 ];
 class MapDoor extends Entity {
     constructor(location, levelName, internalName, imageSrc = 'Door.png') {
@@ -1086,6 +1086,8 @@ class MapDoor extends Entity {
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
+        this.fireDecayRate = 0.083333333333;
+        this.maxFire = 150;
         this.darkOverlay = new Image();
         this.darkOverlay.src = "./assets/player/darkOverlay.png";
         this.keyHelper = new KeyHelper();
@@ -1171,7 +1173,7 @@ class Player extends Entity {
             this.kill();
         this.checkInventory();
         this.drawInventory();
-        this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
+        this.fireCounter = Math.max(0, this.fireCounter - this.fireDecayRate);
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -1269,12 +1271,13 @@ class Player extends Entity {
         });
     }
     drawOverlay() {
-        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined), undefined, undefined, this.fireCounter / 150 * .6);
+        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined), undefined, undefined, this.fireCounter / this.maxFire * .6);
     }
     setIsLanded(state) {
         this.isLanded = state;
     }
     kill() {
+        console.trace();
         if (!this.isAlive)
             return;
         this.keyHelper.destroy();
@@ -1334,9 +1337,16 @@ class MapPlayer extends Player {
             if (e === this)
                 return;
             if (e.collide(this)) {
-                e.onPlayerCollision(this, null);
-                this.location.sub(this.velocity);
-                this.velocity = new Vector(0, 0);
+                if (e instanceof MapDoor) {
+                    if (this.keyHelper.getInteractPressed()) {
+                        e.onPlayerCollision();
+                    }
+                }
+                else {
+                    e.onPlayerCollision(this, null);
+                    this.location.sub(this.velocity);
+                    this.velocity = new Vector(0, 0);
+                }
             }
         });
     }

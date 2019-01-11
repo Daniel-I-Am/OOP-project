@@ -8,6 +8,8 @@ class Player extends Entity {
     protected jumpCount: number;
     protected fireCounter: number;
     protected darkOverlay: HTMLImageElement;
+    private readonly fireDecayRate: number = 0.083333333333;
+    public readonly maxFire: number = 150;
 
     protected leftCollision: CollisionObject;
     protected rightCollision: CollisionObject;
@@ -163,7 +165,7 @@ class Player extends Entity {
         if (this.location.y > 5000) this.kill()
         this.checkInventory();
         this.drawInventory();
-        this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
+        this.fireCounter = Math.max(0, this.fireCounter - this.fireDecayRate);
     }
 
 
@@ -296,7 +298,7 @@ class Player extends Entity {
             (this.velocity.x < 0 ? new Vector(-1, 1) : undefined),
             undefined,
             undefined,
-            this.fireCounter/150 * .6
+            this.fireCounter/this.maxFire * .6
         )
     }
 
@@ -305,6 +307,7 @@ class Player extends Entity {
     }
 
     public kill() {
+        console.trace();
         if (!this.isAlive) return
         this.keyHelper.destroy();
         this.setIsLanded(true);
