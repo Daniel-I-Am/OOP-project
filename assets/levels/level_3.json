@@ -1,6 +1,6 @@
 {
-    "background": "./assets/images/map/Level_2_bg.png",
-    "foreground": "./assets/images/map/Level_2_fg.png",
+    "background": "./assets/images/map/Level_3_bg.png",
+    "foreground": "./assets/images/map/Level_3_fg.png",
     "backgroundMusic": "./assets/sounds/Spectacles_intro2.wav",
     "player": {
         "sprites": [
