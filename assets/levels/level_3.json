@@ -12,11 +12,11 @@
         "location": {
             "x": {
                 "center": false,
-                "offset": 4130
+                "offset": 200
             },
             "y": {
                 "center": false,
-                "offset": 2355
+                "offset": 3700
             }
         },
         "size": {
@@ -65,11 +65,11 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 1000
+                    "offset": 320
                 },
                 "y": {
                     "center": false,
-                    "offset": 1050
+                    "offset": 1870
                 }
             },
             "size": {
@@ -83,11 +83,47 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 1730
+                    "offset": 950
                 },
                 "y": {
                     "center": false,
-                    "offset": 1400
+                    "offset": 1960
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 810
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2780
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 680
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3500
                 }
             },
             "size": {
@@ -125,11 +161,11 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 210
+                    "offset": 170
                 },
                 "y": {
                     "center": false,
-                    "offset": 1050
+                    "offset": 2040
                 }
             },
             "rotation": 0,
@@ -137,7 +173,43 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "keukenrol"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 805
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2380
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "water"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1370
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3330
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "jodium"
         }
     ],
     "Trampolines": [
@@ -146,11 +218,11 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 3000
+                    "offset": 1230
                 },
                 "y": {
                     "center": false,
-                    "offset": 2400
+                    "offset": 2970
                 }
             },
             "rotation": 0,
@@ -182,21 +254,21 @@
         "topLeft": {
             "x": {
                 "center": false,
-                "offset": 3980
+                "offset": 0
             },
             "y": {
                 "center": false,
-                "offset": 2150
+                "offset": 3690
             }
         },
         "bottomRight": {
             "x": {
                 "center": false,
-                "offset": 4060
+                "offset": 85
             },
             "y": {
                 "center": false,
-                "offset": 2435
+                "offset": 3885
             }
         }
     },
@@ -215,11 +287,11 @@
             "bottomRight": {
                 "x": {
                     "center": false,
-                    "offset": 75
+                    "offset": -50
                 },
                 "y": {
                     "center": false,
-                    "offset": 2500
+                    "offset": 4000
                 }
             },
             "rotation": 0
@@ -228,21 +300,205 @@
             "topLeft": {
                 "x": {
                     "center": false,
-                    "offset": 80
+                    "offset": 1550
                 },
                 "y": {
                     "center": false,
-                    "offset": 2440
+                    "offset": -10000
                 }
             },
             "bottomRight": {
                 "x": {
                     "center": false,
-                    "offset": 1190
+                    "offset": 1500
                 },
                 "y": {
                     "center": false,
-                    "offset": 2590
+                    "offset": 4000
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3890
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 4000
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 550
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3650
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 800
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3710
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 240
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3360
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3420
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3000
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 325
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3155
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 490
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3000
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 3155
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 1300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2150
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1500
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2287
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2150
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1150
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2287
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 505
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1745
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 725
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2150
                 }
             },
             "rotation": 0
