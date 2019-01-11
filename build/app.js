@@ -663,13 +663,13 @@ class LevelEndView extends DialogueView {
                         this.lastUsedItem = this.inventory[this.selected];
                         this.inventory.splice(this.selected, 1);
                         this.selected = 0;
-                        Game.adjustReputation(-0.1);
+                        Game.adjustReputation(0.05);
                         if (this.currentItem >= this.usedItems.length) {
                             this.currentLine = 4;
                             this.healed = true;
                             this.backgroundMusic.pause(PlayingStat.PAUSED);
                             this.backgroundMusic = new SoundHelper("./assets/sounds/VICTORY.wav", .6);
-                            Game.adjustReputation(.5);
+                            Game.adjustReputation(.2);
                         }
                     }
                     else {
