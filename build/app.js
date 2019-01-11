@@ -979,17 +979,14 @@ class FallingTile extends Entity {
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             entites.forEach(e => {
-                if (e.collide(this)) {
-                    if (e == this)
-                        return;
-                    if (e instanceof Player)
-                        return;
-                    if (e instanceof Enemy_Bertha)
-                        return;
-                    console.log(e);
-                    console.log(this.getCollision());
+                if (e == this)
+                    return;
+                if (e instanceof Player)
+                    return;
+                if (e instanceof Enemy_Bertha)
+                    return;
+                if (this.collide(e))
                     this.alive = false;
-                }
             });
             this.location.add(this.velocity);
         }
