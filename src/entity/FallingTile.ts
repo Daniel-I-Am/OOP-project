@@ -11,12 +11,12 @@ class FallingTile extends Entity{
         rotation: Rotation,
         size: Vector,
         gravity: number,
-        acceleration: number
+        acceleration: number,
     ) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.collision = new CollisionObject(
-            this.location.copy().sub(this.size.copy().multiply(.5)),
-            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.location.copy().sub(new Vector(50,200)),
+            this.location.copy().add(new Vector(50,100)),
             this.rotation
         )
     }
@@ -36,6 +36,8 @@ class FallingTile extends Entity{
                     if (e == this) return;
                     if (e instanceof Player) return;
                     if (e instanceof Enemy_Bertha) return;
+                    console.log(e)
+                    console.log(this.getCollision())
                     this.alive = false;
                 }
             });

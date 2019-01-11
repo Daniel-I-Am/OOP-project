@@ -177,17 +177,17 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 2145
+                    "offset": 2131
                 },
                 "y": {
                     "center": false,
-                    "offset": 1595
+                    "offset": 1590
                 }
             },
             "rotation": 0,
             "size": {
-                "x": 276,
-                "y": 50
+                "x": 375,
+                "y": 100
             }
         }
     ],

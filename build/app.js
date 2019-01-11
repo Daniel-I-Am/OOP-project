@@ -960,7 +960,7 @@ class FallingTile extends Entity {
         this.falling = false;
         this.alive = true;
         this.activated = false;
-        this.collision = new CollisionObject(this.location.copy().sub(this.size.copy().multiply(.5)), this.location.copy().add(this.size.copy().multiply(.5)), this.rotation);
+        this.collision = new CollisionObject(this.location.copy().sub(new Vector(50, 200)), this.location.copy().add(new Vector(50, 100)), this.rotation);
     }
     move(entites) {
         if (this.activated) {
@@ -980,6 +980,8 @@ class FallingTile extends Entity {
                         return;
                     if (e instanceof Enemy_Bertha)
                         return;
+                    console.log(e);
+                    console.log(this.getCollision());
                     this.alive = false;
                 }
             });
