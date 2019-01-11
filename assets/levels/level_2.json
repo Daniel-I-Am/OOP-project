@@ -12,11 +12,11 @@
         "location": {
             "x": {
                 "center": false,
-                "offset": 150
+                "offset": 4130
             },
             "y": {
                 "center": false,
-                "offset": 1700
+                "offset": 2355
             }
         },
         "size": {
@@ -100,6 +100,52 @@
                 "y": 150
             },
             "gravity": 1
+        },
+        {
+            "sprites": [
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/2.png",
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/3.png"
+            ],
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 7100
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2300
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": [
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/2.png",
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/3.png"
+            ],
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 535
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2300
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
         }
     ],
     "Fires": [],
@@ -110,19 +156,19 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": 900
+                    "offset": 6520
                 },
                 "y": {
                     "center": false,
-                    "offset": 300
+                    "offset": 1670
                 }
             },
-            "rotation": -30,
+            "rotation": -182,
             "size": {
                 "x": 175,
                 "y": 50
             },
-            "yeet": 115
+            "yeet": 62
         }
     ],
     "items": [
@@ -143,6 +189,42 @@
                 "y": 64
             },
             "name": "bandage"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 250
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2250
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "doek"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 7750
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1915
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "icepack"
         }
     ],
     "Trampolines": [
@@ -169,14 +251,14 @@
             "location": {
                 "x": {
                     "center": false,
-                    "offset": -50
+                    "offset": 5125
                 },
                 "y": {
                     "center": false,
-                    "offset": 590
+                    "offset": 2390
                 }
             },
-            "rotation": 45,
+            "rotation": 0,
             "size": {
                 "x": 259,
                 "y": 135
@@ -187,21 +269,21 @@
         "topLeft": {
             "x": {
                 "center": false,
-                "offset": 75
+                "offset": 3980
             },
             "y": {
                 "center": false,
-                "offset": 1600
+                "offset": 2150
             }
         },
         "bottomRight": {
             "x": {
                 "center": false,
-                "offset": 120
+                "offset": 4060
             },
             "y": {
                 "center": false,
-                "offset": 1800
+                "offset": 2435
             }
         }
     },
