@@ -400,6 +400,7 @@ class Entity {
         this.maxSpeed = maxSpeed;
         this.direction = direction;
         this.collision = null;
+        this.collisionOffset = new Vector(0, 0);
     }
     collide(collideWith) {
         if (this.collision == null || collideWith.getCollision() == null)
@@ -416,7 +417,7 @@ class Entity {
         this.move(entities);
         if (this.getCollision()) {
             if (!(this instanceof CollisionObject)) {
-                this.getCollision().updateLocation(this.location);
+                this.getCollision().updateLocation(this.location.copy().add(this.collisionOffset.copy()));
             }
             this.getCollision().draw();
         }
@@ -967,7 +968,8 @@ class FallingTile extends Entity {
         this.falling = false;
         this.alive = true;
         this.activated = false;
-        this.collision = new CollisionObject(this.location.copy().sub(new Vector(50, 200)), this.location.copy().add(new Vector(50, 100)), this.rotation);
+        this.collision = new CollisionObject(this.location.copy().sub(new Vector(276 / 762 * this.size.x, 41 / 200 * this.size.y)), this.location.copy().add(new Vector(278 / 762 * this.size.x, 19 / 200 * this.size.y)), this.rotation);
+        this.collisionOffset = new Vector(15, -5);
     }
     move(entites) {
         if (this.activated) {
@@ -980,17 +982,14 @@ class FallingTile extends Entity {
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             entites.forEach(e => {
-                if (e.collide(this)) {
-                    if (e == this)
-                        return;
-                    if (e instanceof Player)
-                        return;
-                    if (e instanceof Enemy_Bertha)
-                        return;
-                    console.log(e);
-                    console.log(this.getCollision());
+                if (e == this)
+                    return;
+                if (e instanceof Player)
+                    return;
+                if (e instanceof Enemy_Bertha)
+                    return;
+                if (this.collide(e))
                     this.alive = false;
-                }
             });
             this.location.add(this.velocity);
         }
