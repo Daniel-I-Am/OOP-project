@@ -15,10 +15,11 @@ class FallingTile extends Entity{
     ) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.collision = new CollisionObject(
-            this.location.copy().sub(new Vector(50,200)),
-            this.location.copy().add(new Vector(50,100)),
+            this.location.copy().sub(new Vector(276/762 * this.size.x, 41/200 * this.size.y)),
+            this.location.copy().add(new Vector(278/762 * this.size.x, 19/200 * this.size.y)),
             this.rotation
-        )
+        );
+        this.collisionOffset = new Vector(15, -5);
     }
 
     protected move(entites: Array<Entity>):void {
