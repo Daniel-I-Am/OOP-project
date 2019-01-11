@@ -1337,9 +1337,16 @@ class MapPlayer extends Player {
             if (e === this)
                 return;
             if (e.collide(this)) {
-                e.onPlayerCollision(this, null);
-                this.location.sub(this.velocity);
-                this.velocity = new Vector(0, 0);
+                if (e instanceof MapDoor) {
+                    if (this.keyHelper.getInteractPressed()) {
+                        e.onPlayerCollision();
+                    }
+                }
+                else {
+                    e.onPlayerCollision(this, null);
+                    this.location.sub(this.velocity);
+                    this.velocity = new Vector(0, 0);
+                }
             }
         });
     }
