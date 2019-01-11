@@ -400,6 +400,7 @@ class Entity {
         this.maxSpeed = maxSpeed;
         this.direction = direction;
         this.collision = null;
+        this.collisionOffset = new Vector(0, 0);
     }
     collide(collideWith) {
         if (this.collision == null || collideWith.getCollision() == null)
@@ -416,7 +417,7 @@ class Entity {
         this.move(entities);
         if (this.getCollision()) {
             if (!(this instanceof CollisionObject)) {
-                this.getCollision().updateLocation(this.location);
+                this.getCollision().updateLocation(this.location.copy().add(this.collisionOffset.copy()));
             }
             this.getCollision().draw();
         }
@@ -770,6 +771,7 @@ class LevelSelectView extends BaseView {
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
         this.entities.push(new MapDoor(new Vector(600, 560), "Level 2", 'level_2'));
+        this.entities.push(new MapDoor(new Vector(750, 650), "Level 3", 'level_3'));
     }
     update() {
         this.entities.forEach(e => {
@@ -966,7 +968,8 @@ class FallingTile extends Entity {
         this.falling = false;
         this.alive = true;
         this.activated = false;
-        this.collision = new CollisionObject(this.location.copy().sub(new Vector(50, 200)), this.location.copy().add(new Vector(50, 100)), this.rotation);
+        this.collision = new CollisionObject(this.location.copy().sub(new Vector(276 / 762 * this.size.x, 41 / 200 * this.size.y)), this.location.copy().add(new Vector(278 / 762 * this.size.x, 19 / 200 * this.size.y)), this.rotation);
+        this.collisionOffset = new Vector(15, -5);
     }
     move(entites) {
         if (this.activated) {
@@ -979,17 +982,14 @@ class FallingTile extends Entity {
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             entites.forEach(e => {
-                if (e.collide(this)) {
-                    if (e == this)
-                        return;
-                    if (e instanceof Player)
-                        return;
-                    if (e instanceof Enemy_Bertha)
-                        return;
-                    console.log(e);
-                    console.log(this.getCollision());
+                if (e == this)
+                    return;
+                if (e instanceof Player)
+                    return;
+                if (e instanceof Enemy_Bertha)
+                    return;
+                if (this.collide(e))
                     this.alive = false;
-                }
             });
             this.location.add(this.velocity);
         }

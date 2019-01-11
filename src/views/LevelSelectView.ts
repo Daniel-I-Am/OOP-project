@@ -40,12 +40,13 @@ class LevelSelectView extends BaseView {
             let y = 0.56666666666666667 * (x + 1) + 289;
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x+1, y), new Rotation(0)));
         }
-        
+
         // level doors
         if (Game.DEBUG_MODE)
             this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
         this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
         this.entities.push(new MapDoor(new Vector(600, 560), "Level 2", 'level_2'));
+        this.entities.push(new MapDoor(new Vector(750, 650), "Level 3", 'level_3'));
     }
 
     public update() {
