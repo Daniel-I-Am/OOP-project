@@ -11,14 +11,15 @@ class FallingTile extends Entity{
         rotation: Rotation,
         size: Vector,
         gravity: number,
-        acceleration: number
+        acceleration: number,
     ) {
         super(imageSource, location, rotation, size, gravity, undefined, undefined, acceleration);
         this.collision = new CollisionObject(
-            this.location.copy().sub(this.size.copy().multiply(.5)),
-            this.location.copy().add(this.size.copy().multiply(.5)),
+            this.location.copy().sub(new Vector(276/762 * this.size.x, 41/200 * this.size.y)),
+            this.location.copy().add(new Vector(278/762 * this.size.x, 19/200 * this.size.y)),
             this.rotation
-        )
+        );
+        this.collisionOffset = new Vector(15, -5);
     }
 
     protected move(entites: Array<Entity>):void {
@@ -32,12 +33,11 @@ class FallingTile extends Entity{
             this.offset.y = 0;
             this.velocity.y += this.gravity;
             entites.forEach(e => {
-                if (e.collide(this)) {
-                    if (e == this) return;
-                    if (e instanceof Player) return;
-                    if (e instanceof Enemy_Bertha) return;
+                if (e == this) return;
+                if (e instanceof Player) return;
+                if (e instanceof Enemy_Bertha) return;
+                if (this.collide(e))
                     this.alive = false;
-                }
             });
             this.location.add(this.velocity);
         }

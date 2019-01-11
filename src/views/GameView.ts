@@ -1,22 +1,32 @@
 class GameView extends BaseView {
     private backgroundMusic: SoundHelper;
 
-    public constructor(levelName: string) {
-        super();
+    public constructor(levelName: string, inventory?: Array<InventoryItem>) {
+        super(levelName);
         this.entities = new Array<Entity>();
         fetch(`./assets/levels/${levelName}.json`)
             .then(response => {
                 return response.json();
             })
             .then(myJson => {
-                this.makeLevel(myJson);
+                this.makeLevel(myJson, inventory);
             })
     }
 
-    private makeLevel(levelJSON: Level) {
+    private makeLevel(levelJSON: Level, inventory?: Array<InventoryItem>) {
         this.background.src = levelJSON.background;
+        if (levelJSON.foreground) {
+            this.foreground = new Image();
+            this.foreground.src = levelJSON.foreground;
+        }
         this.backgroundMusic = new SoundHelper(levelJSON.backgroundMusic, .3);
-        this.backgroundMusic.toggleLoop();
+        this.backgroundMusic.audioElem.addEventListener("ended", () =>{
+            console.log("Ended");
+            this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles_loop.wav", .3);
+            this.backgroundMusic.toggleLoop();
+        })
+        
+        //this.backgroundMusic.toggleLoop();
         levelJSON.Collisions.forEach(e => {
             this.entities.push(new CollisionObject(
                 this.parseLocation(e.topLeft),
@@ -74,18 +84,26 @@ class GameView extends BaseView {
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),
-                2
+                2,
+                ((e.shouldDraw == null) ? true : e.shouldDraw)
             ));
         });
         levelJSON.items.forEach(e => {
             this.entities.push(new Item(
-                ((e.sprite == null) ? undefined : e.sprite),
                 this.parseLocation(e.location),
                 new Rotation(e.rotation),
                 new Vector(e.size.x, e.size.y),
                 e.name
             ));
         });
+        this.entities.push(
+            new Door(
+                this.parseLocation(levelJSON.door.bottomRight),
+                this.parseLocation(levelJSON.door.topLeft)
+            )
+        );
+        if (inventory)
+            this.player.inventory = inventory;
 
         this.entities.push(this.player);
     }
@@ -118,6 +136,11 @@ class GameView extends BaseView {
             "black",
             Game.getReputation()
         );
+    }
+
+    public reachedDoor(): void {
+        Game.setInventory(this.player.getInventory());
+        Game.switchView(new LevelEndView(this.levelName));
     }
 
     public beforeExit(): void {

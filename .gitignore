@@ -1,9 +1,14 @@
 
 # Created by https://www.gitignore.io/api/node,code,macos,linux,windows,intellij,phpstorm
-# Edit at https://www.gitignore.io/?templates=node,code,macos,linux,windows,intellij,phpstorm
+# Edit at https://www.gitignore.io/?templates=node,code,macos,linux,windows,intellij,phpstorm,libreoffice
 
 ### User Specified ###
 *.js.map
+
+### LibreOffice ###
+# LibreOffice locks
+.~lock.*#
+
 
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/

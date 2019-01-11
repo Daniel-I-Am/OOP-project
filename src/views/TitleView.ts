@@ -8,13 +8,14 @@ class TitleView extends BaseView {
         super();
         this.active = true;
         this.shouldClear = false;
+        this.canvasHelper.newOffset = new Vector(0, 0);
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(
                 buttonImage, "Play!", 96,
                 this.canvasHelper.getCenter(),
                 new Vector(buttonImage.width*5, buttonImage.height*5),
-                buttonCallback
+                (event: MouseEvent) => {if (this.active) {buttonCallback(event)}}
             )
         });
         buttonImage.src = "./assets/images/buttonGreen.png";
@@ -25,6 +26,20 @@ class TitleView extends BaseView {
             this.menuMusic.toggleLoop();
         }
         window.addEventListener('mousemove', _listener);
+
+        let controlButtonImage = new Image();
+        controlButtonImage.addEventListener('load', () => {
+            this.canvasHelper.drawButton(
+                buttonImage, "Controls", 44,
+                this.canvasHelper.getCenter().add(new Vector(0, 200)),
+                new Vector(buttonImage.width*5, buttonImage.height*5),
+                (event: MouseEvent) => {
+                    if (this.active)
+                        Game.switchView(new ControlView());
+                }
+            )
+        });
+        controlButtonImage.src = "./assets/images/buttonGreen.png"
     }
     
     protected update() {}

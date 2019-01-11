@@ -1,11 +1,15 @@
 class LevelSelectView extends BaseView {
+    private backgroundMusic: SoundHelper;
     public constructor() {
         super();
+        this.backgroundMusic = new SoundHelper("./assets/sounds/Pulsewave.wav", .3);
+        this.backgroundMusic.toggleLoop();
         this.background = new Image();
         this.background.src = "./assets/images/level_select.png";
         this.entities = [];
         this.player = new MapPlayer(new Vector(40, 390));
         this.entities.push(this.player);
+        this.canvasHelper.newOffset = new Vector(0, 0);
         // outside border
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(1610, 0), new Rotation(0)));
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(-10, 910), new Rotation(0)));
@@ -37,15 +41,13 @@ class LevelSelectView extends BaseView {
             let y = 0.56666666666666667 * (x + 1) + 289;
             this.entities.push(new CollisionObject(new Vector(x, 432), new Vector(x+1, y), new Rotation(0)));
         }
-        
+
         // level doors
-        this.entities.push(new MapDoor(new Vector(600, 350), "debug_level", new Rotation(45)));
-        
         if (Game.DEBUG_MODE)
-            document.getElementById("canvas").addEventListener('click', (e) => {
-                let target = (<HTMLCanvasElement><HTMLElement>e.target);
-                console.log((e.x - target.offsetLeft) / (target.clientWidth/1600), (e.y - target.offsetTop) / (target.clientHeight/900))
-            });
+            this.entities.push(new MapDoor(new Vector(600, 350), "Debug Level", 'debug_level', "DoorCornerInv.png"));
+        this.entities.push(new MapDoor(new Vector(300, 330), "Level 1", 'level_1'));
+        this.entities.push(new MapDoor(new Vector(600, 560), "Level 2", 'level_2'));
+        this.entities.push(new MapDoor(new Vector(750, 650), "Level 3", 'level_3'));
     }
 
     public update() {
@@ -57,7 +59,10 @@ class LevelSelectView extends BaseView {
         });
     }
 
-    public beforeExit() {}
+    public beforeExit() {
+        this.backgroundMusic.pause(PlayingStat.PAUSED);
+        this.player.removeKeyHelper();
+    }
 
     public drawGUI() {
         this.canvasHelper.addProgressBar(

@@ -13,6 +13,7 @@ class KeyHelper {
      * @constructor
      */
     public constructor() {
+        console.trace("Create")
         this.leftPressed = false;
         this.upPressed = false;
         this.rightPressed = false;
@@ -49,25 +50,28 @@ class KeyHelper {
         switch(event.keyCode) {
             case 37:
             case 65:
-                    this.leftPressed = true;
+                this.leftPressed = true;
                 break;
             case 38:
             case 87:
-                    this.upPressed = true;
+                this.upPressed = true;
                 break;
             case 39:
             case 68:
-                    this.rightPressed = true;
+                this.rightPressed = true;
                 break;
             case 40:
             case 83:
-                    this.downPressed = true;
+                this.downPressed = true;
                 break;
             case 32:
-                    this.spaceBarPressed = true;
+                this.spaceBarPressed = true;
                 break;
             case 69:
-                    this.interactPressed = true;
+                this.interactPressed = true;
+                break;
+            case 80:
+                Game.pause();
                 break;
 
         }
@@ -84,25 +88,25 @@ class KeyHelper {
         switch(event.keyCode) {
             case 37:
             case 65:
-                    this.leftPressed = false;
+                this.leftPressed = false;
                 break;
             case 38:
             case 87:
-                    this.upPressed = false;
+                this.upPressed = false;
                 break;
             case 39:
             case 68:
-                    this.rightPressed = false;
+                this.rightPressed = false;
                 break;
             case 40:
             case 83:
-                    this.downPressed = false;
+                this.downPressed = false;
                 break;
             case 32:
-                    this.spaceBarPressed = false;
+                this.spaceBarPressed = false;
                 break;
             case 69:
-                    this.interactPressed = false;
+                this.interactPressed = false;
                 break;
 
         }

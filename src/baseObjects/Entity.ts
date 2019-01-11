@@ -14,6 +14,7 @@ abstract class Entity {
     protected gravity: number;
     protected canvasHelper: CanvasHelper;
     protected collision: CollisionObject;
+    protected collisionOffset: Vector;
     public shouldCollide: boolean = true;
     protected drawOnDeath: boolean = true;
     protected isAlive: boolean = true;
@@ -55,6 +56,7 @@ abstract class Entity {
         this.maxSpeed = maxSpeed;
         this.direction = direction;
         this.collision = null;
+        this.collisionOffset = new Vector(0, 0);
     }
 
     public collide(
@@ -78,7 +80,7 @@ abstract class Entity {
         this.move(entities);
         if (this.getCollision()) {
             if (!(this instanceof CollisionObject)) {
-                this.getCollision().updateLocation(this.location);
+                this.getCollision().updateLocation(this.location.copy().add(this.collisionOffset.copy()));
             }
             this.getCollision().draw();
         }

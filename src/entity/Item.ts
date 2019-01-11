@@ -4,13 +4,18 @@ class Item extends Entity {
 
     public static readonly itemIDs: Array<ItemDefinition> = [
         {internalName: "none", displayName: "None", spriteSrc: null},
-        {internalName: "bandage", displayName: "Bandage", spriteSrc: "./assets/images/items/bandage.png"},
-        {internalName: "", displayName: "", spriteSrc: ""},
+        {internalName: "bandage", displayName: "Een pleister", spriteSrc: "./assets/images/items/bandage.png"},
+        {internalName: "citroen", displayName: "Een citroen", spriteSrc: "./assets/images/items/citroen.png"},
+        {internalName: "jodium", displayName: "Jodium", spriteSrc: "./assets/images/items/jodium.png"},
+        {internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png"},
+        {internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png"},
+        {internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png"},
+        {internalName: "doek", displayName: "een droge doek", spriteSrc: "./assets/images/items/handdoek.png"},
+        {internalName: "icepack", displayName: "een icepack", spriteSrc: "./assets/images/items/icepack.png"}
     ]
 
     /**
      * @constructor
-     * @param {string} imageSource
      * @param {number} xPos
      * @param {number} yPos
      * @param {number} height
@@ -19,7 +24,6 @@ class Item extends Entity {
      * @param {number} acceleration
      */
     public constructor(
-        imageSource: string,
         location: Vector,
         rotation: Rotation,
         size: Vector,
@@ -53,6 +57,7 @@ class Item extends Entity {
             this.location.copy().add(this.size.copy().multiply(.5)),
             this.rotation
         )
+        if(name == "arrow") this.collision = null;
     }
 
     public move(): void {

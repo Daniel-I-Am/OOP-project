@@ -1,8 +1,7 @@
 class MapPlayer extends Player {
     public constructor(location: Vector) {
-        super(["./assets/player/mapPlayer.png"], location, new Vector(64, 64), 0, 0, 0, 0);
-        this.maxSpeed = 3;
-        this.canvasHelper.offset = new Vector(0, 0)
+        super(["./assets/player/mapPlayer.png"], location, new Vector(48, 48), 0, 0, 0, 0);
+        this.maxSpeed = 5;
     }
 
     public move() {
@@ -16,9 +15,15 @@ class MapPlayer extends Player {
         Game.getCurrentView().entities.forEach(e => {
             if (e === this) return;
             if (e.collide(this)) {
-                e.onPlayerCollision(this, null);
-                this.location.sub(this.velocity);
-                this.velocity = new Vector(0, 0);
+                if (e instanceof MapDoor) {
+                    if (this.keyHelper.getInteractPressed()) {
+                        e.onPlayerCollision();
+                    }
+                } else {
+                    e.onPlayerCollision(this, null);
+                    this.location.sub(this.velocity);
+                    this.velocity = new Vector(0, 0);
+                }
             }
         });
     }

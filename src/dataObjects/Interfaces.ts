@@ -27,15 +27,21 @@ interface CollisionDirections {
 
 interface Level {
     background: string,
+    foreground: string,
     backgroundMusic: string,
     player: LevelPlayer,
+    patient: LevelPatient,
+    dialogue: Array<DialogueLine>,
+    endDialogue: Array<DialogueLine>,
+    usedItems: Array<string>,
     berthas: Array<LevelBertha>,
     Fires: Array<LevelFire>,
     FallingTiles: Array<LevelFallingTile>,
     Accelerators: Array<LevelAccelerator>,
     Trampolines: Array<LevelTrampoline>,
     items: Array<LevelItem>,
-    Collisions: Array<LevelCollision>
+    Collisions: Array<LevelCollision>,
+    door: LevelDoor
 }
 
 interface LevelPlayer {
@@ -45,6 +51,16 @@ interface LevelPlayer {
     gravity: number,
     maxJumps: number,
     jumpHeight: number
+}
+
+interface LevelPatient {
+    sprites: Array<string>,
+    size: LevelSize
+}
+
+interface DialogueLine {
+    who: "player" | "patient",
+    what: string
 }
 
 interface LevelBertha {
@@ -79,11 +95,11 @@ interface LevelTrampoline {
     sprites: Array<string>,
     location: LevelLocations,
     rotation: number,
-    size: LevelSize
+    size: LevelSize,
+    shouldDraw?: boolean
 }
 
 interface LevelItem {
-    sprite: string,
     location: LevelLocations,
     rotation: number,
     size: LevelSize,
@@ -94,6 +110,11 @@ interface LevelCollision {
     topLeft: LevelLocations,
     bottomRight: LevelLocations,
     rotation: number
+}
+
+interface LevelDoor {
+    topLeft: LevelLocations,
+    bottomRight: LevelLocations
 }
 
 interface LevelLocations {

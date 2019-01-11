@@ -2,7 +2,8 @@ class CanvasHelper {
     private static instance: CanvasHelper;
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    public offset: Vector;
+    private offset: Vector;
+    public newOffset: Vector;
 
     private constructor(
         canvas: HTMLElement
@@ -10,6 +11,7 @@ class CanvasHelper {
         this.canvas = <HTMLCanvasElement>canvas;
         this.ctx = this.canvas.getContext('2d');
         this.offset = new Vector(0, 0);
+        this.newOffset = new Vector(0, 0);
 
         this.canvas.style.width = `${this.canvas.clientWidth}px`
         this.canvas.style.height = `${this.canvas.clientWidth*9/16}px`
@@ -207,5 +209,17 @@ class CanvasHelper {
             this.canvas.clientWidth/this.canvas.width,
             this.canvas.clientHeight/this.canvas.height,
         );
+    }
+
+    public getOffset(): Vector {
+        return this.offset.copy();
+    }
+
+    public resetOffset(): void {
+        this.offset = new Vector(0, 0);
+    }
+
+    public updateOffset(): void {
+        this.offset = this.newOffset.copy();
     }
 }

@@ -1,6 +1,7 @@
 {
     "background": "./assets/images/map/debug_level.png",
-    "backgroundMusic": "./assets/sounds/Spectacles.wav",
+    "foreground": null,
+    "backgroundMusic": "./assets/sounds/Spectacles_intro2.wav",
     "player": {
         "sprites": [
             "./assets/player/anim_walk/PlayerAnim1.png",
@@ -26,6 +27,33 @@
         "jumpHeight": 16,
         "maxJumps": 2
     },
+    "patient": {
+        "sprites": [
+            "./assets/images/harry.png"
+        ],
+        "size": {
+            "x": 58.5,
+            "y": 150
+        }
+    },
+    "dialogue": [
+        {"who": "patient", "what": "Dokter, help! Ik heb me in mijn vinger gesneden!"},
+        {"who": "player", "what": "Waar kan ik de spullen vinden om je te helpen?"},
+        {"who": "patient", "what": "In het volgende level kun je alle spullen vinden voor snijwonden."},
+        {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
+    ],
+
+    "endDialogue": [
+        {"who":"patient", "what": "Dokter, u bent terug!"},
+        {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
+        {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
+    ],
+    "usedItems": [
+        "water",
+        "keukenrol",
+        "bandage"
+    ],
     "berthas": [
         {
             "sprites": [
@@ -41,7 +69,7 @@
                 },
                 "y": {
                     "center": false,
-                    "offset": 1500                
+                    "offset": 1500
                 }
             },
             "size": {
@@ -59,7 +87,7 @@
                 },
                 "y": {
                     "center": false,
-                    "offset": 1500                
+                    "offset": 1500
                 }
             },
             "size": {
@@ -151,7 +179,6 @@
     ],
     "items": [
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -170,7 +197,6 @@
             "name": "bandage"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -186,10 +212,9 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "citroen"
         },
         {
-            "sprite": "./assets/images/default.png",
             "location": {
                 "x": {
                     "center": false,
@@ -205,7 +230,43 @@
                 "x": 64,
                 "y": 64
             },
-            "name": "bandage"
+            "name": "jodium"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 400
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "keukenrol"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 300
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "water"
         }
     ],
     "Trampolines": [
@@ -246,6 +307,28 @@
             }
         }
     ],
+    "door": {
+        "topLeft": {
+            "x": {
+                "center": false,
+                "offset": 75
+            },
+            "y": {
+                "center": false,
+                "offset": 1600
+            }
+        },
+        "bottomRight": {
+            "x": {
+                "center": false,
+                "offset": 120
+            },
+            "y": {
+                "center": false,
+                "offset": 1800
+            }
+        }
+    },
     "Collisions": [
         {
             "topLeft": {
@@ -292,7 +375,8 @@
                 }
             },
             "rotation": 0
-        },{
+        },
+        {
             "topLeft": {
                 "x": {
                     "center": false,

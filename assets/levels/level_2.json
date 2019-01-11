@@ -1,0 +1,530 @@
+{
+    "background": "./assets/images/map/Level_2_bg.png",
+    "foreground": "./assets/images/map/Level_2_fg.png",
+    "backgroundMusic": "./assets/sounds/Spectacles_intro2.wav",
+    "player": {
+        "sprites": [
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim2.png",
+            "./assets/player/anim_walk/PlayerAnim1.png",
+            "./assets/player/anim_walk/PlayerAnim3.png"
+        ],
+        "location": {
+            "x": {
+                "center": false,
+                "offset": 4130
+            },
+            "y": {
+                "center": false,
+                "offset": 2355
+            }
+        },
+        "size": {
+            "x": 58.5,
+            "y": 150
+        },
+        "gravity": 1,
+        "jumpHeight": 16,
+        "maxJumps": 2
+    },
+    "patient": {
+        "sprites": [
+            "./assets/images/harry.png"
+        ],
+        "size": {
+            "x": 58.5,
+            "y": 150
+        }
+    },
+    "dialogue": [
+        {"who": "patient", "what": "Dokter, help! Ik ben gevallen en heb mijn enkel verstuikt!"},
+        {"who": "player", "what": "Waar kan ik de spullen vinden om je te helpen?"},
+        {"who": "patient", "what": "In het volgende level kun je alle spullen vinden voor verstuikte enkels."},
+        {"who": "player", "what": "Maak je geen zorgen, ik zal je helpen!"}
+    ],
+    "endDialogue": [
+        {"who":"patient", "what": "Dokter, u bent terug!"},
+        {"who":"player", "what": "Ja, en ik heb spullen voor je meegebracht:"},
+        {"who":"patient", "what": "Ja! [ITEM] is precies wat ik nodig heb!"},
+        {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"},
+        {"who": "patient", "what": "Bedankt, dokter Tattenschnatzer, u heeft me genezen!"}
+    ],
+    "usedItems": [
+        "doek",
+        "icepack"
+    ],
+    "berthas": [
+        {
+            "sprites": [
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/2.png",
+                "./assets/bertha/anim_walk/1.png",
+                "./assets/bertha/anim_walk/3.png"
+            ],
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1050
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 1730
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1400
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 7100
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2300
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        },
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 535
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2300
+                }
+            },
+            "size": {
+                "x": 58.5,
+                "y": 150
+            },
+            "gravity": 1
+        }
+    ],
+    "Fires": [],
+    "FallingTiles": [],
+    "Accelerators": [
+        {
+            "sprites": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 6520
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1670
+                }
+            },
+            "rotation": -182,
+            "size": {
+                "x": 175,
+                "y": 50
+            },
+            "yeet": 62
+        }
+    ],
+    "items": [
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 210
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1050
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "bandage"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 250
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2250
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "doek"
+        },
+        {
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 7750
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1915
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 64,
+                "y": 64
+            },
+            "name": "icepack"
+        }
+    ],
+    "Trampolines": [
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 3000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2400
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 259,
+                "y": 135
+            }
+        },
+        {
+            "sprite": null,
+            "location": {
+                "x": {
+                    "center": false,
+                    "offset": 5125
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2390
+                }
+            },
+            "rotation": 0,
+            "size": {
+                "x": 259,
+                "y": 135
+            }
+        }
+    ],
+    "door": {
+        "topLeft": {
+            "x": {
+                "center": false,
+                "offset": 3980
+            },
+            "y": {
+                "center": false,
+                "offset": 2150
+            }
+        },
+        "bottomRight": {
+            "x": {
+                "center": false,
+                "offset": 4060
+            },
+            "y": {
+                "center": false,
+                "offset": 2435
+            }
+        }
+    },
+    "Collisions": [
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 0
+                },
+                "y": {
+                    "center": false,
+                    "offset": -10000
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 75
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2500
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 80
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2440
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1190
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2590
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 1575
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2440
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 5310
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2590
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 6250
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2440
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 9000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2590
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 4475
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1950
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 4835
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2050
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 3660
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1860
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 4000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2465
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 6300
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2140
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 6666
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2235
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 7950
+                },
+                "y": {
+                    "center": false,
+                    "offset": -10000
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 8000
+                },
+                "y": {
+                    "center": false,
+                    "offset": 2500
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 2035
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1790
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 2430
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1888
+                }
+            },
+            "rotation": 0
+        },
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 1530
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1490
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1915
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1588
+                }
+            },
+            "rotation": 0
+        }
+        ,
+        {
+            "topLeft": {
+                "x": {
+                    "center": false,
+                    "offset": 80
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1160
+                }
+            },
+            "bottomRight": {
+                "x": {
+                    "center": false,
+                    "offset": 1250
+                },
+                "y": {
+                    "center": false,
+                    "offset": 1375
+                }
+            },
+            "rotation": 0
+        }
+    ]
+}
