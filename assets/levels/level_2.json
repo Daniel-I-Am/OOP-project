@@ -79,12 +79,7 @@
             "gravity": 1
         },
         {
-            "sprites": [
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/2.png",
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/3.png"
-            ],
+            "sprites": null,
             "location": {
                 "x": {
                     "center": false,
@@ -102,12 +97,7 @@
             "gravity": 1
         },
         {
-            "sprites": [
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/2.png",
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/3.png"
-            ],
+            "sprites": null,
             "location": {
                 "x": {
                     "center": false,
@@ -125,12 +115,7 @@
             "gravity": 1
         },
         {
-            "sprites": [
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/2.png",
-                "./assets/bertha/anim_walk/1.png",
-                "./assets/bertha/anim_walk/3.png"
-            ],
+            "sprites": null,
             "location": {
                 "x": {
                     "center": false,
