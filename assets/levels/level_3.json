@@ -50,9 +50,9 @@
         {"who": "patient", "what": "Bedankt, dokter Tattenschnatzer, u heeft me genezen!"}
     ],
     "usedItems": [
-        "bandage",
-        "doek",
-        "icepack"
+        "water",
+        "keukenrol",
+        "jodium"
     ],
     "berthas": [
         {
@@ -88,42 +88,6 @@
                 "y": {
                     "center": false,
                     "offset": 1400
-                }
-            },
-            "size": {
-                "x": 58.5,
-                "y": 150
-            },
-            "gravity": 1
-        },
-        {
-            "sprites": null,
-            "location": {
-                "x": {
-                    "center": false,
-                    "offset": 7100
-                },
-                "y": {
-                    "center": false,
-                    "offset": 2300
-                }
-            },
-            "size": {
-                "x": 58.5,
-                "y": 150
-            },
-            "gravity": 1
-        },
-        {
-            "sprites": null,
-            "location": {
-                "x": {
-                    "center": false,
-                    "offset": 535
-                },
-                "y": {
-                    "center": false,
-                    "offset": 2300
                 }
             },
             "size": {
