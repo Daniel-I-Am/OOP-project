@@ -8,6 +8,7 @@ class TitleView extends BaseView {
         super();
         this.active = true;
         this.shouldClear = false;
+        this.canvasHelper.newOffset = new Vector(0, 0);
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(

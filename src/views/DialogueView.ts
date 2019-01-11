@@ -12,6 +12,7 @@ class DialogueView extends BaseView {
         this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
         this.backgroundMusic.toggleLoop();
         this.entities = new Array<Entity>();
+        this.canvasHelper.newOffset = new Vector(0, 0);
         
         this.background = new Image();
         this.background.src = "./assets/images/map/room.png";

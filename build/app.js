@@ -349,7 +349,6 @@ class BaseView {
         this.background = new Image();
         this.levelName = levelName;
         this.canvasHelper.resetOffset();
-        this.canvasHelper.newOffset = new Vector(0, 0);
     }
     tick() {
         if (this.shouldClear)
@@ -473,6 +472,7 @@ class DialogueView extends BaseView {
         this.backgroundMusic = new SoundHelper("./assets/sounds/Spectacles.wav", .3);
         this.backgroundMusic.toggleLoop();
         this.entities = new Array();
+        this.canvasHelper.newOffset = new Vector(0, 0);
         this.background = new Image();
         this.background.src = "./assets/images/map/room.png";
         fetch(`./assets/levels/${levelName}.json`)
@@ -740,6 +740,7 @@ class LevelSelectView extends BaseView {
         this.entities = [];
         this.player = new MapPlayer(new Vector(40, 390));
         this.entities.push(this.player);
+        this.canvasHelper.newOffset = new Vector(0, 0);
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(1610, 0), new Rotation(0)));
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(-10, 910), new Rotation(0)));
         this.entities.push(new CollisionObject(new Vector(-10, 900), new Vector(1610, 910), new Rotation(0)));
@@ -797,6 +798,7 @@ class TitleView extends BaseView {
         super();
         this.active = true;
         this.shouldClear = false;
+        this.canvasHelper.newOffset = new Vector(0, 0);
         let buttonImage = new Image();
         buttonImage.addEventListener('load', () => {
             this.canvasHelper.drawButton(buttonImage, "Play!", 96, this.canvasHelper.getCenter(), new Vector(buttonImage.width * 5, buttonImage.height * 5), (event) => { if (this.active) {
@@ -1456,6 +1458,7 @@ class ControlView extends BaseView {
         super();
         this.shouldClear = false;
         this.canvasHelper.clear();
+        this.canvasHelper.newOffset = new Vector(0, 0);
         "e - items oppakken\nesc - terug gaan\na/d/spatie/pijltje rechts en links - beweging\nenter - volgende dialoog regel".split("\n").forEach((e, i) => {
             this.canvasHelper.writeText(e, 44, this.canvasHelper.getCenter().add(new Vector(0, -100 * i)), undefined, undefined, "black");
         });

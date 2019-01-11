@@ -9,6 +9,7 @@ class LevelSelectView extends BaseView {
         this.entities = [];
         this.player = new MapPlayer(new Vector(40, 390));
         this.entities.push(this.player);
+        this.canvasHelper.newOffset = new Vector(0, 0);
         // outside border
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(1610, 0), new Rotation(0)));
         this.entities.push(new CollisionObject(new Vector(-10, -10), new Vector(-10, 910), new Rotation(0)));
