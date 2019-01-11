@@ -1006,7 +1006,7 @@ class Fire extends Entity {
     onPlayerCollision(player, collisionSides) {
         if (this.collide(player)) {
             player.incFireCounter();
-            if (player.getFireCounter() >= 150) {
+            if (player.getFireCounter() >= player.maxFire) {
                 player.kill();
             }
             console.log("FAYAA");
@@ -1065,8 +1065,8 @@ Item.itemIDs = [
     { internalName: "keukenrol", displayName: "Keukenrol", spriteSrc: "./assets/images/items/keukenrol.png" },
     { internalName: "water", displayName: "Water", spriteSrc: "./assets/images/items/water.png" },
     { internalName: "arrow", displayName: "Arrow", spriteSrc: "./assets/images/arrow.png" },
-    { internalName: "doek", displayName: "een droge doek", spriteSrc: "" },
-    { internalName: "icepack", displayName: "een icepack", spriteSrc: "" }
+    { internalName: "doek", displayName: "een droge doek", spriteSrc: "./assets/images/items/handdoek.png" },
+    { internalName: "icepack", displayName: "een icepack", spriteSrc: "./assets/images/items/icepack.png" }
 ];
 class MapDoor extends Entity {
     constructor(location, levelName, internalName, imageSrc = 'Door.png') {
