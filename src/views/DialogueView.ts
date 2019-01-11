@@ -64,7 +64,7 @@ class DialogueView extends BaseView {
         this.entities.forEach(e => {
             e.draw();
         });
-        this.canvasHelper.offset = new Vector(0, 0);
+        this.canvasHelper.newOffset = new Vector(0, 0);
     }
 
     public displayLine() {

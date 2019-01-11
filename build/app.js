@@ -83,6 +83,7 @@ class CanvasHelper {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
         this.offset = new Vector(0, 0);
+        this.newOffset = new Vector(0, 0);
         this.canvas.style.width = `${this.canvas.clientWidth}px`;
         this.canvas.style.height = `${this.canvas.clientWidth * 9 / 16}px`;
         this.canvas.width = 1600;
@@ -171,6 +172,9 @@ class CanvasHelper {
     }
     getCroppingFactor() {
         return new Vector(this.canvas.clientWidth / this.canvas.width, this.canvas.clientHeight / this.canvas.height);
+    }
+    updateOffset() {
+        this.offset = this.newOffset;
     }
 }
 class KeyHelper {
@@ -338,6 +342,8 @@ class BaseView {
         this.shouldClear = true;
         this.background = new Image();
         this.levelName = levelName;
+        this.canvasHelper.offset = new Vector(0, 0);
+        this.canvasHelper.newOffset = new Vector(0, 0);
     }
     tick() {
         if (this.shouldClear)
@@ -346,6 +352,7 @@ class BaseView {
         this.update();
         if (this.foreground)
             this.drawForeground();
+        this.canvasHelper.updateOffset();
         this.drawGUI();
     }
     drawBackground() {
@@ -487,7 +494,7 @@ class DialogueView extends BaseView {
         this.entities.forEach(e => {
             e.draw();
         });
-        this.canvasHelper.offset = new Vector(0, 0);
+        this.canvasHelper.newOffset = new Vector(0, 0);
     }
     displayLine() {
         this.canvasHelper.writeText(this.dialogue[this.currentLine].what, DialogueView.fontSize, ((who) => {
@@ -1158,15 +1165,15 @@ class Player extends Entity {
         if (this.isAlive) {
             let dx = this.canvasHelper.offset.x + this.canvasHelper.getWidth() / 2 - this.location.x;
             let dy = this.canvasHelper.offset.y + this.canvasHelper.getHeight() / 2 - this.location.y;
-            this.canvasHelper.offset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
-            this.canvasHelper.offset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
+            this.canvasHelper.newOffset.x -= 1 * Math.pow(10, -17) * Math.pow(dx, 7);
+            this.canvasHelper.newOffset.y -= 1 * Math.pow(10, -17) * Math.pow(dy, 7);
             if (isNaN(this.canvasHelper.offset.x)) {
-                this.canvasHelper.offset.x = -this.canvasHelper.getWidth() / 2 + this.location.x;
-                console.log("Reset x", this.canvasHelper.offset.x);
+                this.canvasHelper.newOffset.x = -this.canvasHelper.getWidth() / 2 + this.location.x;
+                console.log("Reset x", this.canvasHelper.newOffset.x);
             }
             if (isNaN(this.canvasHelper.offset.y)) {
-                this.canvasHelper.offset.y = -this.canvasHelper.getHeight() / 2 + this.location.y;
-                console.log("Reset y", this.canvasHelper.offset.y);
+                this.canvasHelper.newOffset.y = -this.canvasHelper.getHeight() / 2 + this.location.y;
+                console.log("Reset y", this.canvasHelper.newOffset.y);
             }
         }
         if (this.location.y > 5000)
