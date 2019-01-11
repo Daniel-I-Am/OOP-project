@@ -49,6 +49,11 @@
         {"who":"patient", "what": "Ja! Een [ITEM] is precies wat ik nodig heb!"},
         {"who":"patient", "what": "Nee! Ik heb iets anders nodig!"}
     ],
+    "usedItems": [
+        "water",
+        "keukenrol",
+        "bandage"
+    ],
     "berthas": [
         {
             "sprites": [
