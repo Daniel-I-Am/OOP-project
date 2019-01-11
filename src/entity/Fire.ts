@@ -23,7 +23,7 @@ class Fire extends Entity{
         if (this.collide(player)) {
             player.incFireCounter()
 
-            if(player.getFireCounter() >= 150){
+            if(player.getFireCounter() >= player.maxFire){
                 player.kill();
             }
             console.log("FAYAA");

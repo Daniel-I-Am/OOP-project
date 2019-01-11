@@ -1086,6 +1086,8 @@ class MapDoor extends Entity {
 class Player extends Entity {
     constructor(imageSources, location, size, gravity, acceleration, jumpHeight, maxJumps) {
         super(imageSources, location, new Rotation(0), size, gravity, undefined, acceleration, 15);
+        this.fireDecayRate = 0.083333333333;
+        this.maxFire = 150;
         this.darkOverlay = new Image();
         this.darkOverlay.src = "./assets/player/darkOverlay.png";
         this.keyHelper = new KeyHelper();
@@ -1171,7 +1173,7 @@ class Player extends Entity {
             this.kill();
         this.checkInventory();
         this.drawInventory();
-        this.fireCounter = Math.max(0, this.fireCounter - 0.083333333333);
+        this.fireCounter = Math.max(0, this.fireCounter - this.fireDecayRate);
     }
     playerCollision(collideWith) {
         this.leftCollision.updateLocation(this.location.copy().add(new Vector(-this.size.x / 2, 0)));
@@ -1269,12 +1271,13 @@ class Player extends Entity {
         });
     }
     drawOverlay() {
-        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined), undefined, undefined, this.fireCounter / 150 * .6);
+        this.canvasHelper.drawImage(this.darkOverlay, this.location, this.rotation, this.size, (this.velocity.x < 0 ? new Vector(-1, 1) : undefined), undefined, undefined, this.fireCounter / this.maxFire * .6);
     }
     setIsLanded(state) {
         this.isLanded = state;
     }
     kill() {
+        console.trace();
         if (!this.isAlive)
             return;
         this.keyHelper.destroy();
