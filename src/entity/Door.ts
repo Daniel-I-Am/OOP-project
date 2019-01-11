@@ -11,6 +11,6 @@ class Door extends Entity {
     public move() {}
 
     public onPlayerCollision(player: Player, collisionSides: CollisionDirections) {
-        this.canvasHelper.writeText("Druk op e om het level te verlaten", 48, this.location.copy().add(new Vector(0, -200)).sub(this.canvasHelper.offset.copy()), undefined, undefined, "black")
+        this.canvasHelper.writeText("Druk op e om het level te verlaten", 48, this.location.copy().add(new Vector(0, -200)).sub(this.canvasHelper.getOffset().copy()), undefined, undefined, "black")
     }
 }
